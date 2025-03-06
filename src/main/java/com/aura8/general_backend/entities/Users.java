@@ -13,9 +13,9 @@ public class Users {
     private String password;
     private String phone;
     private Integer roleId;
-    private Boolean deleted = false;
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime modifiedAt = LocalDateTime.now();
+    private Boolean deleted;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public Integer getId() {
         return id;
