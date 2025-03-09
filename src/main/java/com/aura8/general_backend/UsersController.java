@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -13,6 +14,7 @@ public class UsersController {
     @Autowired
     private UsersRepository repository;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Users> cadastrar(@RequestBody Users users){
 
@@ -20,6 +22,13 @@ public class UsersController {
         return ResponseEntity
                 .status(201)
                 .body(usuarioRegistrado);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/login")
+    public ResponseEntity<Users> logar(@RequestBody Users userInformations){
+        Optional<Users> usersOptional = repository.findByEmailAndPassword(userInformations.getEmail(), userInformations.getPassword());
+        return ResponseEntity.of(usersOptional);
     }
 
     @GetMapping
