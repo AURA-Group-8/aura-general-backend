@@ -18,6 +18,10 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<Users> cadastrar(@RequestBody Users users){
 
+        Optional<Users> usersOptional = repository.findByEmail(users.getEmail());
+        if (usersOptional.isPresent()){
+            return ResponseEntity.status(409).build();
+        }
         Users usuarioRegistrado = this.repository.save(users);
         return ResponseEntity
                 .status(201)
