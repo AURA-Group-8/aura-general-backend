@@ -1,6 +1,7 @@
 package com.aura8.general_backend;
 
 import com.aura8.general_backend.entities.Users;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,15 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/usuarios")
-public class UsersController {
-    @Autowired
-    private UsersRepository repository;
+    @RestController
+    @RequestMapping("/usuarios")
+    public class UsersController {
+
+        @Autowired
+        private UsersRepository repository;
 
     @CrossOrigin(origins = "*")
     @PostMapping
-    public ResponseEntity<Users> cadastrar(@RequestBody Users users){
+    public ResponseEntity<Users> cadastrar(@Valid @RequestBody Users users){
 
         Optional<Users> usersOptional = repository.findByEmail(users.getEmail());
         if (usersOptional.isPresent()){
@@ -63,6 +65,7 @@ public class UsersController {
         }
         return ResponseEntity.status(404).build();
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>  deletar(@PathVariable Integer id){
         if(repository.existsById(id)){
