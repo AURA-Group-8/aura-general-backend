@@ -19,20 +19,24 @@ public class Users {
     private String email;
 
     @NotBlank
-    @Size
     private String password;
 
+    @NotBlank
     private String phone;
 
-    @NotNull
+    @NotBlank
+    private LocalDateTime dateOfBirth;
+
+    @NotBlank
     private Integer roleId;
 
+    @NotBlank
     private Boolean deleted;
 
-    @NotNull
+    @NotBlank
     private LocalDateTime createdAt;
 
-    @NotNull
+    @NotBlank
     private LocalDateTime modifiedAt;
 
     public Integer getId() {
@@ -73,6 +77,14 @@ public class Users {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Integer getRoleId() {
