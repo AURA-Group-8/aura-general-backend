@@ -1,4 +1,4 @@
-package com.aura8.general_backend;
+package com.aura8.general_backend.repository;
 
 import com.aura8.general_backend.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;

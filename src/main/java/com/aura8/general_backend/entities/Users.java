@@ -1,6 +1,8 @@
 package com.aura8.general_backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,13 +10,33 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotBlank
     private String username;
+
+    @NotBlank
+    @Email
     private String email;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String phone;
+
+    @NotBlank
+    private LocalDateTime dateOfBirth;
+
+    @NotBlank
     private Integer roleId;
+
+    @NotBlank
     private Boolean deleted;
+
+    @NotBlank
     private LocalDateTime createdAt;
+
+    @NotBlank
     private LocalDateTime modifiedAt;
 
     public Integer getId() {
@@ -55,6 +77,14 @@ public class Users {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Integer getRoleId() {
