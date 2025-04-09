@@ -1,17 +1,19 @@
 package com.aura8.general_backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToMany(mappedBy = "role")
+    private List<Users> users;
+
     private String name;
     private Boolean deleted = false;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -19,6 +21,14 @@ public class Role {
 
     public Integer getId() {
         return id;
+    }
+
+    public List<Users> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<Users> users) {
+        this.users = users;
     }
 
     public void setId(Integer id) {

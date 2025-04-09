@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Users {
@@ -11,32 +12,24 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
     private String username;
 
-    @NotBlank
-    @Email
     private String email;
 
-    @NotBlank
     private String password;
 
-    @NotBlank
     private String phone;
 
-    @NotBlank
     private LocalDateTime dateOfBirth;
 
-    @NotBlank
-    private Integer roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    @NotBlank
     private Boolean deleted;
 
-    @NotBlank
     private LocalDateTime createdAt;
 
-    @NotBlank
     private LocalDateTime modifiedAt;
 
     public Integer getId() {
@@ -87,12 +80,12 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public @NotBlank Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(@NotBlank Role role) {
+        this.role = role;
     }
 
     public Boolean getDeleted() {
