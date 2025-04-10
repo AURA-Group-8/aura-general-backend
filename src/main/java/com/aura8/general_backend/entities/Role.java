@@ -10,10 +10,6 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @OneToMany(mappedBy = "role")
-    private List<Users> users;
-
     private String name;
     private Boolean deleted = false;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -21,14 +17,6 @@ public class Role {
 
     public Integer getId() {
         return id;
-    }
-
-    public List<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Users> users) {
-        this.users = users;
     }
 
     public void setId(Integer id) {

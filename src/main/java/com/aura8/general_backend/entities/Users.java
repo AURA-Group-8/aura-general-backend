@@ -11,25 +11,14 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String username;
-
     private String email;
-
     private String password;
-
     private String phone;
-
     private LocalDateTime dateOfBirth;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
-
+    private Integer roleId;
     private Boolean deleted;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime modifiedAt;
 
     public Integer getId() {
@@ -80,12 +69,12 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public @NotBlank Role getRole() {
-        return role;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole(@NotBlank Role role) {
-        this.role = role;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public Boolean getDeleted() {
