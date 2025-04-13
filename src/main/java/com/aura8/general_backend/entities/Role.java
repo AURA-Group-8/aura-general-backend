@@ -1,5 +1,7 @@
 package com.aura8.general_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,11 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToMany
+    @JsonManagedReference
+    List<Users> users;
+
     private String name;
     private Boolean deleted = false;
     private LocalDateTime createdAt = LocalDateTime.now();
