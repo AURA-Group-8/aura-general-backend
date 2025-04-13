@@ -1,5 +1,6 @@
 package com.aura8.general_backend.controller;
 
+import com.aura8.general_backend.dtos.*;
 import com.aura8.general_backend.service.UsersService;
 import com.aura8.general_backend.entities.Users;
 import jakarta.validation.Valid;
@@ -17,38 +18,44 @@ import java.util.List;
     private UsersService service;
 
     @PostMapping
-    public ResponseEntity<Users> register(@Valid @RequestBody Users user) {
-        
-        service.register(user);
-        return ResponseEntity.status(201).body(user);
+    public ResponseEntity<UsersRegisterResponseDto> register(@Valid @RequestBody UsersRegisterDto user) {
+        Users userEntity = UsersMapper.toEntity(user);
+        service.register(userEntity);
+        UsersRegisterResponseDto userDto = UsersMapper.toResponse(userEntity);
+        return ResponseEntity.status(201).body(userDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody Users userInfo) {
-        var loginValido = service.login(userInfo);
-        if (loginValido) return ResponseEntity.status(200).build();
-        throw new RuntimeException();
+    public ResponseEntity<Users> login(@RequestBody UsersLoginDto userInfo) {
+        Users userEntity = UsersMapper.toEntity(userInfo);
+        service.login(userEntity);
+        return ResponseEntity.status(200).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Users>> getAllUsers() {
+    public ResponseEntity<List<UsersRegisterResponseDto>> getAllUsers() {
 
         List<Users> users = service.getAllUsers();
 
         if (users.isEmpty()) return ResponseEntity.status(204).build();
 
-        return ResponseEntity.status(200).body(users);
+        List<UsersRegisterResponseDto> usersDto = users.stream().map(UsersMapper::toResponse).toList();
+        return ResponseEntity.status(200).body(usersDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable Integer id) {
-        return ResponseEntity.status(200).body(service.getUserById(id));
+    public ResponseEntity<UsersRegisterResponseDto> getUserById(@PathVariable Integer id) {
+        Users user = service.getUserById(id);
+        UsersRegisterResponseDto userDto = UsersMapper.toResponse(user);
+        return ResponseEntity.status(200).body(userDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Users> updateUser(@PathVariable Integer id, @RequestBody Users userToUpdate) {
-        Users userUpdate = service.updateUser(id, userToUpdate);
-        return ResponseEntity.status(200).body(userUpdate);
+    public ResponseEntity<UsersUpdateResponseDto> updateUser(@PathVariable Integer id, @RequestBody UsersUpdateDto userToUpdate) {
+        Users usersToUpdateEntity = UsersMapper.updateToEntity(userToUpdate);
+        Users userUpdate = service.updateUser(id, usersToUpdateEntity);
+        UsersUpdateResponseDto userResponse = UsersMapper.updateToResponse(userUpdate);
+        return ResponseEntity.status(200).body(userResponse);
     }
 
     @DeleteMapping("/{id}")
