@@ -13,7 +13,15 @@ public class UsersRegisterResponseDto {
     private String email;
     private String phone;
     private LocalDateTime dateOfBirth;
-    private LocalDateTime modifiedAt = LocalDateTime.now();
+    private Integer roleId;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
 
     public Integer getId() {
         return id;

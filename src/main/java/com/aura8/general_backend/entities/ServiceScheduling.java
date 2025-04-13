@@ -1,33 +1,38 @@
 package com.aura8.general_backend.entities;
 
+import com.aura8.general_backend.entities.id.ServiceSchedulingId;
 import jakarta.persistence.*;
 
 @Entity
 public class ServiceScheduling {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer schedulingId;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer serviceId;
+    @EmbeddedId
+    private ServiceSchedulingId id;
+
+    @ManyToOne
+    @JoinColumn(name = "schedulingId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Scheduling scheduling;
+
+    @ManyToOne
+    @JoinColumn(name = "serviceId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Service service;
     private Double currentPrice;
     private String observations;
     private Boolean discountApplied;
 
-    public Integer getSchedulingId() {
-        return schedulingId;
+    public Scheduling getScheduling() {
+        return scheduling;
     }
 
-    public void setSchedulingId(Integer schedulingId) {
-        this.schedulingId = schedulingId;
+    public void setScheduling(Scheduling scheduling) {
+        this.scheduling = scheduling;
     }
 
-    public Integer getServiceId() {
-        return serviceId;
+    public Service getService() {
+        return service;
     }
 
-    public void setServiceId(Integer serviceId) {
-        this.serviceId = serviceId;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public Double getCurrentPrice() {

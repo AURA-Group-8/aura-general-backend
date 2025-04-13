@@ -3,100 +3,72 @@ package com.aura8.general_backend.dtos;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public class UsersRegisterDto {
 
-    private Integer id;
+    @NotBlank
     private String username;
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
+    @NotBlank
     private String phone;
+    @NotNull
     private LocalDateTime dateOfBirth;
+    @NotNull
     private Integer roleId;
-    private Boolean deleted;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
+    public @NotBlank String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotBlank String username) {
         this.username = username;
     }
 
-    public String getEmail() {
+    public @NotBlank String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotBlank String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    public @NotBlank String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotBlank String password) {
         this.password = password;
     }
 
-    public String getPhone() {
+    public @NotBlank String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(@NotBlank String phone) {
         this.phone = phone;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public @NotNull LocalDateTime getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(@NotNull LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Integer getRoleId() {
+    public @NotNull Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(@NotNull Integer roleId) {
         this.roleId = roleId;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
     }
 }
 

@@ -1,5 +1,7 @@
 package com.aura8.general_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -16,7 +18,9 @@ public class Users {
     private String password;
     private String phone;
     private LocalDateTime dateOfBirth;
-    private Integer roleId;
+    @ManyToOne
+    @JsonBackReference
+    private Role role;
     private Boolean deleted;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -69,12 +73,12 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Boolean getDeleted() {

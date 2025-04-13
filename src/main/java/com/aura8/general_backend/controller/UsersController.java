@@ -20,7 +20,7 @@ import java.util.List;
     @PostMapping
     public ResponseEntity<UsersRegisterResponseDto> register(@Valid @RequestBody UsersRegisterDto user) {
         Users userEntity = UsersMapper.toEntity(user);
-        service.register(userEntity);
+        Users savedUser = service.register(userEntity, user.getRoleId());
         UsersRegisterResponseDto userDto = UsersMapper.toResponse(userEntity);
         return ResponseEntity.status(201).body(userDto);
     }
@@ -52,8 +52,9 @@ import java.util.List;
 
     @PutMapping("/{id}")
     public ResponseEntity<UsersUpdateResponseDto> updateUser(@PathVariable Integer id, @RequestBody UsersUpdateDto userToUpdate) {
+        userToUpdate.setId(id);
         Users usersToUpdateEntity = UsersMapper.updateToEntity(userToUpdate);
-        Users userUpdate = service.updateUser(id, usersToUpdateEntity);
+        Users userUpdate = service.updateUser(userToUpdate.getRoleId(), usersToUpdateEntity);
         UsersUpdateResponseDto userResponse = UsersMapper.updateToResponse(userUpdate);
         return ResponseEntity.status(200).body(userResponse);
     }

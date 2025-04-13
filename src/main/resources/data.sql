@@ -1,0 +1,4 @@
+INSERT INTO Role (name, deleted, created_at, modified_at)
+VALUES
+  ('ADMIN', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('CLIENTE', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

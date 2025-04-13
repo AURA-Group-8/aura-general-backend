@@ -8,7 +8,8 @@ public class Scheduling {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer usersId;
+    @ManyToOne
+    private Users users;
     private Integer feedback;
     private String status;
     private LocalDateTime startDatetime;
@@ -25,12 +26,12 @@ public class Scheduling {
         this.id = id;
     }
 
-    public Integer getUsersId() {
-        return usersId;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setUsersId(Integer usersId) {
-        this.usersId = usersId;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public Integer getFeedback() {

@@ -12,19 +12,17 @@ public class UsersMapper {
 
         Users user = new Users();
 
-        user.setDeleted(dto.getDeleted());
-        user.setCreatedAt(dto.getCreatedAt());
         user.setEmail(dto.getEmail());
-        user.setModifiedAt(dto.getModifiedAt());
         user.setPassword(dto.getPassword());
         user.setUsername(dto.getUsername());
         user.setPhone(dto.getPhone());
         user.setDateOfBirth(dto.getDateOfBirth());
-        user.setRoleId(dto.getRoleId());
+        user.setDeleted(false);
+        LocalDateTime now = LocalDateTime.now();
+        user.setCreatedAt(now);
+        user.setModifiedAt(now);
 
         return user;
-
-
     }
     public static UsersRegisterResponseDto toResponse (Users userEntity){
         if (userEntity == null) return null;
@@ -36,6 +34,7 @@ public class UsersMapper {
         dto.setEmail(userEntity.getEmail());
         dto.setDateOfBirth(userEntity.getDateOfBirth());
         dto.setPhone(userEntity.getPhone());
+        dto.setRoleId(userEntity.getRole().getId());
 
         return dto;
     }
@@ -57,6 +56,7 @@ public class UsersMapper {
 
         Users user = new Users();
 
+        user.setId(dto.getId());
         user.setDeleted(dto.getDeleted());
         user.setEmail(dto.getEmail());
         user.setModifiedAt(dto.getModifiedAt());
@@ -64,7 +64,7 @@ public class UsersMapper {
         user.setUsername(dto.getUsername());
         user.setPhone(dto.getPhone());
         user.setDateOfBirth(dto.getDateOfBirth());
-        user.setRoleId(dto.getRoleId());
+//        user.setRoleId(dto.getRoleId());
 
         return user;
 
@@ -81,6 +81,7 @@ public class UsersMapper {
         dto.setDateOfBirth(userEntity.getDateOfBirth());
         dto.setPhone(userEntity.getPhone());
         dto.setModifiedAt(userEntity.getModifiedAt());
+        dto.setRoleId(userEntity.getRole().getId());
 
         return dto;
     }
