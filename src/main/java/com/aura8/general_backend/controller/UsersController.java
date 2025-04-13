@@ -14,36 +14,47 @@ import java.util.List;
     public class UsersController {
 
     @Autowired
-    private UsersService usersService;
+    private UsersService service;
 
     @PostMapping
     public ResponseEntity<Users> register(@Valid @RequestBody Users user) {
-        return usersService.register(user);
+        
+        service.register(user);
+        return ResponseEntity.status(201).body(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Users> login(@RequestBody Users userInfo) {
-        return usersService.login(userInfo);
+        var loginValido = service.login(userInfo);
+        if (loginValido) return ResponseEntity.status(200).build();
+        throw new RuntimeException();
     }
 
     @GetMapping
     public ResponseEntity<List<Users>> getAllUsers() {
-        return usersService.getAllUsers();
+
+        List<Users> users = service.getAllUsers();
+
+        if (users.isEmpty()) return ResponseEntity.status(204).build();
+
+        return ResponseEntity.status(200).body(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Users> getUserById(@PathVariable Integer id) {
-        return usersService.getUserById(id);
+        return ResponseEntity.status(200).body(service.getUserById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable Integer id, @RequestBody Users userToUpdate) {
-        return usersService.updateUser(id, userToUpdate);
+        Users userUpdate = service.updateUser(id, userToUpdate);
+        return ResponseEntity.status(200).body(userUpdate);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        return usersService.deleteUser(id);
+        service.deleteUser(id);
+        return ResponseEntity.status(200).build();
     }
 
 }

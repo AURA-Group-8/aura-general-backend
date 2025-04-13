@@ -10,7 +10,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     List<Users> findAllByDeletedFalse();
 
-    Optional<Users> findByEmailAndPassword(String email, String password);
+    Boolean existsByEmailAndPassword(String email, String password);
 
     Optional<Users> findByEmail(String email);
 }

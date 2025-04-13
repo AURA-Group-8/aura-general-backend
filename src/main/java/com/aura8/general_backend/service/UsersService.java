@@ -15,54 +15,52 @@ public class UsersService{
     @Autowired
     private UsersRepository repository;
 
-    public ResponseEntity<Users> register(Users user) {
+    public Users register(Users user) {
         Optional<Users> existingUser = repository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            return ResponseEntity.status(409).build();
+            throw new RuntimeException(); // 409
         }
 
-        Users savedUser = repository.save(user);
-        return ResponseEntity.status(201).body(savedUser);
+        return repository.save(user);
     }
 
-    public ResponseEntity<Users> login(Users userInfo) {
-        Optional<Users> user = repository.findByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
-        return ResponseEntity.of(user);
+    public Boolean login(Users userInfo) {
+        var userSenhaCorreto = repository.existsByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
+        if (!userSenhaCorreto) throw new RuntimeException(); // 401
+        return userSenhaCorreto;
+
     }
 
-    public ResponseEntity<List<Users>> getAllUsers() {
-        List<Users> allUsers = repository.findAllByDeletedFalse();
-        if (allUsers.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(allUsers);
+    public List<Users> getAllUsers() {
+        return repository.findAllByDeletedFalse();
     }
 
-    public ResponseEntity<Users> getUserById(Integer id) {
-        Optional<Users> user = repository.findById(id);
-        return user.map(value -> ResponseEntity.status(200).body(value)) // OK
-                .orElseGet(() -> ResponseEntity.status(404).build());  // Not Found
+    public Users getUserById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(
+                        () -> new RuntimeException() // 404
+        );
+
     }
-    // Update user
-    public ResponseEntity<Users> updateUser(Integer id, Users userToUpdate) {
+
+    public Users updateUser(Integer id, Users userToUpdate) {
         boolean exists = repository.existsById(id);
 
         if (exists) {
             userToUpdate.setId(id);
             Users updatedUser = repository.save(userToUpdate);
-            return ResponseEntity.status(200).body(updatedUser); // OK
+            return updatedUser;
         }
-        return ResponseEntity.status(404).build(); // Not Found
+        throw new RuntimeException(); // 404
     }
 
-    public ResponseEntity<Void> deleteUser(Integer id) {
-        if (repository.existsById(id)) {
-            Users userToModify = repository.getById(id);
-            userToModify.setDeleted(true);
-            repository.save(userToModify);
-            return ResponseEntity.status(204).build(); // No Content
+    public void deleteUser(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException();
         }
-        return ResponseEntity.status(404).build(); // Not Found
+        Users userToModify = repository.getById(id);
+        userToModify.setDeleted(true);
+        repository.save(userToModify);// 404
     }
 
 }
