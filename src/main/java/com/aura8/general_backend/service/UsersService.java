@@ -4,10 +4,12 @@ import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.UsersRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,14 +52,26 @@ public class UsersService{
     }
 
     public Users updateUser(Integer roleId, Users userToUpdate) {
-        boolean exists = repository.existsById(userToUpdate.getId());
 
-        if (exists) {
+            Users user = repository.findById(userToUpdate.getId())
+                    .orElseThrow(
+                            () -> new ElementNotFoundException("notFound")
+                    );
+
             userToUpdate.setRole(roleService.getRoleById(roleId));
+
+
+            if (userToUpdate.getUsername() == null) userToUpdate.setUsername(user.getUsername());
+            if (userToUpdate.getPassword() == null) userToUpdate.setPassword(user.getPassword());
+            if (userToUpdate.getEmail() == null) userToUpdate.setEmail(user.getEmail());
+            if (userToUpdate.getPhone() == null) userToUpdate.setPhone(user.getPhone());
+            if (userToUpdate.getDateOfBirth() == null) userToUpdate.setDateOfBirth(user.getDateOfBirth());
+            if (userToUpdate.getCreatedAt() == null) userToUpdate.setCreatedAt(user.getCreatedAt());
+            userToUpdate.setModifiedAt(LocalDateTime.now());
             Users updatedUser = repository.save(userToUpdate);
             return updatedUser;
-        }
-        throw new ElementNotFoundException("Usuario de ID: %d não foi encontrado".formatted(userToUpdate.getId())); // 404
+
+
     }
 
     public void deleteUser(Integer id) {

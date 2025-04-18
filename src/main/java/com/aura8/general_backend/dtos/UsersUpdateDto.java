@@ -11,13 +11,7 @@ public class UsersUpdateDto {
     @NotBlank
     private String username;
     @NotBlank
-    private String email;
-    @NotBlank
     private String password;
-    @NotBlank
-    private String phone;
-    @NotNull
-    private LocalDateTime dateOfBirth;
     @NotNull
     private Integer roleId;
     @NotNull
@@ -40,36 +34,12 @@ public class UsersUpdateDto {
         this.username = username;
     }
 
-    public @NotBlank String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotBlank String email) {
-        this.email = email;
-    }
-
     public @NotBlank String getPassword() {
         return password;
     }
 
     public void setPassword(@NotBlank String password) {
         this.password = password;
-    }
-
-    public @NotBlank String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(@NotBlank String phone) {
-        this.phone = phone;
-    }
-
-    public @NotNull LocalDateTime getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(@NotNull LocalDateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public @NotNull Integer getRoleId() {
