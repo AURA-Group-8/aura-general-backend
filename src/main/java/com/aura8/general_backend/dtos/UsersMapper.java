@@ -58,12 +58,11 @@ public class UsersMapper {
 
         user.setId(dto.getId());
         user.setDeleted(dto.getDeleted());
-        user.setEmail(dto.getEmail());
+
         user.setModifiedAt(dto.getModifiedAt());
         user.setPassword(dto.getPassword());
         user.setUsername(dto.getUsername());
-        user.setPhone(dto.getPhone());
-        user.setDateOfBirth(dto.getDateOfBirth());
+
 //        user.setRoleId(dto.getRoleId());
 
         return user;
