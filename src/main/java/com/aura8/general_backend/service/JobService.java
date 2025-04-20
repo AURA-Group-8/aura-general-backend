@@ -26,13 +26,14 @@ public class JobService {
     }
 
     public List<Job> getJobsInList(List<Integer> jobsIds){
-        List<Job> foundedJobs = jobsIds.stream().map((jobId) -> (getByIdForList(jobId))).toList();
         List<Integer> notFoundedIds = new ArrayList<>();
-        for (int i = 0; i < jobsIds.size(); i++) {
-            if(foundedJobs.get(i) == null){
-                notFoundedIds.add(jobsIds.get(i));
-            }
-        }
+        List<Job> foundedJobs = jobsIds.stream()
+                .map((jobId) -> {
+                    Job job = getByIdForList(jobId);
+                    if(job == null) notFoundedIds.add(jobId);
+                    return job;
+                })
+                .toList();
         if(!notFoundedIds.isEmpty()) throw new ElementNotFoundException("Jobs de IDs: %s não foram encontrados".formatted(notFoundedIds.toString()));
         return foundedJobs;
     }
