@@ -12,11 +12,20 @@ public class Scheduling {
     private Users users;
     private Integer feedback;
     private String status;
+    private Double totalPrice;
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
     private LocalDateTime canceledAt;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime modifiedAt = LocalDateTime.now();
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public Integer getId() {
         return id;

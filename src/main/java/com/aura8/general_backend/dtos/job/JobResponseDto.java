@@ -1,20 +1,19 @@
-package com.aura8.general_backend.entities;
+package com.aura8.general_backend.dtos.job;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
-@Entity
-public class Service {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class JobResponseDto {
     private Integer id;
     private String name;
     private String description;
     private Integer expectedDurationMinutes;
     private Double price;
-    private Boolean deleted = false;
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime modifiedAt = LocalDateTime.now();
+
+    public JobResponseDto(Integer id, String name, String description, Integer expectedDurationMinutes, Double price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.expectedDurationMinutes = expectedDurationMinutes;
+        this.price = price;
+    }
 
     public Integer getId() {
         return id;
@@ -55,29 +54,4 @@ public class Service {
     public void setPrice(Double price) {
         this.price = price;
     }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
 }
-
