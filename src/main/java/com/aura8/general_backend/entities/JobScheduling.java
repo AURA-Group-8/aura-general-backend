@@ -1,23 +1,31 @@
 package com.aura8.general_backend.entities;
 
-import com.aura8.general_backend.entities.id.ServiceSchedulingId;
+import com.aura8.general_backend.entities.id.JobSchedulingId;
 import jakarta.persistence.*;
 
 @Entity
-public class ServiceScheduling {
+public class JobScheduling {
     @EmbeddedId
-    private ServiceSchedulingId id;
+    private JobSchedulingId id;
 
     @ManyToOne
     @JoinColumn(name = "schedulingId", referencedColumnName = "id", insertable = false, updatable = false)
     private Scheduling scheduling;
 
     @ManyToOne
-    @JoinColumn(name = "serviceId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Service service;
+    @JoinColumn(name = "jobId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Job job;
     private Double currentPrice;
     private String observations;
     private Boolean discountApplied;
+
+    public JobSchedulingId getId() {
+        return id;
+    }
+
+    public void setId(JobSchedulingId id) {
+        this.id = id;
+    }
 
     public Scheduling getScheduling() {
         return scheduling;
@@ -27,12 +35,12 @@ public class ServiceScheduling {
         this.scheduling = scheduling;
     }
 
-    public Service getService() {
-        return service;
+    public Job getJob() {
+        return job;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public Double getCurrentPrice() {

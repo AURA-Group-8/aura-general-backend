@@ -6,16 +6,16 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class ServiceSchedulingId implements Serializable {
-    private Integer serviceId;
+public class JobSchedulingId implements Serializable {
+    private Integer jobId;
     private Integer schedulingId;
 
-    public Integer getServiceId() {
-        return serviceId;
+    public Integer getJobId() {
+        return jobId;
     }
 
-    public void setServiceId(Integer serviceId) {
-        this.serviceId = serviceId;
+    public void setJobId(Integer jobId) {
+        this.jobId = jobId;
     }
 
     public Integer getSchedulingId() {
@@ -29,12 +29,12 @@ public class ServiceSchedulingId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ServiceSchedulingId that)) return false;
-        return Objects.equals(getServiceId(), that.getServiceId()) && Objects.equals(getSchedulingId(), that.getSchedulingId());
+        if (!(o instanceof JobSchedulingId that)) return false;
+        return Objects.equals(jobId, that.jobId) && Objects.equals(schedulingId, that.schedulingId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getServiceId(), getSchedulingId());
+        return Objects.hash(jobId, schedulingId);
     }
 }
