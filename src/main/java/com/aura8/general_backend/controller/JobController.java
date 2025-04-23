@@ -4,6 +4,9 @@ import com.aura8.general_backend.dtos.job.JobMapper;
 import com.aura8.general_backend.dtos.job.JobResponseDto;
 import com.aura8.general_backend.entities.Job;
 import com.aura8.general_backend.service.JobService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/servicos")
+@Tag(name = "Serviços", description = "Controlador de serviços da cliente")
 public class JobController {
 
     private final JobService service;
@@ -25,6 +29,8 @@ public class JobController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar serviços", description = "Retorna uma lista paginada de todos os serviços disponíveis")
+    @ApiResponse(responseCode = "200", description = "Lista de serviços retornada com sucesso")
     public ResponseEntity<Page<JobResponseDto>> getAll(Pageable pageable){
         Page<Job> jobsPage = service.getJobs(pageable);
         Page<JobResponseDto> jobsDtoPage = JobMapper.toResponse(jobsPage);
