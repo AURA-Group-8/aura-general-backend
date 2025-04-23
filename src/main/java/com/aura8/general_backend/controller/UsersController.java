@@ -17,6 +17,7 @@ import java.util.List;
     @Autowired
     private UsersService service;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<UsersRegisterResponseDto> register(@Valid @RequestBody UsersRegisterDto user) {
         Users userEntity = UsersMapper.toEntity(user);
@@ -25,12 +26,14 @@ import java.util.List;
         return ResponseEntity.status(201).body(userDto);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<Users> login(@RequestBody UsersLoginDto userInfo) {
         Users userEntity = UsersMapper.toEntity(userInfo);
         service.login(userEntity);
         return ResponseEntity.status(200).build();
     }
+
 
     @GetMapping
     public ResponseEntity<List<UsersRegisterResponseDto>> getAllUsers() {
