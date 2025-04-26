@@ -3,6 +3,7 @@ package com.aura8.general_backend.service;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
+import com.aura8.general_backend.exception.UnauthorizedUserException;
 import com.aura8.general_backend.repository.UsersRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UsersService{
 
     public Boolean login(Users userInfo) {
         var userSenhaCorreto = repository.existsByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
-        if (!userSenhaCorreto) throw new RuntimeException(); // 401
+        if (!userSenhaCorreto) throw new UnauthorizedUserException("Email ou Senha incorretos");  // 401
         return userSenhaCorreto;
 
     }

@@ -21,6 +21,7 @@ import java.util.List;
     @Autowired
     private UsersService service;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     @Operation(summary = "Registrar um novo usuario", description = "Registra um novo usuario no sistema")
     @ApiResponse(responseCode = "201", description = "Usuario registrado com sucesso")
@@ -32,6 +33,7 @@ import java.util.List;
         return ResponseEntity.status(201).body(userDto);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/login")
     @Operation(summary = "Login de usuário", description = "Realiza o login de um usuário no sistema")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
@@ -41,6 +43,7 @@ import java.util.List;
         service.login(userEntity);
         return ResponseEntity.status(200).build();
     }
+
 
     @GetMapping
     @Operation(summary = "Listar todos os usuários", description = "Retorna uma lista de todos os usuários cadastrados")
