@@ -20,7 +20,7 @@ public class UsersRegisterDto {
     private String password;
     @NotBlank
     private String phone;
-    @NotNull
+
     private LocalDateTime dateOfBirth;
     @NotNull
     private Integer roleId;
@@ -33,11 +33,11 @@ public class UsersRegisterDto {
         this.username = username;
     }
 
-    public @NotBlank String getEmail() {
+    public @NotBlank @Email String getEmail() {
         return email;
     }
 
-    public void setEmail(@NotBlank String email) {
+    public void setEmail(@NotBlank @Email String email) {
         this.email = email;
     }
 
@@ -57,11 +57,11 @@ public class UsersRegisterDto {
         this.phone = phone;
     }
 
-    public @NotNull LocalDateTime getDateOfBirth() {
+    public LocalDateTime getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(@NotNull LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
