@@ -25,7 +25,7 @@ public class UsersService{
 
     public Users register(Users user, Integer roleId) {
         user.setRole(roleService.getRoleById(roleId));
-        Optional<Users> existingUser = repository.findByEmail(user.getEmail());
+        Optional<Users> existingUser = repository.findByEmailAndDeletedFalse(user.getEmail());
         if (existingUser.isPresent()) {
             throw new ElementAlreadyExists();
         }
@@ -33,11 +33,11 @@ public class UsersService{
         return repository.save(user);
     }
 
-    public Boolean login(Users userInfo) {
-        var userSenhaCorreto = repository.existsByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
-        if (!userSenhaCorreto) throw new UnauthorizedUserException("Email ou Senha incorretos");  // 401
-        return userSenhaCorreto;
-
+    public Users login(Users userInfo) {
+        var user = repository.findByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
+        return user.orElseThrow(
+                () -> new UnauthorizedUserException("Senha ou Email Invalidos")
+        );
     }
 
     public List<Users> getAllUsers() {
@@ -45,43 +45,34 @@ public class UsersService{
     }
 
     public Users getUserById(Integer id) {
-        return repository.findById(id)
+        return repository.findByIdAndDeletedFalse(id)
                 .orElseThrow(
                         () -> new ElementNotFoundException("Usuario de ID: %d não foi encontrado".formatted(id)) // 404
         );
-
     }
 
     public Users updateUser(Integer roleId, Users userToUpdate) {
 
-            Users user = repository.findById(userToUpdate.getId())
-                    .orElseThrow(
-                            () -> new ElementNotFoundException("notFound")
-                    );
-
+            Users user = getUserById(userToUpdate.getId());
+            if (roleId == null) roleId = user.getRole().getId();
             userToUpdate.setRole(roleService.getRoleById(roleId));
 
-
             if (userToUpdate.getUsername() == null) userToUpdate.setUsername(user.getUsername());
-            if (userToUpdate.getPassword() == null) userToUpdate.setPassword(user.getPassword());
             if (userToUpdate.getEmail() == null) userToUpdate.setEmail(user.getEmail());
+            if (userToUpdate.getPassword() == null) userToUpdate.setPassword(user.getPassword());
             if (userToUpdate.getPhone() == null) userToUpdate.setPhone(user.getPhone());
             if (userToUpdate.getDateOfBirth() == null) userToUpdate.setDateOfBirth(user.getDateOfBirth());
-            if (userToUpdate.getCreatedAt() == null) userToUpdate.setCreatedAt(user.getCreatedAt());
+            userToUpdate.setDeleted(user.getDeleted());
+            userToUpdate.setCreatedAt(user.getCreatedAt());
             userToUpdate.setModifiedAt(LocalDateTime.now());
             Users updatedUser = repository.save(userToUpdate);
             return updatedUser;
-
-
     }
 
     public void deleteUser(Integer id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException();
-        }
-        Users userToModify = repository.getById(id);
+        Users userToModify = getUserById(id);
         userToModify.setDeleted(true);
-        repository.save(userToModify);// 404
+        repository.save(userToModify);
     }
 
 }

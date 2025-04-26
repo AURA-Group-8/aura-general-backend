@@ -57,17 +57,13 @@ public class UsersMapper {
         Users user = new Users();
 
         user.setId(dto.getId());
-        user.setDeleted(dto.getDeleted());
-
-        user.setModifiedAt(dto.getModifiedAt());
-        user.setPassword(dto.getPassword());
         user.setUsername(dto.getUsername());
-
-//        user.setRoleId(dto.getRoleId());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setPhone(dto.getPhone());
+        user.setDateOfBirth(dto.getDateOfBirth());
 
         return user;
-
-
     }
     public static UsersUpdateResponseDto updateToResponse (Users userEntity){
         if (userEntity == null) return null;

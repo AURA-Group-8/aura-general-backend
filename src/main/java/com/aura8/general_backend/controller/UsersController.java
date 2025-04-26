@@ -37,18 +37,18 @@ import java.util.List;
     @PostMapping("/login")
     @Operation(summary = "Login de usuário", description = "Realiza o login de um usuário no sistema")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
-    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-    public ResponseEntity<Users> login(@RequestBody UsersLoginDto userInfo) {
+    @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
+    public ResponseEntity<UsersRegisterResponseDto> login(@Valid @RequestBody UsersLoginDto userInfo) {
         Users userEntity = UsersMapper.toEntity(userInfo);
-        service.login(userEntity);
-        return ResponseEntity.status(200).build();
+        Users user = service.login(userEntity);
+        return ResponseEntity.status(200).body(UsersMapper.toResponse(user));
     }
 
-
+    @CrossOrigin(origins = "*")
     @GetMapping
     @Operation(summary = "Listar todos os usuários", description = "Retorna uma lista de todos os usuários cadastrados")
     @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")
-    @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
+    @ApiResponse(responseCode = "204", description = "Nenhum usuário encontrado")
     public ResponseEntity<List<UsersRegisterResponseDto>> getAllUsers() {
 
         List<Users> users = service.getAllUsers();
@@ -59,6 +59,7 @@ import java.util.List;
         return ResponseEntity.status(200).body(usersDto);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     @Operation(summary = "Buscar usuário por ID", description = "Obtém os detalhes de um usuário pelo ID fornecido")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso")
@@ -69,11 +70,12 @@ import java.util.List;
         return ResponseEntity.status(200).body(userDto);
     }
 
-    @PutMapping("/{id}")
+    @CrossOrigin(origins = "*")
+    @PatchMapping("/{id}")
     @Operation(summary = "Atualizar usuário", description = "Atualiza os dados de um usuário existente pelo ID fornecido")
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-    public ResponseEntity<UsersUpdateResponseDto> updateUser(@PathVariable Integer id, @RequestBody UsersUpdateDto userToUpdate) {
+    public ResponseEntity<UsersUpdateResponseDto> updateUser(@PathVariable Integer id,@Valid @RequestBody UsersUpdateDto userToUpdate) {
         userToUpdate.setId(id);
         Users usersToUpdateEntity = UsersMapper.updateToEntity(userToUpdate);
         Users userUpdate = service.updateUser(userToUpdate.getRoleId(), usersToUpdateEntity);
@@ -81,13 +83,14 @@ import java.util.List;
         return ResponseEntity.status(200).body(userResponse);
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletar usuário", description = "Marca um usuário como deletado pelo ID fornecido")
-    @ApiResponse(responseCode = "200", description = "Usuário deletado com sucesso")
+    @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         service.deleteUser(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(204).build();
     }
 
 }

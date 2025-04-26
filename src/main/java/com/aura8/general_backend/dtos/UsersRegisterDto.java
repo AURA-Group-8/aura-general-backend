@@ -3,6 +3,7 @@ package com.aura8.general_backend.dtos;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,6 +14,7 @@ public class UsersRegisterDto {
     @NotBlank
     private String username;
     @NotBlank
+    @Email
     private String email;
     @NotBlank
     private String password;
