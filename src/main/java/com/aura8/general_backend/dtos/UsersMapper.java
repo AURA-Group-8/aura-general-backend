@@ -80,4 +80,17 @@ public class UsersMapper {
 
         return dto;
     }
+
+    public static UsersTokenDto toTokenDto(Users userEntity, String token) {
+        if (userEntity == null) return null;
+
+        UsersTokenDto dto = new UsersTokenDto();
+
+        dto.setId(userEntity.getId());
+        dto.setUsername(userEntity.getUsername());
+        dto.setEmail(userEntity.getEmail());
+        dto.setToken(token);
+
+        return dto;
+    }
 }
