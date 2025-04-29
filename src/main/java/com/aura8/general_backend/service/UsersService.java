@@ -1,5 +1,8 @@
 package com.aura8.general_backend.service;
 
+import com.aura8.general_backend.config.GerenciadorTokenJwt;
+import com.aura8.general_backend.dtos.UsersMapper;
+import com.aura8.general_backend.dtos.UsersTokenDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
@@ -8,6 +11,10 @@ import com.aura8.general_backend.repository.UsersRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +30,12 @@ public class UsersService{
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private GerenciadorTokenJwt gerenciadorTokenJwt;
+
     public Users register(Users user, Integer roleId) {
         user.setRole(roleService.getRoleById(roleId));
         Optional<Users> existingUser = repository.findByEmailAndDeletedFalse(user.getEmail());
@@ -33,11 +46,21 @@ public class UsersService{
         return repository.save(user);
     }
 
-    public Users login(Users userInfo) {
+    public UsersTokenDto login(Users userInfo) {
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                userInfo.getEmail(), userInfo.getPassword());
+
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
         var user = repository.findByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
-        return user.orElseThrow(
+        Users usuarioAutenticado = user.orElseThrow(
                 () -> new UnauthorizedUserException("Senha ou Email Invalidos")
         );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+        return UsersMapper.toTokenDto(usuarioAutenticado, token);
     }
 
     public List<Users> getAllUsers() {

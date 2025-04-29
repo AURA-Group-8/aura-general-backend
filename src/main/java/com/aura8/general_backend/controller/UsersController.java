@@ -38,10 +38,10 @@ import java.util.List;
     @Operation(summary = "Login de usuário", description = "Realiza o login de um usuário no sistema")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
-    public ResponseEntity<UsersRegisterResponseDto> login(@Valid @RequestBody UsersLoginDto userInfo) {
+    public ResponseEntity<UsersTokenDto> login(@Valid @RequestBody UsersLoginDto userInfo) {
         Users userEntity = UsersMapper.toEntity(userInfo);
-        Users user = service.login(userEntity);
-        return ResponseEntity.status(200).body(UsersMapper.toResponse(user));
+        UsersTokenDto user = service.login(userEntity);
+        return ResponseEntity.status(200).body(user);
     }
 
     @CrossOrigin(origins = "*")
