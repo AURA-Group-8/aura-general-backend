@@ -7,13 +7,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AuthenticProvider implements AuthenticationProvider {
 
     private final AuthenticationService usuarioAutorizacaoService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthenticProvider(AuthenticationService usuarioAutorizacaoService) {
+    public AuthenticProvider(AuthenticationService usuarioAutorizacaoService, PasswordEncoder passwordEncoder) {
         this.usuarioAutorizacaoService = usuarioAutorizacaoService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class AuthenticProvider implements AuthenticationProvider {
 
         UserDetails userDetails = this.usuarioAutorizacaoService.loadUserByUsername(username);
 
-        if (password.equals(userDetails.getPassword())) {
+        if (this.passwordEncoder.matches(password, userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         } else {
             throw new BadCredentialsException("Usuário ou Senha inválidos");

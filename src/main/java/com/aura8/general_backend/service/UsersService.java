@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,12 +37,16 @@ public class UsersService{
     @Autowired
     private GerenciadorTokenJwt gerenciadorTokenJwt;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Users register(Users user, Integer roleId) {
         user.setRole(roleService.getRoleById(roleId));
         Optional<Users> existingUser = repository.findByEmailAndDeletedFalse(user.getEmail());
         if (existingUser.isPresent()) {
             throw new ElementAlreadyExists();
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return repository.save(user);
     }
@@ -50,8 +55,8 @@ public class UsersService{
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 userInfo.getEmail(), userInfo.getPassword());
 
+        var user = repository.findByEmailAndDeletedFalse(userInfo.getEmail());
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
-        var user = repository.findByEmailAndPassword(userInfo.getEmail(), userInfo.getPassword());
         Users usuarioAutenticado = user.orElseThrow(
                 () -> new UnauthorizedUserException("Senha ou Email Invalidos")
         );
