@@ -1,5 +1,7 @@
 package com.aura8.general_backend.controller;
 
+import com.aura8.general_backend.dtos.message.ChangePasswordRequestDto;
+import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
 import com.aura8.general_backend.dtos.message.MessageRequestDto;
 import com.aura8.general_backend.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,4 +35,9 @@ public class MessageController {
         return ResponseEntity.status(200).build();
     }
 
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<ChangePasswordResponseDto> changePassword(@Valid @RequestBody ChangePasswordRequestDto requestDto){
+        String responseToken = messageService.sendToken(requestDto.getEmail());
+        return ResponseEntity.status(200).body(new ChangePasswordResponseDto(responseToken));
+    }
 }
