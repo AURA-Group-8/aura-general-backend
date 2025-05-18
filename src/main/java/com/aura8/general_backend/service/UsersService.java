@@ -109,4 +109,7 @@ public class UsersService{
         repository.save(userToModify);
     }
 
+    public Boolean existsByEmail(String email){
+        return repository.findByEmailAndDeletedFalse(email).isPresent();
+    }
 }
