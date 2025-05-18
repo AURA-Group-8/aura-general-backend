@@ -12,16 +12,18 @@ import java.util.List;
 public class MessageService {
 
     private final UsersService usersService;
+    private final TwilioService twilioService;
 
-    public MessageService(UsersService usersService) {
+    public MessageService(UsersService usersService, TwilioService twilioService) {
         this.usersService = usersService;
+        this.twilioService = twilioService;
     }
 
     public void sendToAllUsersWhatsapp(String assunto, String mensagem){
         List<Users> usersList = usersService.getAllUsers();
         if(usersList.isEmpty()) return;
         usersList.forEach(users -> {
-            TwilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
+            twilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
         });
     }
 
