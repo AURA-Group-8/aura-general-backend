@@ -18,6 +18,8 @@ import java.util.List;
 public class MessageService {
 
     private final UsersService usersService;
+    private final TwilioService twilioService;
+
 
     private final MailConfig mailConfig;
 
@@ -30,7 +32,7 @@ public class MessageService {
         List<Users> usersList = usersService.getAllUsers();
         if(usersList.isEmpty()) return;
         usersList.forEach(users -> {
-            TwilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
+            twilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
         });
     }
 
