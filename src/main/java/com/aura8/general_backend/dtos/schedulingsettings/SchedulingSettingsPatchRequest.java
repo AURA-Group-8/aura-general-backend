@@ -1,26 +1,15 @@
-package com.aura8.general_backend.entities;
-
-import com.aura8.general_backend.enums.DayOfWeekEnum;
-import jakarta.persistence.*;
+package com.aura8.general_backend.dtos.schedulingsettings;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-public class SchedulingSettings {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SchedulingSettingsPatchRequest {
     private Integer id;
-    private List<String> daysOfWeek;
     private LocalTime workStart;
     private LocalTime workEnd;
     private LocalTime breakStart;
     private LocalTime breakEnd;
-
-    public SchedulingSettings() {
-    }
+    private List<String> daysOfWeek;
 
     public Integer getId() {
         return id;
@@ -28,14 +17,6 @@ public class SchedulingSettings {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public List<String> getDaysOfWeek() {
-        return daysOfWeek;
-    }
-
-    public void setDaysOfWeek(List<String> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
     }
 
     public LocalTime getWorkStart() {
@@ -68,5 +49,13 @@ public class SchedulingSettings {
 
     public void setBreakEnd(LocalTime breakEnd) {
         this.breakEnd = breakEnd;
+    }
+
+    public List<String> getDaysOfWeek() {
+        return daysOfWeek;
+    }
+
+    public void setDaysOfWeek(List<String> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 }
