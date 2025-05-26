@@ -46,6 +46,12 @@ public class UsersService{
         if (existingUser.isPresent()) {
             throw new ElementAlreadyExists();
         }
+        if (user.getEmail() == null) {
+            throw new NullPointerException("O email do usuário não pode ser nulo.");
+        }
+        if (user.getPassword() == null) {
+            throw new NullPointerException("A senha do usuário não pode ser nula.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return repository.save(user);
