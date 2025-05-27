@@ -4,6 +4,7 @@ import com.aura8.general_backend.entities.Job;
 import com.aura8.general_backend.entities.JobScheduling;
 import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.entities.id.JobSchedulingId;
+import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.JobSchedulingRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class JobSchedulingService {
     }
 
     public Scheduling create(Integer userId, List<Integer> jobsIds, LocalDateTime startDatetime){
+        if (jobsIds == null || jobsIds.isEmpty()) {
+            throw new ElementNotFoundException("Lista de serviços está vazia.");
+        }
         List<Job> jobs = jobService.getJobsInList(jobsIds);
         Double totalPrice = jobService.getTotalPrice(jobsIds);
         LocalDateTime endDatetime = startDatetime.plusMinutes(jobService.getTotalTime(jobsIds));
