@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import com.aura8.general_backend.dtos.UsersMapper;
-import com.aura8.general_backend.dtos.UsersTokenDto;
 import com.aura8.general_backend.entities.Role;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
