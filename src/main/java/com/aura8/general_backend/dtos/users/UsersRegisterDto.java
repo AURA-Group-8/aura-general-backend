@@ -1,5 +1,6 @@
 package com.aura8.general_backend.dtos.users;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,13 +10,17 @@ import java.time.LocalDateTime;
 public class UsersRegisterDto {
 
     @NotBlank
+    @Schema(description = "Nome do usuário", example = "João")
     private String username;
     @NotBlank
     @Email
+    @Schema(description = "Email do usuário", example = "aura@gmail.com")
     private String email;
     @NotBlank
+    @Schema(description = "Senha do usuário", example = "Th1sPassword!")
     private String password;
     @NotBlank
+    @Schema(description = "Telefone do usuário", example = "+55 11 91234-5678")
     private String phone;
 
     private LocalDateTime dateOfBirth;
