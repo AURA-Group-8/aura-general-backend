@@ -1,4 +1,4 @@
-# Aura General Backend
+# 💻 Aura Backend
 
 Este é o backend principal do projeto **Aura**, desenvolvido pelo **Grupo 8**. Ele fornece APIs e integrações para gerenciar usuários, serviços, agendamentos e notificações.
 
