@@ -44,7 +44,35 @@ public class MessageService {
         } else {
             minutoString = "%d".formatted(localDateTime.getMinute());
         }
-        String mensagem = "Novo atendimento marcado para %d/%d as %d:%s".formatted(
+        String mensagem = "👋 Olá!\n" +
+                "\n" +
+                "        Esperamos que esta mensagem o(a) encontre bem. 😊 \n" +
+                "        É com grande satisfação que informamos que um **novo atendimento foi " +
+                "        agendado com sucesso** em nosso sistema. 🎉✅\n" +
+                "\n" +
+                "        📌 Abaixo seguem todos os detalhes do agendamento para sua referência:\n" +
+                "\n" +
+                "        📆**Data do Atendimento:** *%d/%d*  \n" +
+                "        🕛**Horário:** *%d:%s*  \n" +
+                "        📍**Local:** conforme combinado anteriormente ou conforme informações registradas em sua conta.\n" +
+                "\n" +
+                "        ✨ Este atendimento é exclusivo e foi cuidadosamente reservado para você.  \n" +
+                "        Pedimos que, se possível, esteja disponível com alguns minutos de antecedência" +
+                "        ⏳ para garantir o melhor aproveitamento do seu tempo e do nosso serviço.\n" +
+                "\n" +
+                "        ❌Caso haja qualquer imprevisto, solicitamos que nos avise com a maior antecedência possível." +
+                "        Assim, poderemos reagendar ou ajustar conforme sua necessidade, " +
+                "        evitando transtornos e liberando o horário para outras pessoas. \uD83D\uDDD3\uD83D\uDD04\n" +
+                "\n" +
+                "        ✅Nosso compromisso é com a qualidade, o respeito ao seu tempo e a excelência no atendimento.  \n" +
+                "        Por isso, estamos sempre disponíveis para esclarecer dúvidas, dar suporte e " +
+                "        garantir que sua experiência conosco seja positiva do início ao fim. \uD83D\uDCAC\uD83D\uDE4C\n" +
+                "\n" +
+                "        📞Em caso de necessidade, entre em contato com nossa equipe pelos canais " +
+                "        de atendimento já conhecidos. Estaremos prontos para ajudar da melhor forma possível!\n" +
+                "\n" +
+                "        💼Atenciosamente,  \n   " +
+                "        Equipe de Atendimento🌟".formatted(
                 localDateTime.getDayOfMonth(),
                 localDateTime.getMonthValue(),
                 localDateTime.getHour(),
