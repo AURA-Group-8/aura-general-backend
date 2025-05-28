@@ -19,6 +19,7 @@ public class MessageService {
 
     private final UsersService usersService;
 
+
     private final MailConfig mailConfig;
 
     public MessageService(UsersService usersService, MailConfig mailConfig) {

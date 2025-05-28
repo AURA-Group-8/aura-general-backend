@@ -10,3 +10,6 @@ VALUES
 
 INSERT INTO users (role_id, created_at, date_of_birth, modified_at, email, password, phone, username, deleted)
 VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01 00:00:00', '2025-04-29 17:56:15.430192', 'aura@gmail.com','$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '(11)97797-2747', 'AURA', FALSE);
+
+INSERT INTO scheduling_settings (id, days_of_week, work_start, work_end, break_start, break_end)
+VALUES (1, 'TERCA', '08:00:00', '18:00:00', '12:00:00', '13:00:00');
