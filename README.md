@@ -2,6 +2,15 @@
 
 Este é o backend principal do projeto **Aura**, desenvolvido pelo **Grupo 8**. Ele fornece APIs e integrações para gerenciar usuários, serviços, agendamentos e notificações.
 
+## 💼 Equipe do projeto
+
+- [@Bruna Karen](https://github.com/brunaK19)
+- [@Gustavo Basi](https://github.com/GustavoBasi)
+- [@Luiz Felipe](https://github.com/LuizFelipeSptech)
+- [@Murillo Lima](https://github.com/Murillo-lc)
+- [@Pablo Rocha](https://github.com/AlbaDr52)
+- [@Richard Almeida](https://github.com/richpdp)
+
 ## ⚙️ Tecnologias Utilizadas
 
 - ☕ **Java 21**
