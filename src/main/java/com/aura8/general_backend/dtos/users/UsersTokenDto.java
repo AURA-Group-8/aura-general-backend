@@ -1,4 +1,4 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 public class UsersTokenDto {
     private Integer id;

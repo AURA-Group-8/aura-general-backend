@@ -1,4 +1,4 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 import com.aura8.general_backend.entities.Users;
 

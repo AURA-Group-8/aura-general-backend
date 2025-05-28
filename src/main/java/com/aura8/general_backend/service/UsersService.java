@@ -1,16 +1,14 @@
 package com.aura8.general_backend.service;
 
 import com.aura8.general_backend.config.GerenciadorTokenJwt;
-import com.aura8.general_backend.dtos.UsersMapper;
-import com.aura8.general_backend.dtos.UsersTokenDto;
+import com.aura8.general_backend.dtos.users.UsersMapper;
+import com.aura8.general_backend.dtos.users.UsersTokenDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.exception.UnauthorizedUserException;
 import com.aura8.general_backend.repository.UsersRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
