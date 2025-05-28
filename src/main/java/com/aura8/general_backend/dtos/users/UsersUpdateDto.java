@@ -1,16 +1,23 @@
 package com.aura8.general_backend.dtos.users;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
 
 public class UsersUpdateDto {
+
     private Integer id;
+    @Schema(description = "Nome do usuário", example = "João")
     private String username;
     @Email
+    @Schema(description = "Email do usuário", example = "aura@gmail.com")
     private String email;
+    @Schema(description = "Senha do usuário", example = "Th1sPassword!")
     private String password;
+    @Schema(description = "Telefone do usuário", example = "+55 11 91234-5678")
     private String phone;
+    @Schema(description = "Data de nascimento do usuário", example = "1990-01-01T00:00:00")
     private LocalDateTime dateOfBirth;
     private Integer roleId;
 
