@@ -1,8 +1,4 @@
-package com.aura8.general_backend.dtos;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.aura8.general_backend.dtos.users;
 
 import java.time.LocalDateTime;
 

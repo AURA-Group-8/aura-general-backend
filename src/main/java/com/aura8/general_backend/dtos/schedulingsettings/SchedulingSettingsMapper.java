@@ -40,4 +40,17 @@ public class SchedulingSettingsMapper {
         }
         return schedulingSettings;
     }
+
+    public static SchedulingSettingsListEnumDto toListEnumDto(SchedulingSettings schedulingSettings) {
+        SchedulingSettingsListEnumDto dto = new SchedulingSettingsListEnumDto();
+        dto.setWorkStart(schedulingSettings.getWorkStart());
+        dto.setWorkEnd(schedulingSettings.getWorkEnd());
+        dto.setBreakStart(schedulingSettings.getBreakStart());
+        dto.setBreakEnd(schedulingSettings.getBreakEnd());
+        dto.setDaysOfWeek(schedulingSettings.getDaysOfWeek().stream()
+                .map(DayOfWeekEnum::valueOf)
+                .map(DayOfWeekEnum::getDayOfWeek)
+                .collect(Collectors.toList()));
+        return dto;
+    }
 }

@@ -1,5 +1,6 @@
 package com.aura8.general_backend.controller;
 
+import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
 import com.aura8.general_backend.dtos.jobscheduling.JobSchedulingRequestDto;
 import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.service.JobSchedulingService;
@@ -12,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
@@ -44,5 +48,13 @@ public class JobSchedulingController {
     @ApiResponse(responseCode = "200", description = "Lista de agendamentos retornada com sucesso")
     public ResponseEntity<Page<Scheduling>> getAll(Pageable pageable){
         return ResponseEntity.ok(schedulingService.findAll(pageable));
+    }
+
+    @GetMapping("/available-times")
+    public ResponseEntity<List<AvailableDayDto>> getAvaliablesTimes(
+            @RequestParam Integer durationInMinutes,
+            @RequestParam LocalDate firstDayOfWeek
+            ) {
+        return ResponseEntity.ok(schedulingService.getAvailableTimes(durationInMinutes, firstDayOfWeek));
     }
 }

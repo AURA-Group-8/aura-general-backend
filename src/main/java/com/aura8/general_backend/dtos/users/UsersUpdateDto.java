@@ -1,30 +1,25 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
+
+import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
 
-public class UsersUpdateResponseDto {
+public class UsersUpdateDto {
     private Integer id;
     private String username;
+    @Email
     private String email;
+    private String password;
     private String phone;
     private LocalDateTime dateOfBirth;
-    private LocalDateTime modifiedAt;
     private Integer roleId;
 
-    public Integer getRoleId() {
-        return roleId;
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Integer getId() {
@@ -43,12 +38,20 @@ public class UsersUpdateResponseDto {
         this.username = username;
     }
 
-    public String getEmail() {
+    public @Email String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@Email String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -59,11 +62,11 @@ public class UsersUpdateResponseDto {
         this.phone = phone;
     }
 
-    public LocalDateTime getDateOfBirth() {
-        return dateOfBirth;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }
