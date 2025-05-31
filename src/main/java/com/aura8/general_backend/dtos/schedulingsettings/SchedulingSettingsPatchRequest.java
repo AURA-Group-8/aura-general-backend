@@ -15,7 +15,7 @@ public class SchedulingSettingsPatchRequest {
     private LocalTime breakStart;
     @Schema(description = "Horário de fim do intervalo", example = "13:00:00")
     private LocalTime breakEnd;
-    @Schema(description = "Dias da semana em que o horário de trabalho se aplica", example = "[\"Segunda\", \"Terça\", \"Quarta\"]")
+    @Schema(description = "Dias da semana em que o horário de trabalho se aplica", example = "[\"SEGUNDA\", \"TERCA\", \"QUARTA\"]")
     private List<String> daysOfWeek;
 
     public Integer getId() {
