@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class AvailableDayDto {
+
     private LocalDate date;
     private String weekDay;
     private Boolean isAvailable;

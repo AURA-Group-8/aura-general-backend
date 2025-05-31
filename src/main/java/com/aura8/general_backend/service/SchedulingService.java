@@ -1,16 +1,19 @@
 package com.aura8.general_backend.service;
 
 import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
+import com.aura8.general_backend.dtos.jobscheduling.SchedulingCardResponseDto;
+import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import com.aura8.general_backend.dtos.schedulingsettings.SchedulingSettingsListEnumDto;
 import com.aura8.general_backend.dtos.schedulingsettings.SchedulingSettingsMapper;
 import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.entities.SchedulingSettings;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.enums.DayOfWeekEnum;
+import com.aura8.general_backend.enums.PaymentStatus;
+import com.aura8.general_backend.enums.SchedulingStatus;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.SchedulingRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +33,10 @@ public class SchedulingService {
     private final UsersService usersService;
     private final SchedulingSettingsService schedulingSettingsService;
 
-    public SchedulingService(SchedulingRepository schedulingRepository, UsersService usersService, ApplicationEventPublisher publisher, SchedulingSettingsService schedulingSettingsService) {
+    public SchedulingService(ApplicationEventPublisher publisher, SchedulingRepository schedulingRepository, UsersService usersService, SchedulingSettingsService schedulingSettingsService) {
+        this.publisher = publisher;
         this.schedulingRepository = schedulingRepository;
         this.usersService = usersService;
-        this.publisher = publisher;
         this.schedulingSettingsService = schedulingSettingsService;
     }
 
@@ -46,6 +49,8 @@ public class SchedulingService {
     public Scheduling create(Scheduling scheduling, Integer userId) {
         Users user = usersService.getUserById(userId);
         scheduling.setUsers(user);
+        scheduling.setPaymentStatus(PaymentStatus.PENDENTE);
+        scheduling.setStatus(SchedulingStatus.PENDENTE);
         Boolean isAdminScheduling = user.getRole().getName().equals("ADMIN");
         publisher.publishEvent(new SchedulingCreateEvent(this, isAdminScheduling, user, scheduling));
         return schedulingRepository.save(scheduling);
@@ -118,8 +123,8 @@ public class SchedulingService {
                 // Remove os horários ocupados
                 availableDay.getAvailableTimes().removeIf(time ->
                         (time.isAfter(start) && time.isBefore(end)) ||
-                        (time.plusMinutes(durationInMinutes).isAfter(start) && time.plusMinutes(durationInMinutes).isBefore(end)) ||
-                        (time.equals(start) || time.plusMinutes(durationInMinutes).equals(end))
+                                (time.plusMinutes(durationInMinutes).isAfter(start) && time.plusMinutes(durationInMinutes).isBefore(end)) ||
+                                (time.equals(start) || time.plusMinutes(durationInMinutes).equals(end))
                 );
 
                 // Se não houver horários disponíveis, marca o dia como indisponível
@@ -130,5 +135,45 @@ public class SchedulingService {
             availableDays.add(availableDay);
         }
         return availableDays;
+    }
+
+    public List<SchedulingCardResponseDto> getCardInfos() {
+        List<SchedulingCardResponseDto> cards = new ArrayList<>();
+        List<Scheduling> schedulings = schedulingRepository.findAll();
+        schedulings.forEach(scheduling -> {
+            SchedulingCardResponseDto card = new SchedulingCardResponseDto();
+            card.setIdScheduling(scheduling.getId());
+            card.setUserName(scheduling.getUsers().getUsername());
+            card.setStartDatetime(scheduling.getStartDatetime());
+            card.setEndDatetime(scheduling.getEndDatetime());
+            card.setTotalPrice(scheduling.getTotalPrice());
+            card.setPaymentStatus(scheduling.getPaymentStatus().getDescription());
+            card.setStatus(scheduling.getStatus().getStatus());
+            cards.add(card);
+        });
+        return cards;
+    }
+
+    public Scheduling update(Integer id, SchedulingPatchRequestDto schedulingPatchRequestDto) {
+        Scheduling scheduling = findById(id);
+        schedulingPatchRequestDto.setId(id);
+        if (schedulingPatchRequestDto.getFeedback() != null) {
+            scheduling.setFeedback(schedulingPatchRequestDto.getFeedback());
+        }
+        if (schedulingPatchRequestDto.getStatus() != null) {
+            try {
+                scheduling.setStatus(SchedulingStatus.valueOf(schedulingPatchRequestDto.getStatus()));
+            } catch (IllegalArgumentException e) {
+                throw new ElementNotFoundException("Status de agendamento inválido: %s. Tente: [FEITO, PENDENTE, CANCELADO]".formatted(schedulingPatchRequestDto.getStatus()));
+            }
+        }
+        if (schedulingPatchRequestDto.getPaymentStatus() != null) {
+            try {
+                scheduling.setPaymentStatus(PaymentStatus.valueOf(schedulingPatchRequestDto.getPaymentStatus()));
+            } catch (IllegalArgumentException e) {
+                throw new ElementNotFoundException("Status de pagamento inválido: %s. Tente: [PAGO, PENDENTE]".formatted(schedulingPatchRequestDto.getPaymentStatus()));
+            }
+        }
+        return schedulingRepository.save(scheduling);
     }
 }

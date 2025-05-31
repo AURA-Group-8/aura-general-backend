@@ -101,4 +101,19 @@ public class MessageService {
         }
         return responseToken;
     }
+
+    public void sendToAuraEmail(String mensagem) {
+        try {
+            JavaMailSender emailSender = mailConfig.getJavaMailSender();
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("");
+            message.setTo("");
+            message.setSubject("Mensagem para Aura");
+            message.setText(mensagem);
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
+        }
+    }
 }
