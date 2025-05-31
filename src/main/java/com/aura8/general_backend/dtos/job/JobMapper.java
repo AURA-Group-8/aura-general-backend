@@ -15,18 +15,7 @@ public class JobMapper {
                 job.getPrice()
         );
     }
-    public static List<JobSimpleResponseDto> toSimpleResponse(List<Job> job){
-        if(job == null) return null;
-        List<JobSimpleResponseDto> jobsDto = job.stream()
-                .map(j -> new JobSimpleResponseDto(
-                        j.getId(),
-                        j.getName(),
-                        j.getPrice()
-                )).toList();
-        return jobsDto;
 
-
-    }
 //    public static JobResponsePriceDto toResponsePrice(List<JobResponseDto> dtos , Double price){
 //      return new JobResponsePriceDto(dtos, price);
 //    }

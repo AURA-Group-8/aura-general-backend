@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
     Page<Job> findAllByDeletedFalse(Pageable pageable);
-    List<Job> findAllByDeletedFalse();
     Optional<Job> findByIdAndDeletedFalse(Integer id);
 
     @Query("SELECT SUM(j.price) FROM Job j WHERE j.id IN :jobsIds")

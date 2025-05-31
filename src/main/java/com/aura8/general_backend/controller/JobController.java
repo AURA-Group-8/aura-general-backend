@@ -33,16 +33,6 @@ public class JobController {
         return ResponseEntity.ok(jobsDtoPage);
     }
 
-    @GetMapping("servicos-agenda")
-    @Operation(summary = "Listar serviços", description = "Retorna uma lista de todos os nomes e preços de serviços disponíveis")
-    @ApiResponse(responseCode = "200", description = "Lista de nomes e preços retornada com sucesso")
-    public ResponseEntity<List<JobSimpleResponseDto>> getAll(){
-        List<Job> jobs = service.getJobsSimple();
-        List<JobSimpleResponseDto> jobsDtoPage = JobMapper.toSimpleResponse(jobs);
-        return ResponseEntity.ok(jobsDtoPage);
-    }
-
-
 //    @GetMapping("/lista-precos")
 //    @Operation(summary = "Listar serviços por IDs e preço total", description = "Retorna uma lista de serviços pelos IDs informados e o preço total")
 //    @ApiResponse(responseCode = "200", description = "Lista de serviços e preço total retornados com sucesso")

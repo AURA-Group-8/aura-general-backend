@@ -29,9 +29,7 @@ public class JobService {
     public Page<Job> getJobs(Pageable pageable){
         return repository.findAllByDeletedFalse(pageable);
     }
-    public List<Job> getJobsSimple(){
-        return repository.findAllByDeletedFalse();
-    }
+
 
     public List<Job> getJobsInList(List<Integer> jobsIds){
         List<Integer> notFoundedIds = new ArrayList<>();
