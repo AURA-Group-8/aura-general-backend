@@ -2,6 +2,8 @@ package com.aura8.general_backend.controller;
 
 import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
 import com.aura8.general_backend.dtos.jobscheduling.JobSchedulingRequestDto;
+import com.aura8.general_backend.dtos.jobscheduling.SchedulingCardResponseDto;
+import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.service.JobSchedulingService;
 import com.aura8.general_backend.service.SchedulingService;
@@ -67,5 +69,35 @@ public class JobSchedulingController {
             @RequestParam LocalDate firstDayOfWeek
             ) {
         return ResponseEntity.ok(schedulingService.getAvailableTimes(durationInMinutes, firstDayOfWeek));
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/card")
+    public ResponseEntity<List<SchedulingCardResponseDto>> getCardInfos() {
+        List<SchedulingCardResponseDto> cards = schedulingService.getCardInfos();
+        cards.forEach(card -> {
+            card.setJobsNames(
+                    jobSchedulingService.getJobsInScheduling(card.getIdScheduling())
+                            .stream()
+                            .map(job -> job.getName())
+                            .toList()
+            );
+            });
+        if( cards.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(cards);
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @PatchMapping("/{idScheduling}")
+    public ResponseEntity<Scheduling> updateScheduling(
+            @Parameter(description = "ID do agendamento", example = "1")
+            @RequestParam Integer idScheduling,
+            @Valid @RequestBody SchedulingPatchRequestDto schedulingPatchRequestDto) {
+        Scheduling updatedScheduling = schedulingService.update(idScheduling, schedulingPatchRequestDto);
+        return ResponseEntity.ok(updatedScheduling);
     }
 }

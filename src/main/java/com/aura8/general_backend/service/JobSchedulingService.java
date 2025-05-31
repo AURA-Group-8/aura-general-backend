@@ -52,4 +52,11 @@ public class JobSchedulingService {
         return newScheduling;
     }
 
+    public List<Job> getJobsInScheduling(Integer schedulingId) {
+        Scheduling scheduling = schedulingService.findById(schedulingId);
+        return jobSchedulingRepository.findAllByScheduling(scheduling)
+                .stream()
+                .map(JobScheduling::getJob)
+                .toList();
+    }
 }
