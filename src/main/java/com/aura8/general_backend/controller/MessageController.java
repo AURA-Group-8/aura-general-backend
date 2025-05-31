@@ -6,13 +6,11 @@ import com.aura8.general_backend.dtos.message.MessageRequestDto;
 import com.aura8.general_backend.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/mensagens")
@@ -25,6 +23,8 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping("/all/whatsapp")
     @Operation(summary = "Enviar mensagem para todos os usuários via WhatsApp",
             description = "Envia uma mensagem para todos os usuários cadastrados utilizando o WhatsApp")
@@ -35,6 +35,8 @@ public class MessageController {
         return ResponseEntity.status(200).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping("/esqueci-senha")
     public ResponseEntity<ChangePasswordResponseDto> changePassword(@Valid @RequestBody ChangePasswordRequestDto requestDto){
         String responseToken = messageService.sendToken(requestDto.getEmail());

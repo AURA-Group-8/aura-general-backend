@@ -2,25 +2,28 @@ package com.aura8.general_backend.service;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TwilioService {
     @Value("${twilio.accountsid}")
-    public static final String ACCOUNT_SID = "";
+    public String account_sid;
     @Value("${twilio.auth}")
-    public static final String AUTH_TOKEN = "";
+    public String auth_token;
 
-    public TwilioService() {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+    @PostConstruct
+    public void init() {
+        Twilio.init(account_sid, auth_token);
     }
 
     public static void sendWhatsappMessage(String phone, String assunto, String mensagem){
         try{
             Message message = Message.creator(
-                            new com.twilio.type.PhoneNumber("whatsapp:+55%s".formatted(phone)),
-                            new com.twilio.type.PhoneNumber("whatsapp:+14155238886"),
+                            new PhoneNumber("whatsapp:+55%s".formatted(phone)),
+                            new PhoneNumber("whatsapp:+14155238886"),
                             "*%s*\n%s".formatted(assunto, mensagem))
                     .create();
         }catch (Exception e){

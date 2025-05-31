@@ -6,9 +6,12 @@ import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.service.JobSchedulingService;
 import com.aura8.general_backend.service.SchedulingService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,8 @@ public class JobSchedulingController {
         this.schedulingService = schedulingService;
     }
 
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping
     @Operation(summary = "Criar agendamento", description = "Cria um novo agendamento com base nos dados fornecidos")
     @ApiResponse(responseCode = "201", description = "Agendamento criado com sucesso")
@@ -43,16 +48,22 @@ public class JobSchedulingController {
                 ));
     }
 
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
     @GetMapping
     @Operation(summary = "Listar agendamentos", description = "Retorna uma lista paginada de todos os agendamentos")
     @ApiResponse(responseCode = "200", description = "Lista de agendamentos retornada com sucesso")
-    public ResponseEntity<Page<Scheduling>> getAll(Pageable pageable){
+    public ResponseEntity<Page<Scheduling>> getAll(@ParameterObject Pageable pageable){
         return ResponseEntity.ok(schedulingService.findAll(pageable));
     }
 
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/available-times")
     public ResponseEntity<List<AvailableDayDto>> getAvaliablesTimes(
+            @Parameter(description = "Duração em minutos", example = "30")
             @RequestParam Integer durationInMinutes,
+            @Parameter(description = "Primeiro dia da semana (formato yyyy-MM-dd)", example = "2025-01-01")
             @RequestParam LocalDate firstDayOfWeek
             ) {
         return ResponseEntity.ok(schedulingService.getAvailableTimes(durationInMinutes, firstDayOfWeek));

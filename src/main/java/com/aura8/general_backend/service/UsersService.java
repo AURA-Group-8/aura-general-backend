@@ -42,7 +42,7 @@ public class UsersService{
         user.setRole(roleService.getRoleById(roleId));
         Optional<Users> existingUser = repository.findByEmailAndDeletedFalse(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new ElementAlreadyExists();
+            throw new ElementAlreadyExists("Já existe um usuário cadastrado com este email.");
         }
         if (user.getEmail() == null) {
             throw new NullPointerException("O email do usuário não pode ser nulo.");
@@ -89,16 +89,28 @@ public class UsersService{
             if (roleId == null) roleId = user.getRole().getId();
             userToUpdate.setRole(roleService.getRoleById(roleId));
 
-            if (userToUpdate.getUsername() == null) userToUpdate.setUsername(user.getUsername());
-            if (userToUpdate.getEmail() == null) userToUpdate.setEmail(user.getEmail());
-            if (userToUpdate.getPassword() == null) userToUpdate.setPassword(user.getPassword());
-            if (userToUpdate.getPhone() == null) userToUpdate.setPhone(user.getPhone());
-            if (userToUpdate.getDateOfBirth() == null) userToUpdate.setDateOfBirth(user.getDateOfBirth());
+          if (userToUpdate.getUsername() == null || userToUpdate.getUsername().trim().isEmpty()) {
+                userToUpdate.setUsername(user.getUsername());
+            }
+            if (userToUpdate.getEmail() == null || userToUpdate.getEmail().trim().isEmpty()) {
+                userToUpdate.setEmail(user.getEmail());
+            }
+            if (userToUpdate.getPassword() == null || userToUpdate.getPassword().trim().isEmpty()) {
+                userToUpdate.setPassword(user.getPassword());
+            } else {
+                userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+            }
+            if (userToUpdate.getPhone() == null || userToUpdate.getPhone().trim().isEmpty()) {
+                userToUpdate.setPhone(user.getPhone());
+            }
+            if (userToUpdate.getDateOfBirth() == null) {
+                userToUpdate.setDateOfBirth(user.getDateOfBirth());
+            }
             userToUpdate.setDeleted(user.getDeleted());
             userToUpdate.setCreatedAt(user.getCreatedAt());
             userToUpdate.setModifiedAt(LocalDateTime.now());
             Users updatedUser = repository.save(userToUpdate);
-            return updatedUser;
+            return userToUpdate;
     }
 
     public void deleteUser(Integer id) {

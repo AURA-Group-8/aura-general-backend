@@ -20,11 +20,12 @@ public class UsersRegisterDto {
     @Schema(description = "Senha do usuário", example = "Th1sPassword!")
     private String password;
     @NotBlank
-    @Schema(description = "Telefone do usuário", example = "+55 11 91234-5678")
+    @Schema(description = "Telefone do usuário", example = "11912345678")
     private String phone;
-
+    @Schema(description = "Data de Nascimento", example = "1990-01-01T00:00:00")
     private LocalDateTime dateOfBirth;
     @NotNull
+    @Schema(description = "Id da role do usuario", example = "1")
     private Integer roleId;
 
     public @NotBlank String getUsername() {
