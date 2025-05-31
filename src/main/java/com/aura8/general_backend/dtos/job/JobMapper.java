@@ -16,9 +16,7 @@ public class JobMapper {
         );
     }
 
-//    public static JobResponsePriceDto toResponsePrice(List<JobResponseDto> dtos , Double price){
-//      return new JobResponsePriceDto(dtos, price);
-//    }
+
 
     public static Page<JobResponseDto> toResponse(Page<Job> jobsPage){
         if(jobsPage == null) return null;

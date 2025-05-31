@@ -33,18 +33,7 @@ public class JobController {
         return ResponseEntity.ok(jobsDtoPage);
     }
 
-//    @GetMapping("/lista-precos")
-//    @Operation(summary = "Listar serviços por IDs e preço total", description = "Retorna uma lista de serviços pelos IDs informados e o preço total")
-//    @ApiResponse(responseCode = "200", description = "Lista de serviços e preço total retornados com sucesso")
-//    public ResponseEntity<JobResponsePriceDto> getAllAndTotalPriceByIds(@RequestParam List<Integer> ids) {
-//        List<Job> jobs = service.getJobsInList(ids);
-//        Double totalPrice = service.getTotalPrice(ids);
-//        List<JobResponseDto> jobResponses = jobs.stream()
-//                .map(JobMapper::toResponse)
-//                .toList();
-//        JobResponsePriceDto response = JobMapper.toResponsePrice(jobResponses, totalPrice);
-//        return ResponseEntity.ok().body(response);
-//    }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar serviço por ID", description = "Retorna um serviço específico pelo ID fornecido")
