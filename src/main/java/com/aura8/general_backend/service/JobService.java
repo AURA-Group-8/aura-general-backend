@@ -8,22 +8,28 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class JobService {
-    @Autowired
+
     private JobRepository repository;
+
+    public JobService(JobRepository repository) {
+        this.repository = repository;
+    }
 
     public Job createService(Job job){
         return repository.save(job);
     }
 
     public Page<Job> getJobs(Pageable pageable){
-        return repository.findAll(pageable);
+        return repository.findAllByDeletedFalse(pageable);
     }
+
 
     public List<Job> getJobsInList(List<Integer> jobsIds){
         List<Integer> notFoundedIds = new ArrayList<>();
@@ -39,13 +45,34 @@ public class JobService {
     }
 
     public Job getById(Integer id){
-        return repository.findById(id).orElseThrow(
+        return repository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new ElementNotFoundException("Job de ID: %d não foi encontrado".formatted(id))
         );
     }
 
+    public Job updateById(Integer id, Job job){
+        Job jobToUpdate = repository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new ElementNotFoundException("Job de ID: %d não foi encontrado".formatted(id))
+        );
+        job.setId(jobToUpdate.getId());
+        if (job.getName() == null) job.setName(jobToUpdate.getName());
+        if (job.getDescription() == null) job.setDescription(jobToUpdate.getDescription());
+        if (job.getExpectedDurationMinutes() == null) job.setExpectedDurationMinutes(jobToUpdate.getExpectedDurationMinutes());
+        if (job.getPrice() == null) job.setPrice(jobToUpdate.getPrice());
+        job.setCreatedAt(jobToUpdate.getCreatedAt());
+        job.setModifiedAt(LocalDateTime.now());
+        return repository.save(job);
+    }
+
+    public Job deleteById(Integer id){
+        Job job = getById(id);
+        job.setDeleted(true);
+        repository.save(job);
+        return job;
+    }
+
     public Job getByIdForList(Integer id){
-        return repository.findById(id).orElse(null);
+        return repository.findByIdAndDeletedFalse(id).orElse(null);
     }
 
     public Double getTotalPrice(List<Integer> jobsIds){
