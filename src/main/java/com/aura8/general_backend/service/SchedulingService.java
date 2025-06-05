@@ -1,5 +1,6 @@
 package com.aura8.general_backend.service;
 
+import com.aura8.general_backend.dtos.finance.MonthDataDto;
 import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
 import com.aura8.general_backend.dtos.jobscheduling.SchedulingCardResponseDto;
 import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class SchedulingService {
         }
         LocalDate startOfWeek = today.minusDays(dayOfWeeek);
         int daysToNextWeek = 6 - dayOfWeeek;
-        List<Scheduling> schedulings = schedulingRepository.findByStartDatetimeBetween(startOfWeek.atStartOfDay(), today.plusDays(daysToNextWeek).atStartOfDay());
+        List<Scheduling> schedulings = schedulingRepository.findByStartDatetimeBetweenAndIsCanceledFalse(startOfWeek.atStartOfDay(), today.plusDays(daysToNextWeek).atStartOfDay());
         SchedulingSettings schedulingSettings = schedulingSettingsService.getSchedulingSettings();
         SchedulingSettingsListEnumDto settings = SchedulingSettingsMapper.toListEnumDto(schedulingSettings);
 
@@ -175,5 +177,59 @@ public class SchedulingService {
             }
         }
         return schedulingRepository.save(scheduling);
+    }
+
+    public MonthDataDto generateFinanceMonthData(LocalDate month) {
+        LocalDateTime startOfMonth = month.withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endOfMonth = month.withDayOfMonth(month.lengthOfMonth()).atTime(23, 59, 59);
+        Double totalFaturadoMes = schedulingRepository.getTotalFaturadoMes(startOfMonth, endOfMonth);
+        Integer totalAtendimentosMes = schedulingRepository.getTotalAtendimentosMes(startOfMonth, endOfMonth);
+        Integer totalAtendimentosCanceladosMes = schedulingRepository.getTotalAtendimentosCanceladosMes(startOfMonth, endOfMonth);
+        if (totalFaturadoMes == null) {
+            totalFaturadoMes = 0.0;
+        }
+        return new MonthDataDto(totalFaturadoMes, totalAtendimentosMes, totalAtendimentosCanceladosMes);
+    }
+
+    public List<String> getTopClientes() {
+        List<String> topServicos = schedulingRepository.getTopClientes();
+        topServicos = topServicos.stream()
+                .map(servico -> servico.split(",")[0])
+                .toList();
+        System.out.println("Top Serviços: " + topServicos);
+        return topServicos;
+    }
+
+    public List<Integer> getAtendimentosDiaDaSemanaNoMes(LocalDate month) {
+        LocalDateTime startOfMonth = month.withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endOfMonth = month.withDayOfMonth(month.lengthOfMonth()).atTime(23, 59, 59);
+        List<Scheduling> schedulings = schedulingRepository.findByStartDatetimeBetweenAndIsCanceledFalse(startOfMonth, endOfMonth);
+        List<Integer> atendimentosDiaDaSemana = new ArrayList<>(7);
+        for (int i = 0; i < 7; i++) {
+            atendimentosDiaDaSemana.add(0);
+        }
+        schedulings.forEach(
+                scheduling -> {
+                    int index_dia_da_semana = scheduling.getStartDatetime().getDayOfWeek().getValue() - 1;
+                    int oldValue = atendimentosDiaDaSemana.get(index_dia_da_semana);
+                    atendimentosDiaDaSemana.set(index_dia_da_semana, oldValue+1);
+                }
+        );
+        System.out.println("Atendimentos por dia da semana: " + atendimentosDiaDaSemana);
+        return atendimentosDiaDaSemana;
+    }
+
+
+    public LocalDate getDateFirstScheduling() {
+        return schedulingRepository.findFirstDateScheduling()
+                .orElseThrow(() -> new ElementNotFoundException("Nenhum agendamento encontrado"))
+                .toLocalDate();
+    }
+
+    public void delete(Integer idScheduling) {
+        Scheduling scheduling = findById(idScheduling);
+        scheduling.setCanceled(true);
+        scheduling.setCanceledAt(LocalDateTime.now());
+        schedulingRepository.save(scheduling);
     }
 }

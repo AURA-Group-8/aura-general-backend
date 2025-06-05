@@ -21,8 +21,17 @@ public class Scheduling {
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
     private LocalDateTime canceledAt;
+    private Boolean isCanceled = false;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime modifiedAt = LocalDateTime.now();
+
+    public Boolean getCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        isCanceled = canceled;
+    }
 
     public Integer getId() {
         return id;

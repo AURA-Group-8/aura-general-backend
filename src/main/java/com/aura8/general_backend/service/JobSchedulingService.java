@@ -59,4 +59,13 @@ public class JobSchedulingService {
                 .map(JobScheduling::getJob)
                 .toList();
     }
+
+    public List<String> getTopServicos(){
+        List<String> topServicos = jobSchedulingRepository.getTopServicos();
+        topServicos = topServicos.stream()
+                .map(servico -> servico.split(",")[0])
+                .toList();
+        System.out.println("Top Serviços: " + topServicos);
+        return topServicos;
+    }
 }
