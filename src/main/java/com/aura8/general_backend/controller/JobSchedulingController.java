@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,9 +96,19 @@ public class JobSchedulingController {
     @PatchMapping("/{idScheduling}")
     public ResponseEntity<Scheduling> updateScheduling(
             @Parameter(description = "ID do agendamento", example = "1")
-            @RequestParam Integer idScheduling,
+            @PathVariable Integer idScheduling,
             @Valid @RequestBody SchedulingPatchRequestDto schedulingPatchRequestDto) {
         Scheduling updatedScheduling = schedulingService.update(idScheduling, schedulingPatchRequestDto);
         return ResponseEntity.ok(updatedScheduling);
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @DeleteMapping("/{idScheduling}")
+    public ResponseEntity<Void> deleteScheduling(
+            @Parameter(description = "ID do agendamento", example = "1")
+            @PathVariable Integer idScheduling) {
+        schedulingService.delete(idScheduling);
+        return ResponseEntity.noContent().build();
     }
 }
