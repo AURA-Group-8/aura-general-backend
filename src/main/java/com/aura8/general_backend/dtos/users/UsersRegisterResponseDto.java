@@ -10,6 +10,15 @@ public class UsersRegisterResponseDto {
     private String phone;
     private LocalDateTime dateOfBirth;
     private Integer roleId;
+    private String observation;
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
     public Integer getRoleId() {
         return roleId;

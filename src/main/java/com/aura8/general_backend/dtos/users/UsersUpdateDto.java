@@ -23,6 +23,8 @@ public class UsersUpdateDto {
     private LocalDateTime dateOfBirth;
     @Schema(description = "Id da role do usuario", example = "1")
     private Integer roleId;
+    @Schema(description = "Observação sobre o usuario", example = "Tem alergia")
+    private String observation;
 
     public LocalDateTime getDateOfBirth() {
         return dateOfBirth;
@@ -78,5 +80,13 @@ public class UsersUpdateDto {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservatio(String observation) {
+        this.observation = observation;
     }
 }

@@ -16,6 +16,16 @@ public class JobSchedulingRequestDto {
     @NotNull
     @Schema(description = "Horario e dia do agendamento", example = "2025-01-01T10:00:00")
     private LocalDateTime startDatetime;
+    @Schema(description = "Role do usuário que está criando o agendamento", example = "1")
+    private Integer roleId;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
 
     public @NotNull LocalDateTime getStartDatetime() {
         return startDatetime;

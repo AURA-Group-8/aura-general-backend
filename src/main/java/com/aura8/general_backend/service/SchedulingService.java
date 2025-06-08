@@ -12,7 +12,10 @@ import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.enums.DayOfWeekEnum;
 import com.aura8.general_backend.enums.PaymentStatus;
 import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.enums.UpdateTypeEnum;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
+import com.aura8.general_backend.event.SchedulingDeletedEvent;
+import com.aura8.general_backend.event.SchedulingUpdatedEvent;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.SchedulingRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -34,12 +37,14 @@ public class SchedulingService {
     private final SchedulingRepository schedulingRepository;
     private final UsersService usersService;
     private final SchedulingSettingsService schedulingSettingsService;
+    private final RoleService roleService;
 
-    public SchedulingService(ApplicationEventPublisher publisher, SchedulingRepository schedulingRepository, UsersService usersService, SchedulingSettingsService schedulingSettingsService) {
+    public SchedulingService(ApplicationEventPublisher publisher, SchedulingRepository schedulingRepository, UsersService usersService, SchedulingSettingsService schedulingSettingsService, RoleService roleService) {
         this.publisher = publisher;
         this.schedulingRepository = schedulingRepository;
         this.usersService = usersService;
         this.schedulingSettingsService = schedulingSettingsService;
+        this.roleService = roleService;
     }
 
     public Scheduling findById(Integer id) {
@@ -48,14 +53,15 @@ public class SchedulingService {
         );
     }
 
-    public Scheduling create(Scheduling scheduling, Integer userId) {
+    public Scheduling create(Scheduling scheduling, Integer userId, Integer roleId) {
         Users user = usersService.getUserById(userId);
         scheduling.setUsers(user);
         scheduling.setPaymentStatus(PaymentStatus.PENDENTE);
         scheduling.setStatus(SchedulingStatus.PENDENTE);
-        Boolean isAdminScheduling = user.getRole().getName().equals("ADMIN");
-        publisher.publishEvent(new SchedulingCreateEvent(this, isAdminScheduling, user, scheduling));
-        return schedulingRepository.save(scheduling);
+        Boolean isAdminScheduling = roleService.getRoleById(roleId).getName().equals("ADMIN");
+        Scheduling savedScheduling = schedulingRepository.save(scheduling);
+        publisher.publishEvent(new SchedulingCreateEvent(this, isAdminScheduling, user, savedScheduling));
+        return savedScheduling;
     }
 
     public Page<Scheduling> findAll(Pageable pageable) {
@@ -157,14 +163,19 @@ public class SchedulingService {
     }
 
     public Scheduling update(Integer id, SchedulingPatchRequestDto schedulingPatchRequestDto) {
+        Boolean statusHasModified = false;
+        Boolean feedbackHasModified = false;
+
         Scheduling scheduling = findById(id);
         schedulingPatchRequestDto.setId(id);
         if (schedulingPatchRequestDto.getFeedback() != null) {
             scheduling.setFeedback(schedulingPatchRequestDto.getFeedback());
+            feedbackHasModified = true;
         }
         if (schedulingPatchRequestDto.getStatus() != null) {
             try {
                 scheduling.setStatus(SchedulingStatus.valueOf(schedulingPatchRequestDto.getStatus()));
+                if(SchedulingStatus.valueOf(schedulingPatchRequestDto.getStatus()).equals(SchedulingStatus.FEITO)) statusHasModified = true;
             } catch (IllegalArgumentException e) {
                 throw new ElementNotFoundException("Status de agendamento inválido: %s. Tente: [FEITO, PENDENTE, CANCELADO]".formatted(schedulingPatchRequestDto.getStatus()));
             }
@@ -176,7 +187,11 @@ public class SchedulingService {
                 throw new ElementNotFoundException("Status de pagamento inválido: %s. Tente: [PAGO, PENDENTE]".formatted(schedulingPatchRequestDto.getPaymentStatus()));
             }
         }
-        return schedulingRepository.save(scheduling);
+        Scheduling savedScheduling = schedulingRepository.save(scheduling);
+        Integer agendamentos = schedulingRepository.countByUsersIdAndStatusAndIsCanceledFalse(savedScheduling.getUsers().getId(), SchedulingStatus.FEITO);
+        if(statusHasModified && agendamentos == 1) publisher.publishEvent(new SchedulingUpdatedEvent(this, savedScheduling, savedScheduling.getUsers(), true, UpdateTypeEnum.STATUS));
+        if(feedbackHasModified) publisher.publishEvent(new SchedulingUpdatedEvent(this, savedScheduling, savedScheduling.getUsers(), false, UpdateTypeEnum.FEEDBACK));
+        return savedScheduling;
     }
 
     public MonthDataDto generateFinanceMonthData(LocalDate month) {
@@ -226,10 +241,16 @@ public class SchedulingService {
                 .toLocalDate();
     }
 
-    public void delete(Integer idScheduling) {
+    public void delete(Integer idScheduling, String message, Integer roleId) {
         Scheduling scheduling = findById(idScheduling);
         scheduling.setCanceled(true);
         scheduling.setCanceledAt(LocalDateTime.now());
+        scheduling.setStatus(SchedulingStatus.CANCELADO);
+        Users user = scheduling.getUsers();
+        Boolean isAdmin = false;
+        int adminId = 1;
+        if(roleId == adminId) isAdmin = true;
+        publisher.publishEvent(new SchedulingDeletedEvent(this, scheduling, message, user, isAdmin));
         schedulingRepository.save(scheduling);
     }
 }
