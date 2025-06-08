@@ -106,6 +106,9 @@ public class UsersService{
             if (userToUpdate.getDateOfBirth() == null) {
                 userToUpdate.setDateOfBirth(user.getDateOfBirth());
             }
+            if(userToUpdate.getObservation() == null || userToUpdate.getObservation().trim().isEmpty()){
+                userToUpdate.setObservation(user.getObservation());
+            }
             userToUpdate.setDeleted(user.getDeleted());
             userToUpdate.setCreatedAt(user.getCreatedAt());
             userToUpdate.setModifiedAt(LocalDateTime.now());

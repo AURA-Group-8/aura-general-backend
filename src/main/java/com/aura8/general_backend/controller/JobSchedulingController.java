@@ -9,6 +9,7 @@ import com.aura8.general_backend.service.JobSchedulingService;
 import com.aura8.general_backend.service.SchedulingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +48,8 @@ public class JobSchedulingController {
                 jobSchedulingService.create(
                         jobSchedulingRequestDto.getUserId(),
                         jobSchedulingRequestDto.getJobsIds(),
-                        jobSchedulingRequestDto.getStartDatetime()
+                        jobSchedulingRequestDto.getStartDatetime(),
+                        jobSchedulingRequestDto.getRoleId()
                 ));
     }
 
@@ -107,8 +109,13 @@ public class JobSchedulingController {
     @DeleteMapping("/{idScheduling}")
     public ResponseEntity<Void> deleteScheduling(
             @Parameter(description = "ID do agendamento", example = "1")
-            @PathVariable Integer idScheduling) {
-        schedulingService.delete(idScheduling);
+            @PathVariable Integer idScheduling,
+            @Parameter(description = "Role do usuário que está deletand o agendamento", example = "1")
+            @RequestParam Integer roleId,
+            @Parameter(description = "Motivo do cancelamento", example = "Fiquei doente")
+            @RequestParam String message
+    ) {
+        schedulingService.delete(idScheduling, message, roleId);
         return ResponseEntity.noContent().build();
     }
 }

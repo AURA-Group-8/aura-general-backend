@@ -93,9 +93,9 @@ public class JobSchedulingServiceTest {
         when(jobService.getJobsInList(jobIds)).thenReturn(jobs);
         when(jobService.getTotalPrice(jobIds)).thenReturn(250.0);
         when(jobService.getTotalTime(jobIds)).thenReturn(50L);
-        when(schedulingService.create(any(Scheduling.class), eq(userId))).thenReturn(scheduling);
+        when(schedulingService.create(any(Scheduling.class), eq(userId), anyInt())).thenReturn(scheduling);
 
-        service.create(userId, jobIds, start);
+        service.create(userId, jobIds, start, null);
 
         ArgumentCaptor<JobScheduling> captor = ArgumentCaptor.forClass(JobScheduling.class);
         verify(jobSchedulingRepository, times(2)).save(captor.capture());
