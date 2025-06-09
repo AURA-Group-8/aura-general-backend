@@ -36,7 +36,6 @@ public class MessageController {
     }
 
     @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
     @PostMapping("/esqueci-senha")
     public ResponseEntity<ChangePasswordResponseDto> changePassword(@Valid @RequestBody ChangePasswordRequestDto requestDto){
         ChangePasswordResponseDto response = messageService.sendToken(requestDto.getEmail());
