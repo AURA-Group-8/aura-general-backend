@@ -133,5 +133,6 @@ public class UsersService{
     public void changePassword(Integer id, String newPassword){
         Users user = getUserById(id);
         user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
     }
 }
