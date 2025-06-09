@@ -122,7 +122,11 @@ public class UsersService{
         repository.save(userToModify);
     }
 
-    public Boolean existsByEmail(String email){
-        return repository.findByEmailAndDeletedFalse(email).isPresent();
+    public Users findByEmail(String email){
+        return repository.findByEmailAndDeletedFalse(email).orElseThrow(
+                () -> {
+                    throw new ElementNotFoundException("Usuario de email: %s não foi localizado".formatted(email));
+                }
+        );
     }
 }

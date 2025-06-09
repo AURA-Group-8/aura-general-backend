@@ -1,6 +1,7 @@
 package com.aura8.general_backend.service;
 
 import com.aura8.general_backend.config.MailConfig;
+import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.exception.ElementNotFoundException;
@@ -80,10 +81,8 @@ public class MessageService {
             TwilioService.sendWhatsappMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
     }
 
-    public String sendToken(String to) {
-        if(!usersService.existsByEmail(to)){
-            throw new ElementNotFoundException("Usuario de email: %s não foi encontrado".formatted(to));
-        }
+    public ChangePasswordResponseDto sendToken(String to) {
+        Users userByEmail = usersService.findByEmail(to);
 
         Integer token = (int) Math.ceil(Math.random() * 89999) + 10000;
         String responseToken = token.toString();
@@ -99,7 +98,8 @@ public class MessageService {
             e.printStackTrace();
             throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
         }
-        return responseToken;
+
+        return new ChangePasswordResponseDto(responseToken, userByEmail.getId());
     }
 
     public void sendToAuraEmail(String mensagem) {

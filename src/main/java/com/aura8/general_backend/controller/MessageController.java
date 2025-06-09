@@ -39,7 +39,7 @@ public class MessageController {
     @SecurityRequirement(name = "Bearer")
     @PostMapping("/esqueci-senha")
     public ResponseEntity<ChangePasswordResponseDto> changePassword(@Valid @RequestBody ChangePasswordRequestDto requestDto){
-        String responseToken = messageService.sendToken(requestDto.getEmail());
-        return ResponseEntity.status(200).body(new ChangePasswordResponseDto(responseToken));
+        ChangePasswordResponseDto response = messageService.sendToken(requestDto.getEmail());
+        return ResponseEntity.status(200).body(response);
     }
 }
