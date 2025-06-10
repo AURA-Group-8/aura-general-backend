@@ -52,9 +52,9 @@ public class JobSchedulingServiceTest {
         when(jobService.getJobsInList(jobIds)).thenReturn(jobs);
         when(jobService.getTotalPrice(jobIds)).thenReturn(300.0);
         when(jobService.getTotalTime(jobIds)).thenReturn(60L);
-        when(schedulingService.create(any(Scheduling.class), eq(userId))).thenReturn(savedScheduling);
+        when(schedulingService.create(any(Scheduling.class), eq(userId), anyInt())).thenReturn(savedScheduling);
 
-        Scheduling result = service.create(userId, jobIds, start);
+        Scheduling result = service.create(userId, jobIds, start,1);
 
         assertEquals(99, result.getId());
         assertEquals(300.0, result.getTotalPrice());
@@ -71,7 +71,7 @@ public class JobSchedulingServiceTest {
         LocalDateTime start = LocalDateTime.now();
 
         assertThrows(ElementNotFoundException.class, () -> {
-            service.create(userId, jobIds, start);
+            service.create(userId, jobIds, start,1);
         });
 
         verify(jobSchedulingRepository, never()).save(any());
