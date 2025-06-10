@@ -1,16 +1,14 @@
 package com.aura8.general_backend.service;
 
 import com.aura8.general_backend.config.GerenciadorTokenJwt;
-import com.aura8.general_backend.dtos.UsersMapper;
-import com.aura8.general_backend.dtos.UsersTokenDto;
+import com.aura8.general_backend.dtos.users.UsersMapper;
+import com.aura8.general_backend.dtos.users.UsersTokenDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.exception.UnauthorizedUserException;
 import com.aura8.general_backend.repository.UsersRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,7 +42,7 @@ public class UsersService{
         user.setRole(roleService.getRoleById(roleId));
         Optional<Users> existingUser = repository.findByEmailAndDeletedFalse(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new ElementAlreadyExists();
+            throw new ElementAlreadyExists("Já existe um usuário cadastrado com este email.");
         }
         if (user.getEmail() == null) {
             throw new NullPointerException("O email do usuário não pode ser nulo.");
@@ -91,16 +89,31 @@ public class UsersService{
             if (roleId == null) roleId = user.getRole().getId();
             userToUpdate.setRole(roleService.getRoleById(roleId));
 
-            if (userToUpdate.getUsername() == null) userToUpdate.setUsername(user.getUsername());
-            if (userToUpdate.getEmail() == null) userToUpdate.setEmail(user.getEmail());
-            if (userToUpdate.getPassword() == null) userToUpdate.setPassword(user.getPassword());
-            if (userToUpdate.getPhone() == null) userToUpdate.setPhone(user.getPhone());
-            if (userToUpdate.getDateOfBirth() == null) userToUpdate.setDateOfBirth(user.getDateOfBirth());
+          if (userToUpdate.getUsername() == null || userToUpdate.getUsername().trim().isEmpty()) {
+                userToUpdate.setUsername(user.getUsername());
+            }
+            if (userToUpdate.getEmail() == null || userToUpdate.getEmail().trim().isEmpty()) {
+                userToUpdate.setEmail(user.getEmail());
+            }
+            if (userToUpdate.getPassword() == null || userToUpdate.getPassword().trim().isEmpty()) {
+                userToUpdate.setPassword(user.getPassword());
+            } else {
+                userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+            }
+            if (userToUpdate.getPhone() == null || userToUpdate.getPhone().trim().isEmpty()) {
+                userToUpdate.setPhone(user.getPhone());
+            }
+            if (userToUpdate.getDateOfBirth() == null) {
+                userToUpdate.setDateOfBirth(user.getDateOfBirth());
+            }
+            if(userToUpdate.getObservation() == null || userToUpdate.getObservation().trim().isEmpty()){
+                userToUpdate.setObservation(user.getObservation());
+            }
             userToUpdate.setDeleted(user.getDeleted());
             userToUpdate.setCreatedAt(user.getCreatedAt());
             userToUpdate.setModifiedAt(LocalDateTime.now());
             Users updatedUser = repository.save(userToUpdate);
-            return updatedUser;
+            return userToUpdate;
     }
 
     public void deleteUser(Integer id) {
@@ -109,7 +122,17 @@ public class UsersService{
         repository.save(userToModify);
     }
 
-    public Boolean existsByEmail(String email){
-        return repository.findByEmailAndDeletedFalse(email).isPresent();
+    public Users findByEmail(String email){
+        return repository.findByEmailAndDeletedFalse(email).orElseThrow(
+                () -> {
+                    throw new ElementNotFoundException("Usuario de email: %s não foi localizado".formatted(email));
+                }
+        );
+    }
+
+    public void changePassword(Integer id, String newPassword){
+        Users user = getUserById(id);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
     }
 }

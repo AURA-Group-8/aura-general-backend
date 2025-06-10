@@ -1,5 +1,7 @@
 package com.aura8.general_backend.entities;
 
+import com.aura8.general_backend.enums.PaymentStatus;
+import com.aura8.general_backend.enums.SchedulingStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,20 +13,24 @@ public class Scheduling {
     @ManyToOne
     private Users users;
     private Integer feedback;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private SchedulingStatus status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
     private Double totalPrice;
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
     private LocalDateTime canceledAt;
+    private Boolean isCanceled = false;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public Boolean getCanceled() {
+        return isCanceled;
     }
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setCanceled(Boolean canceled) {
+        isCanceled = canceled;
     }
 
     public Integer getId() {
@@ -51,12 +57,28 @@ public class Scheduling {
         this.feedback = feedback;
     }
 
-    public String getStatus() {
+    public SchedulingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(SchedulingStatus status) {
         this.status = status;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public LocalDateTime getStartDatetime() {

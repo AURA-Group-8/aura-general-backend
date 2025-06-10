@@ -1,6 +1,6 @@
 package com.aura8.general_backend.controller;
 
-import com.aura8.general_backend.dtos.*;
+import com.aura8.general_backend.dtos.users.*;
 import com.aura8.general_backend.service.UsersService;
 import com.aura8.general_backend.entities.Users;
 import io.swagger.v3.oas.annotations.Operation;
@@ -98,4 +98,14 @@ import java.util.List;
         return ResponseEntity.status(204).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @Operation(summary = "Altera a senha")
+    @PatchMapping("/alterar-senha/{id}")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable Integer id,
+            @RequestParam String password
+    ){
+        service.changePassword(id, password);
+        return ResponseEntity.noContent().build();
+    }
 }

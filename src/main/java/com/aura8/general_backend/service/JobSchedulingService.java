@@ -1,12 +1,15 @@
 package com.aura8.general_backend.service;
 
+import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
 import com.aura8.general_backend.entities.Job;
 import com.aura8.general_backend.entities.JobScheduling;
 import com.aura8.general_backend.entities.Scheduling;
 import com.aura8.general_backend.entities.id.JobSchedulingId;
+import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.JobSchedulingRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +25,11 @@ public class JobSchedulingService {
         this.jobService = jobService;
     }
 
-    public Scheduling create(Integer userId, List<Integer> jobsIds, LocalDateTime startDatetime){
+    public Scheduling create(Integer userId, List<Integer> jobsIds, LocalDateTime startDatetime, Integer roleId){
+        if (jobsIds == null || jobsIds.isEmpty()) {
+            throw new ElementNotFoundException("Lista de serviços está vazia.");
+        }
+        if (roleId == null) roleId = 2;
         List<Job> jobs = jobService.getJobsInList(jobsIds);
         Double totalPrice = jobService.getTotalPrice(jobsIds);
         LocalDateTime endDatetime = startDatetime.plusMinutes(jobService.getTotalTime(jobsIds));
@@ -30,7 +37,7 @@ public class JobSchedulingService {
         scheduling.setStartDatetime(startDatetime);
         scheduling.setEndDatetime(endDatetime);
         scheduling.setTotalPrice(totalPrice);
-        Scheduling newScheduling = schedulingService.create(scheduling,userId);
+        Scheduling newScheduling = schedulingService.create(scheduling,userId, roleId);
         jobs.forEach(job -> {
             JobScheduling newJobScheduling = new JobScheduling();
             JobSchedulingId jobSchedulingId = new JobSchedulingId();
@@ -46,4 +53,20 @@ public class JobSchedulingService {
         return newScheduling;
     }
 
+    public List<Job> getJobsInScheduling(Integer schedulingId) {
+        Scheduling scheduling = schedulingService.findById(schedulingId);
+        return jobSchedulingRepository.findAllByScheduling(scheduling)
+                .stream()
+                .map(JobScheduling::getJob)
+                .toList();
+    }
+
+    public List<String> getTopServicos(){
+        List<String> topServicos = jobSchedulingRepository.getTopServicos();
+        topServicos = topServicos.stream()
+                .map(servico -> servico.split(",")[0])
+                .toList();
+        System.out.println("Top Serviços: " + topServicos);
+        return topServicos;
+    }
 }

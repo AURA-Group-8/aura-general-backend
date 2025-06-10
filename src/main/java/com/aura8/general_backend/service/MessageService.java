@@ -1,6 +1,7 @@
 package com.aura8.general_backend.service;
 
 import com.aura8.general_backend.config.MailConfig;
+import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.exception.ElementNotFoundException;
@@ -18,8 +19,6 @@ import java.util.List;
 public class MessageService {
 
     private final UsersService usersService;
-
-
     private final MailConfig mailConfig;
 
     public MessageService(UsersService usersService, MailConfig mailConfig) {
@@ -44,7 +43,35 @@ public class MessageService {
         } else {
             minutoString = "%d".formatted(localDateTime.getMinute());
         }
-        String mensagem = "Novo atendimento marcado para %d/%d as %d:%s".formatted(
+        String mensagem = "👋 Olá!\n" +
+                "\n" +
+                "        Esperamos que esta mensagem o(a) encontre bem. 😊 \n" +
+                "        É com grande satisfação que informamos que um **novo atendimento foi " +
+                "        agendado com sucesso** em nosso sistema. 🎉✅\n" +
+                "\n" +
+                "        📌 Abaixo seguem todos os detalhes do agendamento para sua referência:\n" +
+                "\n" +
+                "        📆**Data do Atendimento:** *%d/%d*  \n" +
+                "        🕛**Horário:** *%d:%s*  \n" +
+                "        📍**Local:** conforme combinado anteriormente ou conforme informações registradas em sua conta.\n" +
+                "\n" +
+                "        ✨ Este atendimento é exclusivo e foi cuidadosamente reservado para você.  \n" +
+                "        Pedimos que, se possível, esteja disponível com alguns minutos de antecedência" +
+                "        ⏳ para garantir o melhor aproveitamento do seu tempo e do nosso serviço.\n" +
+                "\n" +
+                "        ❌Caso haja qualquer imprevisto, solicitamos que nos avise com a maior antecedência possível." +
+                "        Assim, poderemos reagendar ou ajustar conforme sua necessidade, " +
+                "        evitando transtornos e liberando o horário para outras pessoas. \uD83D\uDDD3\uD83D\uDD04\n" +
+                "\n" +
+                "        ✅Nosso compromisso é com a qualidade, o respeito ao seu tempo e a excelência no atendimento.  \n" +
+                "        Por isso, estamos sempre disponíveis para esclarecer dúvidas, dar suporte e " +
+                "        garantir que sua experiência conosco seja positiva do início ao fim. \uD83D\uDCAC\uD83D\uDE4C\n" +
+                "\n" +
+                "        📞Em caso de necessidade, entre em contato com nossa equipe pelos canais " +
+                "        de atendimento já conhecidos. Estaremos prontos para ajudar da melhor forma possível!\n" +
+                "\n" +
+                "        💼Atenciosamente,  \n   " +
+                "        Equipe de Atendimento🌟".formatted(
                 localDateTime.getDayOfMonth(),
                 localDateTime.getMonthValue(),
                 localDateTime.getHour(),
@@ -54,10 +81,8 @@ public class MessageService {
             TwilioService.sendWhatsappMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
     }
 
-    public String sendToken(String to) {
-        if(!usersService.existsByEmail(to)){
-            throw new ElementNotFoundException("Usuario de email: %s não foi encontrado".formatted(to));
-        }
+    public ChangePasswordResponseDto sendToken(String to) {
+        Users userByEmail = usersService.findByEmail(to);
 
         Integer token = (int) Math.ceil(Math.random() * 89999) + 10000;
         String responseToken = token.toString();
@@ -73,6 +98,22 @@ public class MessageService {
             e.printStackTrace();
             throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
         }
-        return responseToken;
+
+        return new ChangePasswordResponseDto(responseToken, userByEmail.getId());
+    }
+
+    public void sendToAuraEmail(String mensagem) {
+        try {
+            JavaMailSender emailSender = mailConfig.getJavaMailSender();
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("");
+            message.setTo("");
+            message.setSubject("Mensagem para Aura");
+            message.setText(mensagem);
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
+        }
     }
 }

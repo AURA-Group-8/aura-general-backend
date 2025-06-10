@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
 

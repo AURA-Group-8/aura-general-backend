@@ -1,15 +1,24 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 import java.time.LocalDateTime;
 
-public class UsersUpdateResponseDto {
+public class UsersRegisterResponseDto {
+
     private Integer id;
     private String username;
     private String email;
     private String phone;
     private LocalDateTime dateOfBirth;
-    private LocalDateTime modifiedAt;
     private Integer roleId;
+    private String observation;
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
     public Integer getRoleId() {
         return roleId;
@@ -17,14 +26,6 @@ public class UsersUpdateResponseDto {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
     }
 
     public Integer getId() {

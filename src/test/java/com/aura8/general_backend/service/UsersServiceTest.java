@@ -7,24 +7,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import com.aura8.general_backend.dtos.UsersMapper;
-import com.aura8.general_backend.dtos.UsersTokenDto;
 import com.aura8.general_backend.entities.Role;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.exception.UnauthorizedUserException;
 import com.aura8.general_backend.repository.UsersRepository;
-import com.aura8.general_backend.service.RoleService;
-import com.aura8.general_backend.service.UsersService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UsersServiceTest {
