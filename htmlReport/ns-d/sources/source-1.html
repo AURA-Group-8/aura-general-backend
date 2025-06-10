@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DayOfWeekEnum</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.aura8.general_backend.enums</a>
+</div>
+
+<h1>Coverage Summary for Class: DayOfWeekEnum (com.aura8.general_backend.enums)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DayOfWeekEnum</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (12/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.aura8.general_backend.enums;
+&nbsp;
+&nbsp;import java.time.DayOfWeek;
+&nbsp;
+<b class="fc">&nbsp;public enum DayOfWeekEnum {</b>
+<b class="fc">&nbsp;    SEGUNDA(&quot;MONDAY&quot;, 1),</b>
+<b class="fc">&nbsp;    TERCA(&quot;TUESDAY&quot;, 2),</b>
+<b class="fc">&nbsp;    QUARTA(&quot;WEDNESDAY&quot;, 3),</b>
+<b class="fc">&nbsp;    QUINTA(&quot;THURSDAY&quot;, 4),</b>
+<b class="fc">&nbsp;    SEXTA(&quot;FRIDAY&quot;, 5),</b>
+<b class="fc">&nbsp;    SABADO(&quot;SATURDAY&quot;, 6),</b>
+<b class="fc">&nbsp;    DOMINGO(&quot;SUNDAY&quot;, 7)</b>
+&nbsp;    ;
+&nbsp;
+&nbsp;    private final String name;
+&nbsp;    private final Integer number;
+&nbsp;
+<b class="fc">&nbsp;    DayOfWeekEnum(String name, Integer number) {</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+<b class="fc">&nbsp;        this.number = number;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public DayOfWeek getDayOfWeek() {
+<b class="fc">&nbsp;        return DayOfWeek.valueOf(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String getNameByNumber(Integer number) {
+<b class="nc">&nbsp;        for (DayOfWeekEnum day : DayOfWeekEnum.values()) {</b>
+<b class="nc">&nbsp;            if (day.number.equals(number)) {</b>
+<b class="nc">&nbsp;                return day.name();</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-08 01:04</div>
+</div>
+</body>
+</html>

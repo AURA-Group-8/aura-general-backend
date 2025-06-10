@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SchedulingRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.aura8.general_backend.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: SchedulingRepository (com.aura8.general_backend.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">SchedulingRepository$MockitoMock$8neZj8wx</td>
+  </tr>
+  <tr>
+    <td class="name">SchedulingRepository$MockitoMock$8neZj8wx$auxiliary$24o936Gk</td>
+  </tr>
+  <tr>
+    <td class="name">SchedulingRepository$MockitoMock$8neZj8wx$auxiliary$DMD4CP0i</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.aura8.general_backend.repository;
+&nbsp;
+&nbsp;import com.aura8.general_backend.entities.Scheduling;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface SchedulingRepository extends JpaRepository&lt;Scheduling, Integer&gt; {
+&nbsp;    List&lt;Scheduling&gt; findByStartDatetimeBetweenAndIsCanceledFalse(LocalDateTime startDate, LocalDateTime endDate);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT SUM(s.totalPrice) FROM Scheduling s WHERE s.startDatetime &gt;= :startDate AND s.endDatetime &lt;= :endDate AND s.isCanceled = false AND s.paymentStatus = &#39;PAGO&#39;&quot;)
+&nbsp;    Double getTotalFaturadoMes(LocalDateTime startDate, LocalDateTime endDate);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT count(*) FROM Scheduling s WHERE s.startDatetime &gt;= :startDate AND s.endDatetime &lt;= :endDate AND s.isCanceled = false AND s.status = &#39;FEITO&#39;&quot;)
+&nbsp;    Integer getTotalAtendimentosMes(LocalDateTime startDate, LocalDateTime endDate);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT count(*) FROM Scheduling s WHERE s.startDatetime &gt;= :startDate AND s.endDatetime &lt;= :endDate AND s.isCanceled = true&quot;)
+&nbsp;    Integer getTotalAtendimentosCanceladosMes(LocalDateTime startDate, LocalDateTime endDate);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT s.users.username, count(*) as agendamentos FROM Scheduling s &quot;
+&nbsp;            + &quot;WHERE s.isCanceled = false &quot;
+&nbsp;            + &quot;AND s.status = &#39;FEITO&#39;&quot;
+&nbsp;            + &quot;GROUP BY s.users.username &quot;
+&nbsp;            + &quot;ORDER BY agendamentos DESC &quot;
+&nbsp;            + &quot;LIMIT 5&quot;
+&nbsp;    )
+&nbsp;    List&lt;String&gt; getTopClientes();
+&nbsp;
+&nbsp;    @Query(&quot;SELECT MIN(s.startDatetime) FROM Scheduling s WHERE s.isCanceled = false&quot;)
+&nbsp;    Optional&lt;LocalDateTime&gt; findFirstDateScheduling();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-08 01:04</div>
+</div>
+</body>
+</html>

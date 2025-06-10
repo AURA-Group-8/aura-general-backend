@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AuthenticFilter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.aura8.general_backend.config</a>
+</div>
+
+<h1>Coverage Summary for Class: AuthenticFilter (com.aura8.general_backend.config)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthenticFilter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.aura8.general_backend.config;
+&nbsp;
+&nbsp;import com.aura8.general_backend.service.AuthenticationService;
+&nbsp;import io.jsonwebtoken.ExpiredJwtException;
+&nbsp;import jakarta.servlet.FilterChain;
+&nbsp;import jakarta.servlet.ServletException;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import jakarta.servlet.http.HttpServletResponse;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+&nbsp;import org.springframework.web.filter.OncePerRequestFilter;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;public class AuthenticFilter extends OncePerRequestFilter {
+&nbsp;
+<b class="nc">&nbsp;    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticFilter.class);</b>
+&nbsp;
+&nbsp;    private final AuthenticationService autenticacaoService;
+&nbsp;
+&nbsp;    private final GerenciadorTokenJwt jwtTokenManager;
+&nbsp;
+<b class="nc">&nbsp;    public AuthenticFilter(AuthenticationService autenticacaoService, GerenciadorTokenJwt jwtTokenManager) {</b>
+<b class="nc">&nbsp;        this.autenticacaoService = autenticacaoService;</b>
+<b class="nc">&nbsp;        this.jwtTokenManager = jwtTokenManager;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+<b class="nc">&nbsp;        String username = null;</b>
+<b class="nc">&nbsp;        String jwtToken = null;</b>
+&nbsp;
+<b class="nc">&nbsp;        String requestTokenHeader = request.getHeader(&quot;Authorization&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (Objects.nonNull(requestTokenHeader) &amp;&amp; requestTokenHeader.startsWith(&quot;Bearer &quot;)) {</b>
+<b class="nc">&nbsp;            jwtToken = requestTokenHeader.substring(7);</b>
+&nbsp;
+&nbsp;            try {
+<b class="nc">&nbsp;                username = jwtTokenManager.getUsernameFromToken(jwtToken);</b>
+&nbsp;            } catch (ExpiredJwtException exception) {
+&nbsp;
+<b class="nc">&nbsp;                LOGGER.info(&quot;[FALHA AUTENTICACAO] - Token expirado, usuario: {} - {}&quot;,</b>
+<b class="nc">&nbsp;                        exception.getClaims().getSubject(), exception.getMessage());</b>
+&nbsp;
+<b class="nc">&nbsp;                LOGGER.trace(&quot;[FALHA AUTENTICACAO] - stack trace: %s&quot;, exception);</b>
+&nbsp;
+<b class="nc">&nbsp;                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (username != null &amp;&amp; SecurityContextHolder.getContext().getAuthentication() == null) {</b>
+<b class="nc">&nbsp;            addUsernameInContext(request, username, jwtToken);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        filterChain.doFilter(request, response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void addUsernameInContext(HttpServletRequest request, String username, String jwtToken) {
+&nbsp;
+<b class="nc">&nbsp;        UserDetails userDetails = autenticacaoService.loadUserByUsername(username);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (jwtTokenManager.validateToken(jwtToken, userDetails)) {</b>
+&nbsp;
+<b class="nc">&nbsp;            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(</b>
+<b class="nc">&nbsp;                    userDetails, null, userDetails.getAuthorities());</b>
+&nbsp;
+<b class="nc">&nbsp;            usernamePasswordAuthenticationToken</b>
+<b class="nc">&nbsp;                    .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));</b>
+&nbsp;
+<b class="nc">&nbsp;            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-08 01:04</div>
+</div>
+</body>
+</html>
