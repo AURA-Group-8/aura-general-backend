@@ -26,7 +26,7 @@ jobs:
         env:
           JWT: ${{ secrets.JWT }}
           TWILIO_SID: ${{ secrets.TWILIO_SID }}
-          TWILLIO_AUTH: ${{ secrets.TWILLIO_AUTH }}
+          TWILIO_AUTH: ${{ secrets.TWILIO_AUTH }}
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: mvn clean install
