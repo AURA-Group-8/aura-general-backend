@@ -30,4 +30,16 @@ public class TwilioService {
             e.printStackTrace();
         }
     }
+
+    public static void sendWhatsappMessage(String phone, String mensagem){
+        try{
+            Message message = Message.creator(
+                            new PhoneNumber("whatsapp:+55%s".formatted(phone)),
+                            new PhoneNumber("whatsapp:+14155238886"),
+                            "%s".formatted(mensagem))
+                    .create();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
