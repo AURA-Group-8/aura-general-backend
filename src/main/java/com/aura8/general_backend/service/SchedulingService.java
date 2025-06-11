@@ -21,6 +21,7 @@ import com.aura8.general_backend.repository.SchedulingRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -38,13 +39,15 @@ public class SchedulingService {
     private final UsersService usersService;
     private final SchedulingSettingsService schedulingSettingsService;
     private final RoleService roleService;
+    private final MessageService messageService;
 
-    public SchedulingService(ApplicationEventPublisher publisher, SchedulingRepository schedulingRepository, UsersService usersService, SchedulingSettingsService schedulingSettingsService, RoleService roleService) {
+    public SchedulingService(ApplicationEventPublisher publisher, SchedulingRepository schedulingRepository, UsersService usersService, SchedulingSettingsService schedulingSettingsService, RoleService roleService, MessageService messageService) {
         this.publisher = publisher;
         this.schedulingRepository = schedulingRepository;
         this.usersService = usersService;
         this.schedulingSettingsService = schedulingSettingsService;
         this.roleService = roleService;
+        this.messageService = messageService;
     }
 
     public Scheduling findById(Integer id) {
@@ -252,5 +255,16 @@ public class SchedulingService {
         if(roleId == adminId) isAdmin = true;
         publisher.publishEvent(new SchedulingDeletedEvent(this, scheduling, message, user, isAdmin));
         schedulingRepository.save(scheduling);
+    }
+
+    @Scheduled(cron = "* */30 10 * * *")
+    public void sendMensage(){
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("%s: Iniciando processo agendado de envio de mensagens".formatted(now.toString()));
+        LocalDateTime amanha = now.toLocalDate().plusDays(1).atStartOfDay();
+        List<Scheduling> agendamentosAmanha = schedulingRepository.findByStartDatetimeBetweenAndIsCanceledFalse(amanha, amanha.plusHours(24));
+        for (Scheduling scheduling : agendamentosAmanha) {
+            messageService.sendMensagemValidUserPresence(scheduling.getUsers().getPhone());
+        }
     }
 }

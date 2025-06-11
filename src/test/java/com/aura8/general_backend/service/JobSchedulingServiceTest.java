@@ -54,7 +54,7 @@ public class JobSchedulingServiceTest {
         when(jobService.getTotalTime(jobIds)).thenReturn(60L);
         when(schedulingService.create(any(Scheduling.class), eq(userId), anyInt())).thenReturn(savedScheduling);
 
-        Scheduling result = service.create(userId, jobIds, start,1);
+        Scheduling result = service.create(userId, jobIds, start, 1);
 
         assertEquals(99, result.getId());
         assertEquals(300.0, result.getTotalPrice());

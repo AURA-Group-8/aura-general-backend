@@ -36,6 +36,7 @@ public class MessageService {
 
     @EventListener
     public void onSchedulingCreated(SchedulingCreateEvent event) {
+        if(event.getAdminScheduling()) return;
         LocalDateTime localDateTime = event.getScheduling().getStartDatetime();
         String minutoString;
         if (localDateTime.getMinute() < 10) {
@@ -115,5 +116,14 @@ public class MessageService {
             e.printStackTrace();
             throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
         }
+    }
+
+    public void sendMensagemValidUserPresence(String number){
+        String mensagem = "Olá!\n" +
+                "Este é um lembrete de que você tem um agendamento marcado para amanhã.\n" +
+                "Caso não possa comparecer, por favor, cancele o agendamento com antecedência para liberar o horário.\n" +
+                "\n" +
+                "Agradecemos sua colaboração!";
+        TwilioService.sendWhatsappMessage(number, mensagem);
     }
 }
