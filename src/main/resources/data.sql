@@ -39,16 +39,28 @@ VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01 00:00:00', '2025-04-29 17:5
         '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990005', 'NATALIA', FALSE);
 
 INSERT INTO scheduling_settings (id, days_of_week, work_start, work_end, break_start, break_end)
-VALUES (1, 'SEGUNDA,TERCA,QUINTA', '08:00:00', '18:00:00', '12:00:00', '13:00:00');
+VALUES (1, 'SEGUNDA', '08:00:00', '18:00:00', '12:00:00', '13:00:00');
 
 INSERT INTO scheduling (feedback, is_canceled, total_price, users_id, canceled_at, created_at, end_datetime,
                         modified_at, start_datetime, payment_status, status)
-VALUES (5, false, 160.00, 2, NULL, '2025-06-09 10:00:00', '2025-06-09 11:00:00', '2025-06-09 11:00:00',
+VALUES (5, false, 215.00, 2, NULL, '2025-06-09 10:00:00', '2025-06-09 11:00:00', '2025-06-09 11:00:00',
         '2025-06-09 10:00:00', 'PAGO', 'FEITO'),
-       (4, false, 550.00, 4, NULL, '2025-06-09 14:00:00', '2025-06-09 15:30:00', '2025-06-09 15:30:00',
+       (4, false, 725.00, 4, NULL, '2025-06-09 14:00:00', '2025-06-09 15:30:00', '2025-06-09 15:30:00',
         '2025-06-09 14:00:00', 'PAGO', 'FEITO'),
-       (5, false, 55.00, 5, NULL, '2025-06-10 09:00:00', '2025-06-10 09:45:00', '2025-06-10 09:45:00',
+       (5, false, 115.00, 5, NULL, '2025-06-10 09:00:00', '2025-06-10 09:45:00', '2025-06-10 09:45:00',
         '2025-06-10 09:00:00', 'PAGO', 'FEITO'),
-       (5, false, 600.00, 6, NULL, '2025-06-12 13:00:00', '2025-06-12 14:30:00', '2025-06-12 14:30:00',
+       (5, false, 750.00, 6, NULL, '2025-06-12 13:00:00', '2025-06-12 14:30:00', '2025-06-12 14:30:00',
         '2025-06-12 13:00:00', 'PAGO', 'FEITO');
 
+INSERT INTO job_scheduling (scheduling_id, job_id, current_price, observations, discount_applied)
+VALUES
+(1, 4, 160.00, '', false),
+(1, 6, 15.00, '', false),
+(1, 2, 40.00, '', false),
+(2, 9, 550.00, '', false),
+(2, 7, 120.00, '', false),
+(2, 1, 55.00, '', false),
+(3, 1, 55.00, '', false),
+(3, 3, 60.00, '', false),
+(4, 8, 600.00, '', false),
+(4, 5, 150.00, '', false);
