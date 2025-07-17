@@ -29,6 +29,13 @@ jobs:
       - name: Build com Maven
         run: ./mvnw clean package -DskipTests
 
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_214E870C46854C97948A1B0BA8AE11B1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C6FABA858B2942CCAF804638724962E0 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9BADFFADE8F24FCFB32E8B0C295E9022 }}
+
       - name: Deploy para Azure Web App
         uses: azure/webapps-deploy@v3
         with:
