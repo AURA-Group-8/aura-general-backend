@@ -21,7 +21,7 @@ Este é o backend principal do projeto **Aura**, desenvolvido pelo **Grupo 8**. 
 - 🛡️ **Spring Security** para segurança
 - 🧼 **Spring Validation** para validação de dados
 - ✉️ **Spring Mail** para envio de e-mails
-- 📚 **Swagger/OpenAPI** para documentação da API
+- 📚 **Swagger** para documentação da API
 
 ## ✨ Funcionalidades
 
