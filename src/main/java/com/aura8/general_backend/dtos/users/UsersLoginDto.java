@@ -1,9 +1,7 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-
-import java.time.LocalDateTime;
 
 public class UsersLoginDto {
 

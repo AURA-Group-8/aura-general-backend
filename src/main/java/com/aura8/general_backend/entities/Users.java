@@ -18,6 +18,7 @@ public class Users {
     private String password;
     private String phone;
     private LocalDateTime dateOfBirth;
+    private String observation;
     @ManyToOne
     @JsonBackReference
     private Role role;
@@ -71,6 +72,14 @@ public class Users {
 
     public void setDateOfBirth(LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
     public Role getRole() {

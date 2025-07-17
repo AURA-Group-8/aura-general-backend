@@ -1,6 +1,6 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.dtos.UsersDetailsDto;
+import com.aura8.general_backend.dtos.users.UsersDetailsDto;
 import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;

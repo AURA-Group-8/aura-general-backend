@@ -1,4 +1,4 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 import com.aura8.general_backend.entities.Users;
 
@@ -35,6 +35,7 @@ public class UsersMapper {
         dto.setDateOfBirth(userEntity.getDateOfBirth());
         dto.setPhone(userEntity.getPhone());
         dto.setRoleId(userEntity.getRole().getId());
+        dto.setObservation(userEntity.getObservation());
 
         return dto;
     }
@@ -62,6 +63,7 @@ public class UsersMapper {
         user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
         user.setDateOfBirth(dto.getDateOfBirth());
+        user.setObservation(dto.getObservation());
 
         return user;
     }

@@ -1,11 +1,10 @@
-package com.aura8.general_backend.dtos;
+package com.aura8.general_backend.dtos.users;
 
 import com.aura8.general_backend.entities.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 public class UsersDetailsDto implements UserDetails{
     private final String username;

@@ -7,4 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ElementAlreadyExists extends RuntimeException{
     public ElementAlreadyExists() {
     }
+
+    public ElementAlreadyExists(String message) {
+        super(message);
+    }
 }
