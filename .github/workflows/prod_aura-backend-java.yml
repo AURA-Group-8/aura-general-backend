@@ -23,9 +23,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build com Maven (ou gradle se for o caso)
-        run: |
-          ./mvnw clean package -DskipTests
+      - name: Dar permissão de execução ao mvnw
+        run: chmod +x ./mvnw
+
+      - name: Build com Maven
+        run: ./mvnw clean package -DskipTests
 
       - name: Deploy para Azure Web App
         uses: azure/webapps-deploy@v3
