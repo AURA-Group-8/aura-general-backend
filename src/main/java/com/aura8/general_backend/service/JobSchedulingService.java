@@ -33,11 +33,7 @@ public class JobSchedulingService {
         List<Job> jobs = jobService.getJobsInList(jobsIds);
         Double totalPrice = jobService.getTotalPrice(jobsIds);
         LocalDateTime endDatetime = startDatetime.plusMinutes(jobService.getTotalTime(jobsIds));
-        Scheduling scheduling = new Scheduling();
-        scheduling.setStartDatetime(startDatetime);
-        scheduling.setEndDatetime(endDatetime);
-        scheduling.setTotalPrice(totalPrice);
-        Scheduling newScheduling = schedulingService.create(scheduling,userId, roleId);
+        Scheduling newScheduling = schedulingService.create(startDatetime, endDatetime, totalPrice, userId, roleId);
         jobs.forEach(job -> {
             JobScheduling newJobScheduling = new JobScheduling();
             JobSchedulingId jobSchedulingId = new JobSchedulingId();

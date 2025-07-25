@@ -16,6 +16,7 @@ import com.aura8.general_backend.enums.UpdateTypeEnum;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.event.SchedulingDeletedEvent;
 import com.aura8.general_backend.event.SchedulingUpdatedEvent;
+import com.aura8.general_backend.exception.ConflictException;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.repository.SchedulingRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -56,11 +57,65 @@ public class SchedulingService {
         );
     }
 
-    public Scheduling create(Scheduling scheduling, Integer userId, Integer roleId) {
+    public Scheduling create(LocalDateTime startDateTime, LocalDateTime endDateTime, Double totalPrice, Integer userId, Integer roleId) {
+        Scheduling scheduling = new Scheduling();
         Users user = usersService.getUserById(userId);
+        scheduling.setStartDatetime(startDateTime);
+        scheduling.setEndDatetime(endDateTime);
+        scheduling.setTotalPrice(totalPrice);
         scheduling.setUsers(user);
         scheduling.setPaymentStatus(PaymentStatus.PENDENTE);
         scheduling.setStatus(SchedulingStatus.PENDENTE);
+
+//      Validar de dia está disponível
+        // 1. Pegar configurações
+        SchedulingSettings schedulingSettings = schedulingSettingsService.getSchedulingSettings();
+        SchedulingSettingsListEnumDto settings = SchedulingSettingsMapper.toListEnumDto(schedulingSettings);
+        // 2. validar
+        if(!settings.getDaysOfWeek().contains(startDateTime.toLocalDate().getDayOfWeek())){
+            throw new ConflictException("O dia %s não está disponível".formatted(startDateTime.toLocalDate().toString()));
+        }
+
+//      Validar se horario está disponivel
+        // 1. Pegar agendamentos do dia
+        List<Scheduling> schedulingsOfTheDay = schedulingRepository.findByStartDatetimeBetweenAndIsCanceledFalse(
+                startDateTime.toLocalDate().atStartOfDay(),
+                endDateTime
+        );
+        // 2. transformar dados
+        LocalTime startTime = startDateTime.toLocalTime();
+        LocalTime endTime = endDateTime.toLocalTime();
+
+        // 3. Verificar se o horario é valido
+        for(Scheduling schedlingToValidate : schedulingsOfTheDay) {
+            LocalTime start = schedlingToValidate.getStartDatetime().toLocalTime();
+            LocalTime end = schedlingToValidate.getEndDatetime().toLocalTime();
+
+            if(
+                (startTime.isAfter(start) && startTime.isBefore(end)) ||
+                (endTime.isAfter(start) && endTime.isBefore(end)) ||
+                (startTime.equals(start) || endTime.equals(end))
+            ){
+                throw new ConflictException("Horário das %s às %s não está disponível para o dia %s".formatted(
+                        startTime.toString(), endTime.toString(), startDateTime.toLocalDate().toString()
+                ));
+            }
+        }
+        if(
+            (startTime.isBefore(settings.getWorkStart()) || endTime.isAfter(settings.getWorkEnd()))
+        ){
+            throw new ConflictException(
+                    "Horário das %s às %s não está disponível. ".formatted(
+                            startTime.toString(),
+                            endTime.toString()
+                    ) +
+                    "Horário de funcionamento apenas das %s às %s e das %s às %s".formatted(
+                            settings.getWorkStart(), settings.getBreakStart(),
+                            settings.getBreakEnd(), settings.getWorkEnd()
+                    )
+            );
+        }
+
         Boolean isAdminScheduling = roleService.getRoleById(roleId).getName().equals("ADMIN");
         Scheduling savedScheduling = schedulingRepository.save(scheduling);
         publisher.publishEvent(new SchedulingCreateEvent(this, isAdminScheduling, user, savedScheduling));

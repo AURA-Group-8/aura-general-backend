@@ -37,10 +37,9 @@ public class NotificationService {
         }
         notification.setHasButtonToRate(false);
         notification.setUserId(receiver);
-        notification.setMessage("%s agendou um atendimento com você as %d:%d no dia %d/%d/%d".formatted(
+        notification.setMessage("%s agendou um atendimento com você as %s no dia %02d/%02d/%04d".formatted(
                 username,
-                event.getScheduling().getStartDatetime().getHour(),
-                event.getScheduling().getStartDatetime().getMinute(),
+                event.getScheduling().getStartDatetime().toLocalTime().toString(),
                 event.getScheduling().getStartDatetime().getDayOfMonth(),
                 event.getScheduling().getStartDatetime().getMonthValue(),
                 event.getScheduling().getStartDatetime().getYear()
@@ -61,10 +60,9 @@ public class NotificationService {
         }
         notification.setUserId(receiverId);
         notification.setHasButtonToRate(false);
-        notification.setMessage("%s cancelou o atendimento das %d:%d do dia %d/%d/%d; motivo: %s".formatted(
+        notification.setMessage("%s cancelou o atendimento das %s do dia %02d/%02d/%04d; motivo: %s".formatted(
                 username,
-                event.getScheduling().getStartDatetime().getHour(),
-                event.getScheduling().getStartDatetime().getMinute(),
+                event.getScheduling().getStartDatetime().toLocalTime().toString(),
                 event.getScheduling().getStartDatetime().getDayOfMonth(),
                 event.getScheduling().getStartDatetime().getMonthValue(),
                 event.getScheduling().getStartDatetime().getYear(),
