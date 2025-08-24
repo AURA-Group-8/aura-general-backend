@@ -32,8 +32,8 @@ public class JobSchedulingService {
         if (roleId == null) roleId = 2;
         List<Job> jobs = jobService.getJobsInList(jobsIds);
         Double totalPrice = jobService.getTotalPrice(jobsIds);
-        LocalDateTime endDatetime = startDatetime.plusMinutes(jobService.getTotalTime(jobsIds));
-        Scheduling newScheduling = schedulingService.create(startDatetime, endDatetime, totalPrice, userId, roleId);
+        Long durationInMinutes = jobService.getTotalTime(jobsIds);
+        Scheduling newScheduling = schedulingService.create(startDatetime, durationInMinutes, totalPrice, userId, roleId);
         jobs.forEach(job -> {
             JobScheduling newJobScheduling = new JobScheduling();
             JobSchedulingId jobSchedulingId = new JobSchedulingId();

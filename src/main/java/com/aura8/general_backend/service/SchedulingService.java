@@ -29,6 +29,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +58,11 @@ public class SchedulingService {
         );
     }
 
-    public Scheduling create(LocalDateTime startDateTime, LocalDateTime endDateTime, Double totalPrice, Integer userId, Integer roleId) {
+    public Scheduling create(LocalDateTime startDateTime, Long durationInMinutes, Double totalPrice, Integer userId, Integer roleId) {
         Scheduling scheduling = new Scheduling();
         Users user = usersService.getUserById(userId);
         scheduling.setStartDatetime(startDateTime);
+        LocalDateTime endDateTime = startDateTime.plusMinutes(durationInMinutes);
         scheduling.setEndDatetime(endDateTime);
         scheduling.setTotalPrice(totalPrice);
         scheduling.setUsers(user);
@@ -87,32 +89,24 @@ public class SchedulingService {
         LocalTime endTime = endDateTime.toLocalTime();
 
         // 3. Verificar se o horario é valido
-        for(Scheduling schedlingToValidate : schedulingsOfTheDay) {
-            LocalTime start = schedlingToValidate.getStartDatetime().toLocalTime();
-            LocalTime end = schedlingToValidate.getEndDatetime().toLocalTime();
+        boolean isInvalidTime = isInvalidSchedulingTimeInDay(
+                schedulingsOfTheDay,
+                settings,
+                startDateTime,
+                durationInMinutes.intValue()
+        );
 
-            if(
-                (startTime.isAfter(start) && startTime.isBefore(end)) ||
-                (endTime.isAfter(start) && endTime.isBefore(end)) ||
-                (startTime.equals(start) || endTime.equals(end))
-            ){
-                throw new ConflictException("Horário das %s às %s não está disponível para o dia %s".formatted(
-                        startTime.toString(), endTime.toString(), startDateTime.toLocalDate().toString()
-                ));
-            }
-        }
-        if(
-            (startTime.isBefore(settings.getWorkStart()) || endTime.isAfter(settings.getWorkEnd()))
-        ){
+        if(isInvalidTime) {
             throw new ConflictException(
-                    "Horário das %s às %s não está disponível. ".formatted(
-                            startTime.toString(),
-                            endTime.toString()
-                    ) +
-                    "Horário de funcionamento apenas das %s às %s e das %s às %s".formatted(
-                            settings.getWorkStart(), settings.getBreakStart(),
-                            settings.getBreakEnd(), settings.getWorkEnd()
-                    )
+                "Horário das %s às %s não está disponível para o dia %s; Horário de funcionamento apenas das %s às %s e das %s às %s".formatted(
+                        startTime.toString(),
+                        endTime.toString(),
+                        startDateTime.toLocalDate().toString(),
+                        settings.getWorkStart(),
+                        settings.getBreakStart(),
+                        settings.getBreakEnd(),
+                        settings.getWorkEnd()
+                )
             );
         }
 
@@ -159,48 +153,83 @@ public class SchedulingService {
             if (!avaliablesWeekDays.contains(date.getDayOfWeek())) {
                 availableDay.setAvailable(false); // Dia não disponível
             } else {
-                // Adiciona os horários disponíveis baseados nas configurações
-                LocalTime startTime = settings.getWorkStart();
-                LocalTime endTime = settings.getWorkEnd();
-                LocalTime breakStart = settings.getBreakStart();
-                LocalTime breakEnd = settings.getBreakEnd();
-
-                // Adiciona os horários antes do intervalo de almoço
-                while (startTime.isBefore(breakStart)) {
-                    availableDay.getAvailableTimes().add(startTime);
-                    startTime = startTime.plusMinutes(30);
-                }
-
-                // Adiciona os horários após o intervalo de almoço
-                startTime = breakEnd;
-                while (startTime.isBefore(endTime)) {
-                    availableDay.getAvailableTimes().add(startTime);
-                    startTime = startTime.plusMinutes(30);
-                }
+                availableDay = createAvaliableTimesInDay(availableDay, settings);
             }
 
-            availableDay.getAvailableTimes().removeIf(time -> (time.plusMinutes(durationInMinutes).isAfter(settings.getWorkEnd())));
-
             // Remove os horários que já estão ocupados
-            for (Scheduling scheduling : dailySchedulings) {
-                LocalTime start = scheduling.getStartDatetime().toLocalTime();
-                LocalTime end = scheduling.getEndDatetime().toLocalTime();
+            availableDay.getAvailableTimes().removeIf(time -> (
+                    isInvalidSchedulingTimeInDay(
+                            dailySchedulings,
+                            settings,
+                            time.atDate(date),
+                            durationInMinutes
+                    )
+            ));
 
-                // Remove os horários ocupados
-                availableDay.getAvailableTimes().removeIf(time ->
-                        (time.isAfter(start) && time.isBefore(end)) ||
-                                (time.plusMinutes(durationInMinutes).isAfter(start) && time.plusMinutes(durationInMinutes).isBefore(end)) ||
-                                (time.equals(start) || time.plusMinutes(durationInMinutes).equals(end))
-                );
-
-                // Se não houver horários disponíveis, marca o dia como indisponível
-                if (availableDay.getAvailableTimes().isEmpty()) {
-                    availableDay.setAvailable(false);
-                }
+            // Se não houver horários disponíveis, marca o dia como indisponível
+            if (availableDay.getAvailableTimes().isEmpty()) {
+                availableDay.setAvailable(false);
             }
             availableDays.add(availableDay);
         }
         return availableDays;
+    }
+
+    public boolean isInvalidSchedulingTimeInDay(
+            List<Scheduling> schedulingsOfTheDay,
+            SchedulingSettingsListEnumDto settings,
+            LocalDateTime startDateTime,
+            Integer durationOfScheduling
+    ){
+        LocalTime startTime = startDateTime.toLocalTime();
+        LocalTime endTime = startTime.plusMinutes(durationOfScheduling);
+
+        if(!settings.getDaysOfWeek().contains(startDateTime.getDayOfWeek())) return true;
+
+        if(endTime.isAfter(settings.getWorkEnd())) return true;
+        if(startTime.isBefore(settings.getWorkStart())) return true;
+        if(endTime.isAfter(settings.getBreakStart()) && endTime.isBefore(settings.getBreakEnd())) return true;
+        if(startTime.isAfter(settings.getBreakStart()) && startTime.isBefore(settings.getBreakEnd())) return true;
+        if(startTime.equals(settings.getBreakStart()) && endTime.equals(settings.getBreakEnd())) return true;
+
+
+        LocalDateTime datetime = startTime.atDate(LocalDate.now());
+        boolean isEndTimeInTheSameDayOfTheStart = datetime.toLocalDate().equals(datetime.plusMinutes(durationOfScheduling).toLocalDate());
+        if(!isEndTimeInTheSameDayOfTheStart) return true;
+
+        for (Scheduling scheduling : schedulingsOfTheDay) {
+            LocalTime start = scheduling.getStartDatetime().toLocalTime();
+            LocalTime end = scheduling.getEndDatetime().toLocalTime();
+
+            boolean isStartInConflictWithSomeAnotherScheduling = (startTime.isAfter(start) && startTime.isBefore(end));
+            if(isStartInConflictWithSomeAnotherScheduling) return true;
+            boolean isEndInConflictWithSomeAnotherScheduling = (endTime.isAfter(start) && endTime.isBefore(end));
+            if(isEndInConflictWithSomeAnotherScheduling) return true;
+            boolean isStartOrEndInExactlyConflictWithSomeAnotherScheduling = (startTime.equals(start) || endTime.equals(end));
+            if(isStartOrEndInExactlyConflictWithSomeAnotherScheduling) return true;
+        }
+        return false;
+    }
+
+    public AvailableDayDto createAvaliableTimesInDay(AvailableDayDto day, SchedulingSettingsListEnumDto settings){
+        LocalTime startTime = settings.getWorkStart();
+        LocalTime endTime = settings.getWorkEnd();
+        LocalTime breakStart = settings.getBreakStart();
+        LocalTime breakEnd = settings.getBreakEnd();
+
+        // Adiciona os horários antes do intervalo de almoço
+        while (startTime.isBefore(breakStart)) {
+            day.getAvailableTimes().add(startTime);
+            startTime = startTime.plusMinutes(30);
+        }
+
+        // Adiciona os horários após o intervalo de almoço
+        startTime = breakEnd;
+        while (startTime.isBefore(endTime)) {
+            day.getAvailableTimes().add(startTime);
+            startTime = startTime.plusMinutes(30);
+        }
+        return day;
     }
 
     public List<SchedulingCardResponseDto> getCardInfos() {
@@ -291,7 +320,6 @@ public class SchedulingService {
         System.out.println("Atendimentos por dia da semana: " + atendimentosDiaDaSemana);
         return atendimentosDiaDaSemana;
     }
-
 
     public LocalDate getDateFirstScheduling() {
         return schedulingRepository.findFirstDateScheduling()
