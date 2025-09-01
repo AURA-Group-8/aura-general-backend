@@ -15,7 +15,7 @@ Este é o backend principal do projeto **Aura**, desenvolvido pelo **Grupo 8**. 
 
 - ☕ **Java 21**
 - 🚀 **Spring Boot 3.4.3**
-- 🗃️ **H2 Database** (banco de dados em memória)
+- 🗃️ **H2 Database** (Banco de dados em memória)
 - 🔐 **JWT** (JSON Web Token) para autenticação
 - 📲 **Twilio API** para envio de mensagens via WhatsApp
 - 🛡️ **Spring Security** para segurança
