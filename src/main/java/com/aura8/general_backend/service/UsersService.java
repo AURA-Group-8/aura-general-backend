@@ -1,13 +1,13 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.config.GerenciadorTokenJwt;
 import com.aura8.general_backend.dtos.users.UsersMapper;
 import com.aura8.general_backend.dtos.users.UsersTokenDto;
-import com.aura8.general_backend.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.exception.UnauthorizedUserException;
-import com.aura8.general_backend.repository.UsersRepository;
+import com.aura8.general_backend.infraestructure.config.GerenciadorTokenJwt;
+import com.aura8.general_backend.infraestructure.entities.Users;
+import com.aura8.general_backend.infraestructure.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +16,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersService{
+public class UsersService {
 
     @Autowired
     private UsersRepository repository;
@@ -80,40 +79,39 @@ public class UsersService{
         return repository.findByIdAndDeletedFalse(id)
                 .orElseThrow(
                         () -> new ElementNotFoundException("Usuario de ID: %d não foi encontrado".formatted(id)) // 404
-        );
+                );
     }
 
     public Users updateUser(Integer roleId, Users userToUpdate) {
 
-            Users user = getUserById(userToUpdate.getId());
-            if (roleId == null) roleId = user.getRole().getId();
-            userToUpdate.setRole(roleService.getRoleById(roleId));
+        Users user = getUserById(userToUpdate.getId());
+        if (roleId == null) roleId = user.getRole().getId();
+        userToUpdate.setRole(roleService.getRoleById(roleId));
 
-          if (userToUpdate.getUsername() == null || userToUpdate.getUsername().trim().isEmpty()) {
-                userToUpdate.setUsername(user.getUsername());
-            }
-            if (userToUpdate.getEmail() == null || userToUpdate.getEmail().trim().isEmpty()) {
-                userToUpdate.setEmail(user.getEmail());
-            }
-            if (userToUpdate.getPassword() == null || userToUpdate.getPassword().trim().isEmpty()) {
-                userToUpdate.setPassword(user.getPassword());
-            } else {
-                userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
-            }
-            if (userToUpdate.getPhone() == null || userToUpdate.getPhone().trim().isEmpty()) {
-                userToUpdate.setPhone(user.getPhone());
-            }
-            if (userToUpdate.getDateOfBirth() == null) {
-                userToUpdate.setDateOfBirth(user.getDateOfBirth());
-            }
-            if(userToUpdate.getObservation() == null || userToUpdate.getObservation().trim().isEmpty()){
-                userToUpdate.setObservation(user.getObservation());
-            }
-            userToUpdate.setDeleted(user.getDeleted());
-            userToUpdate.setCreatedAt(user.getCreatedAt());
-            userToUpdate.setModifiedAt(LocalDateTime.now());
-            Users updatedUser = repository.save(userToUpdate);
-            return userToUpdate;
+        if (userToUpdate.getUsername() == null || userToUpdate.getUsername().trim().isEmpty()) {
+            userToUpdate.setUsername(user.getUsername());
+        }
+        if (userToUpdate.getEmail() == null || userToUpdate.getEmail().trim().isEmpty()) {
+            userToUpdate.setEmail(user.getEmail());
+        }
+        if (userToUpdate.getPassword() == null || userToUpdate.getPassword().trim().isEmpty()) {
+            userToUpdate.setPassword(user.getPassword());
+        } else {
+            userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+        }
+        if (userToUpdate.getPhone() == null || userToUpdate.getPhone().trim().isEmpty()) {
+            userToUpdate.setPhone(user.getPhone());
+        }
+        if (userToUpdate.getDateOfBirth() == null) {
+            userToUpdate.setDateOfBirth(user.getDateOfBirth());
+        }
+        if (userToUpdate.getObservation() == null || userToUpdate.getObservation().trim().isEmpty()) {
+            userToUpdate.setObservation(user.getObservation());
+        }
+        userToUpdate.setCreatedAt(user.getCreatedAt());
+        userToUpdate.setDeleted(user.getDeleted());
+        Users updatedUser = repository.save(userToUpdate);
+        return userToUpdate;
     }
 
     public void deleteUser(Integer id) {
@@ -122,7 +120,7 @@ public class UsersService{
         repository.save(userToModify);
     }
 
-    public Users findByEmail(String email){
+    public Users findByEmail(String email) {
         return repository.findByEmailAndDeletedFalse(email).orElseThrow(
                 () -> {
                     throw new ElementNotFoundException("Usuario de email: %s não foi localizado".formatted(email));
@@ -130,7 +128,7 @@ public class UsersService{
         );
     }
 
-    public void changePassword(Integer id, String newPassword){
+    public void changePassword(Integer id, String newPassword) {
         Users user = getUserById(id);
         user.setPassword(passwordEncoder.encode(newPassword));
         repository.save(user);

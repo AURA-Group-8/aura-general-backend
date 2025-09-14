@@ -1,9 +1,8 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.Job;
+import com.aura8.general_backend.infraestructure.entities.Job;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.JobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.aura8.general_backend.infraestructure.repository.JobRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class JobService {

@@ -6,10 +6,12 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.aura8.general_backend.entities.*;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 
-import com.aura8.general_backend.repository.JobSchedulingRepository;
+import com.aura8.general_backend.infraestructure.entities.Job;
+import com.aura8.general_backend.infraestructure.entities.JobScheduling;
+import com.aura8.general_backend.infraestructure.entities.Scheduling;
+import com.aura8.general_backend.infraestructure.repository.JobSchedulingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

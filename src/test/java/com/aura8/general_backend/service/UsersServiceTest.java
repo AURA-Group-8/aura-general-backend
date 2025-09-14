@@ -7,11 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import com.aura8.general_backend.entities.Role;
-import com.aura8.general_backend.entities.Users;
+import com.aura8.general_backend.infraestructure.entities.Role;
+import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.UsersRepository;
+import com.aura8.general_backend.infraestructure.repository.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -149,7 +149,6 @@ public class UsersServiceTest {
         originalUser.setPhone("9999-9999");
         originalUser.setDateOfBirth(LocalDate.of(2000, 1, 1).atStartOfDay());
         originalUser.setDeleted(false);
-        originalUser.setCreatedAt(LocalDateTime.now().of(2020, 1, 1, 0, 0));
         Role role = new Role();
         role.setId(1);
         role.setName("USER");
@@ -189,7 +188,6 @@ public class UsersServiceTest {
         originalUser.setPhone("9999-9999");
         originalUser.setDateOfBirth(LocalDate.of(2000, 1, 1).atStartOfDay());
         originalUser.setDeleted(false);
-        originalUser.setCreatedAt(LocalDateTime.of(2020, 1, 1, 0, 0));
         Role role = new Role();
         role.setId(1);
         role.setName("USER");

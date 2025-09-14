@@ -1,8 +1,8 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.Role;
+import com.aura8.general_backend.infraestructure.entities.Role;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.RoleRepository;
+import com.aura8.general_backend.infraestructure.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

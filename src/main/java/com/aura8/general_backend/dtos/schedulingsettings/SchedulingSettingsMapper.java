@@ -1,10 +1,9 @@
 package com.aura8.general_backend.dtos.schedulingsettings;
 
-import com.aura8.general_backend.entities.SchedulingSettings;
+import com.aura8.general_backend.infraestructure.entities.SchedulingSettings;
 import com.aura8.general_backend.enums.DayOfWeekEnum;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class SchedulingSettingsMapper {

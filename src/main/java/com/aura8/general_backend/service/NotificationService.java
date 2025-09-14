@@ -1,12 +1,11 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.Notification;
-import com.aura8.general_backend.entities.Scheduling;
+import com.aura8.general_backend.infraestructure.entities.Notification;
 import com.aura8.general_backend.enums.UpdateTypeEnum;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.event.SchedulingDeletedEvent;
 import com.aura8.general_backend.event.SchedulingUpdatedEvent;
-import com.aura8.general_backend.repository.NotificationRespository;
+import com.aura8.general_backend.infraestructure.repository.NotificationRespository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

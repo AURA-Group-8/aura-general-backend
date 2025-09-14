@@ -6,9 +6,9 @@ import com.aura8.general_backend.dtos.jobscheduling.SchedulingCardResponseDto;
 import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import com.aura8.general_backend.dtos.schedulingsettings.SchedulingSettingsListEnumDto;
 import com.aura8.general_backend.dtos.schedulingsettings.SchedulingSettingsMapper;
-import com.aura8.general_backend.entities.Scheduling;
-import com.aura8.general_backend.entities.SchedulingSettings;
-import com.aura8.general_backend.entities.Users;
+import com.aura8.general_backend.infraestructure.entities.Scheduling;
+import com.aura8.general_backend.infraestructure.entities.SchedulingSettings;
+import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.enums.DayOfWeekEnum;
 import com.aura8.general_backend.enums.PaymentStatus;
 import com.aura8.general_backend.enums.SchedulingStatus;
@@ -18,7 +18,7 @@ import com.aura8.general_backend.event.SchedulingDeletedEvent;
 import com.aura8.general_backend.event.SchedulingUpdatedEvent;
 import com.aura8.general_backend.exception.ConflictException;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.SchedulingRepository;
+import com.aura8.general_backend.infraestructure.repository.SchedulingRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -338,6 +337,12 @@ public class SchedulingService {
         if(roleId == adminId) isAdmin = true;
         publisher.publishEvent(new SchedulingDeletedEvent(this, scheduling, message, user, isAdmin));
         schedulingRepository.save(scheduling);
+    }
+
+    public Scheduling findByIdAndDeletedFalse(Integer id){
+        return schedulingRepository.findByIdAndIsDeletedFalse(id).orElseThrow(
+                () -> (new ElementNotFoundException("Scheduling de ID: %d não foi encontrado".formatted(id)))
+        );
     }
 
     @Scheduled(cron = "* */30 10 * * *")

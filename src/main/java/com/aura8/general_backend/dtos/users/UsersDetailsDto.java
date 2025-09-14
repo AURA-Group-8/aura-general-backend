@@ -1,6 +1,6 @@
 package com.aura8.general_backend.dtos.users;
 
-import com.aura8.general_backend.entities.Users;
+import com.aura8.general_backend.infraestructure.entities.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

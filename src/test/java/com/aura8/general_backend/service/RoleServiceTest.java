@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
-import com.aura8.general_backend.entities.*;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.RoleRepository;
+import com.aura8.general_backend.infraestructure.entities.Role;
+import com.aura8.general_backend.infraestructure.repository.RoleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

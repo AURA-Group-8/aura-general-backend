@@ -1,15 +1,13 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.config.MailConfig;
+import com.aura8.general_backend.infraestructure.config.MailConfig;
 import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
-import com.aura8.general_backend.entities.Users;
+import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
-import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.exception.EmailFailedException;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

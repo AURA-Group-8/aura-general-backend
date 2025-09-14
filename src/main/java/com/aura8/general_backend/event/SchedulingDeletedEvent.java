@@ -1,8 +1,7 @@
 package com.aura8.general_backend.event;
 
-import com.aura8.general_backend.entities.Scheduling;
-import com.aura8.general_backend.entities.Users;
-import com.aura8.general_backend.enums.UpdateTypeEnum;
+import com.aura8.general_backend.infraestructure.entities.Scheduling;
+import com.aura8.general_backend.infraestructure.entities.Users;
 import org.springframework.context.ApplicationEvent;
 
 public class SchedulingDeletedEvent extends ApplicationEvent {

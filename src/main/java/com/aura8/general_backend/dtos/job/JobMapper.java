@@ -1,9 +1,7 @@
 package com.aura8.general_backend.dtos.job;
 
-import com.aura8.general_backend.entities.Job;
+import com.aura8.general_backend.infraestructure.entities.Job;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public class JobMapper {
     public static JobResponseDto toResponse(Job job){

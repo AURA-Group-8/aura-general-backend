@@ -1,7 +1,7 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.SchedulingSettings;
-import com.aura8.general_backend.repository.SchedulingSettingsRepository;
+import com.aura8.general_backend.infraestructure.entities.SchedulingSettings;
+import com.aura8.general_backend.infraestructure.repository.SchedulingSettingsRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

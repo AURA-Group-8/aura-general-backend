@@ -1,7 +1,7 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.Users;
-import com.aura8.general_backend.repository.UsersRepository;
+import com.aura8.general_backend.infraestructure.entities.Users;
+import com.aura8.general_backend.infraestructure.repository.UsersRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,16 +1,10 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.entities.SchedulingSettings;
+import com.aura8.general_backend.infraestructure.entities.SchedulingSettings;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.SchedulingSettingsRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.aura8.general_backend.infraestructure.repository.SchedulingSettingsRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

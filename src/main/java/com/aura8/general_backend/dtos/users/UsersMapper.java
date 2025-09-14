@@ -1,6 +1,6 @@
 package com.aura8.general_backend.dtos.users;
 
-import com.aura8.general_backend.entities.Users;
+import com.aura8.general_backend.infraestructure.entities.Users;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +19,6 @@ public class UsersMapper {
         user.setDateOfBirth(dto.getDateOfBirth());
         user.setDeleted(false);
         LocalDateTime now = LocalDateTime.now();
-        user.setCreatedAt(now);
-        user.setModifiedAt(now);
 
         return user;
     }
@@ -77,7 +75,6 @@ public class UsersMapper {
         dto.setEmail(userEntity.getEmail());
         dto.setDateOfBirth(userEntity.getDateOfBirth());
         dto.setPhone(userEntity.getPhone());
-        dto.setModifiedAt(userEntity.getModifiedAt());
         dto.setRoleId(userEntity.getRole().getId());
 
         return dto;

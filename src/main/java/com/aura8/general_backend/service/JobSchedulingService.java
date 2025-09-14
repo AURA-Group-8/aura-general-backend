@@ -1,15 +1,13 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
-import com.aura8.general_backend.entities.Job;
-import com.aura8.general_backend.entities.JobScheduling;
-import com.aura8.general_backend.entities.Scheduling;
-import com.aura8.general_backend.entities.id.JobSchedulingId;
+import com.aura8.general_backend.infraestructure.entities.Job;
+import com.aura8.general_backend.infraestructure.entities.JobScheduling;
+import com.aura8.general_backend.infraestructure.entities.Scheduling;
+import com.aura8.general_backend.infraestructure.entities.id.JobSchedulingId;
 import com.aura8.general_backend.exception.ElementNotFoundException;
-import com.aura8.general_backend.repository.JobSchedulingRepository;
+import com.aura8.general_backend.infraestructure.repository.JobSchedulingRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

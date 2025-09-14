@@ -3,7 +3,6 @@ package com.aura8.general_backend.service;
 import com.aura8.general_backend.dtos.finance.DashboardDto;
 import com.aura8.general_backend.dtos.finance.MonthDataDto;
 import com.aura8.general_backend.dtos.finance.MonthDataHistoryDto;
-import com.aura8.general_backend.repository.SchedulingRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
