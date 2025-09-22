@@ -9,6 +9,7 @@ import com.aura8.general_backend.core.domain.attribute.Username;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,8 +24,7 @@ class UsersTest {
         Email email = new Email("valid@email.com");
         Password password = new Password("ValidPass123!");
         Phone phone = new Phone("12345678901");
-        LocalDateTime dateOfBirth = LocalDateTime.of(1990, 1, 1, 0, 0);
-        String observation = "This is a valid observation.";
+        LocalDate dateOfBirth = LocalDate.of(1990, 1, 1);
         Role role = new Role("USER");
         Users user = new Users(
                 username,
@@ -32,7 +32,6 @@ class UsersTest {
                 password,
                 phone,
                 dateOfBirth,
-                observation,
                 role
         );
         System.out.println(user);
@@ -47,7 +46,7 @@ class UsersTest {
             Email email = new Email("valid@email.com");
             Password password = new Password("ValidPass123!");
             Phone phone = new Phone("(12)34567-8901");
-            LocalDateTime dateOfBirth = LocalDateTime.of(1990, 1, 1, 0, 0);
+            LocalDate dateOfBirth = LocalDate.of(1990, 1, 1);
             String observation = "This is a valid observation.";
             Role role = new Role("USER");
             Users user = new Users(
@@ -56,7 +55,6 @@ class UsersTest {
                     password,
                     phone,
                     dateOfBirth,
-                    observation,
                     role
             );
             System.out.println(user);

@@ -5,14 +5,14 @@ import com.aura8.general_backend.core.domain.attribute.Password;
 import com.aura8.general_backend.core.domain.attribute.Phone;
 import com.aura8.general_backend.core.domain.attribute.Username;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Users {
     private Username username;
     private Email email;
     private Password password;
     private Phone phone;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     private String observation;
     private Role role;
     private Boolean deleted = false;
@@ -25,15 +25,13 @@ public class Users {
         this.role = role;
     }
 
-    public Users(Username username, Email email, Password password, Phone phone, LocalDateTime dateOfBirth, String observation, Role role, Boolean deleted) {
+    public Users(Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
-        this.observation = observation;
         this.role = role;
-        this.deleted = deleted;
     }
 
     public Username getUsername() {
@@ -68,11 +66,11 @@ public class Users {
         this.phone = phone;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
