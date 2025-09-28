@@ -1,10 +1,8 @@
 package com.aura8.general_backend.infraestructure.controller;
 
 import com.aura8.general_backend.dtos.finance.DashboardDto;
-import com.aura8.general_backend.dtos.finance.MonthDataDto;
 import com.aura8.general_backend.dtos.finance.MonthDataHistoryDto;
 import com.aura8.general_backend.service.FinanceService;
-import com.aura8.general_backend.service.SchedulingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

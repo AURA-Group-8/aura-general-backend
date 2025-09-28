@@ -1,10 +1,13 @@
-package com.aura8.general_backend.infraestructure.entities;
+package com.aura8.general_backend.clean_arch.infraestructure.persistence.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.aura8.general_backend.infraestructure.entities.AuditableEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-public class Job extends AuditableEntity {
+public class JobEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -13,6 +16,16 @@ public class Job extends AuditableEntity {
     private Integer expectedDurationMinutes;
     private Double price;
     private Boolean deleted = false;
+
+    public JobEntity() {
+    }
+
+    public JobEntity(String name, String description, Integer expectedDurationMinutes, Double price) {
+        this.name = name;
+        this.description = description;
+        this.expectedDurationMinutes = expectedDurationMinutes;
+        this.price = price;
+    }
 
     public Integer getId() {
         return id;
@@ -62,3 +75,4 @@ public class Job extends AuditableEntity {
         this.deleted = deleted;
     }
 }
+

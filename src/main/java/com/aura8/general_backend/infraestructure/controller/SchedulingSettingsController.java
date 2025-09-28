@@ -21,14 +21,14 @@ public class SchedulingSettingsController {
         this.schedulingSettingsService = schedulingSettingsService;
     }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @ApiResponse(responseCode = "200", description = "Configuração de agendamento padrão retornada com sucesso")
-    @ApiResponse(responseCode = "404", description = "Configuração de agendamento padrão não encontrada")
-    @GetMapping
-    public ResponseEntity<SchedulingSettings> get() {
-        return ResponseEntity.ok().body(schedulingSettingsService.getSchedulingSettings());
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @ApiResponse(responseCode = "200", description = "Configuração de agendamento padrão retornada com sucesso")
+//    @ApiResponse(responseCode = "404", description = "Configuração de agendamento padrão não encontrada")
+//    @GetMapping
+//    public ResponseEntity<SchedulingSettings> get() {
+//        return ResponseEntity.ok().body(schedulingSettingsService.getSchedulingSettings());
+//    }
 
     @CrossOrigin(origins = "*")
     @SecurityRequirement(name = "Bearer")
