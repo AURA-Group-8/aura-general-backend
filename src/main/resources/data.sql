@@ -41,6 +41,9 @@ VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01 00:00:00', '2025-04-29 17:5
 INSERT INTO scheduling_settings (id, days_of_week, work_start, work_end, break_start, break_end)
 VALUES (1, 'SEGUNDA', '08:00:00', '18:00:00', '12:00:00', '13:00:00');
 
+INSERT INTO schedule_setting_entity (id, days_of_week, work_start, work_end, break_start, break_end)
+VALUES (1, 'SEGUNDA', '08:00:00', '18:00:00', '12:00:00', '13:00:00');
+
 INSERT INTO scheduling (feedback, is_canceled, total_price, users_id, canceled_at, created_at, end_datetime,
                         modified_at, start_datetime, payment_status, status)
 VALUES (5, false, 215.00, 2, NULL, '2025-06-09 10:00:00', '2025-06-09 11:00:00', '2025-06-09 11:00:00',
