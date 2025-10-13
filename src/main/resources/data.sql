@@ -2,6 +2,10 @@ INSERT INTO Role (name, deleted, created_at, modified_at)
 VALUES ('ADMIN', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        ('CLIENTE', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO Role_entity (name, deleted)
+VALUES ('ADMIN', false),
+       ('CLIENTE', false);
+
 INSERT INTO job (name, description, expected_duration_minutes, price, deleted, created_at, modified_at)
 VALUES ('Design com Henna', 'Design de sobrancelhas com aplicação de henna.', 60, 55.00, false, CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP),
@@ -26,6 +30,20 @@ VALUES ('Design com Henna', 'Design de sobrancelhas com aplicação de henna.', 
 
 INSERT INTO users (role_id, created_at, date_of_birth, modified_at, email, password, phone, username, deleted)
 VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01 00:00:00', '2025-04-29 17:56:15.430192', 'aura@gmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11977972747', 'AURA', FALSE),
+       (2, '2025-04-29 17:56:15.430192', '1998-07-15', '2025-04-29 17:56:15.430192', 'jaqueline@gmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990001', 'JAQUELINE', FALSE),
+       (2, '2025-04-29 17:56:15.430192', '2000-01-22', '2025-04-29 17:56:15.430192', 'carol@hotmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990002', 'CAROL', FALSE),
+       (2, '2025-04-29 17:56:15.430192', '1995-10-03', '2025-04-29 17:56:15.430192', 'luiza@gmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990003', 'LUIZA', FALSE),
+       (2, '2025-04-29 17:56:15.430192', '1997-03-08', '2025-04-29 17:56:15.430192', 'marcela@gmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990004', 'MARCELA', FALSE),
+       (2, '2025-04-29 17:56:15.430192', '1999-11-27', '2025-04-29 17:56:15.430192', 'natalia@gmail.com',
+        '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990005', 'NATALIA', FALSE);
+
+INSERT INTO users_entity (role_id, created_at, date_of_birth, modified_at, email, password, phone, username, deleted)
+VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01', '2025-04-29', 'aura@gmail.com',
         '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11977972747', 'AURA', FALSE),
        (2, '2025-04-29 17:56:15.430192', '1998-07-15', '2025-04-29 17:56:15.430192', 'jaqueline@gmail.com',
         '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11999990001', 'JAQUELINE', FALSE),
@@ -67,3 +85,10 @@ VALUES
 (3, 3, 60.00, '', false),
 (4, 8, 600.00, '', false),
 (4, 5, 150.00, '', false);
+
+INSERT INTO notification_entity (user_id, scheduling_id, message, has_button_to_rate, was_answered, was_read)
+VALUES
+ (1, 1, 'Consulta marcada para amanhã às 10h', true, false, false),
+ (2, 2, 'Seu agendamento foi confirmado', false, false, false),
+ (3, 3, 'Deseja avaliar o atendimento?', true, true, false),
+ (1, 4, 'Notificação teste já lida', false, true, true);
