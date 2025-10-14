@@ -7,7 +7,6 @@ import java.util.List;
 public interface NotificationGateway {
     Notification create(Notification notification);
     Notification getById(Integer id);
-    void delete(Integer id);
-    Notification update(Notification notification);
-    List<Notification> getAllByUserId(Integer userId);
+    Notification patch(Notification notification);
+    List<Notification> getAllByUserId(Integer userId, Integer page, Integer size, String sortBy, String direction);
 }

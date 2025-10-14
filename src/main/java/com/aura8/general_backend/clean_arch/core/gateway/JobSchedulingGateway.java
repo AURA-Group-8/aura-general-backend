@@ -8,7 +8,7 @@ public interface JobSchedulingGateway {
     JobScheduling create(JobScheduling jobScheduling);
     JobScheduling findById(Integer id);
     void delete(Integer id);
-    JobScheduling update(JobScheduling jobScheduling);
+    JobScheduling patch(JobScheduling jobScheduling);
     List<JobScheduling> findAllByScheduleId(Integer scheduleId);
     List<JobScheduling> findTopServicos();
 }

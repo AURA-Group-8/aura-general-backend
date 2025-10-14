@@ -8,6 +8,6 @@ public interface ScheduleGateway {
     Schedule create(Schedule schedule);
     Schedule findById(Integer id);
     void deleteById(Integer id);
-    Schedule update(Schedule schedule);
+    Schedule patch(Schedule schedule);
     List<Schedule> findAll(Integer userId);
 }

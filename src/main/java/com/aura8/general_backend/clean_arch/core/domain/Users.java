@@ -8,6 +8,7 @@ import com.aura8.general_backend.clean_arch.core.domain.attribute.Username;
 import java.time.LocalDate;
 
 public class Users {
+    private Integer id;
     private Username username;
     private Email email;
     private Password password;
@@ -32,6 +33,26 @@ public class Users {
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
         this.role = role;
+    }
+
+    public Users(Integer id, Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, String observation, Role role, Boolean deleted) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.dateOfBirth = dateOfBirth;
+        this.observation = observation;
+        this.role = role;
+        this.deleted = deleted;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Username getUsername() {
