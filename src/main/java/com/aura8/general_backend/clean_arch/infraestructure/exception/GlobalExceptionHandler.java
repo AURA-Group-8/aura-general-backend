@@ -1,5 +1,6 @@
 package com.aura8.general_backend.clean_arch.infraestructure.exception;
 
+import com.aura8.general_backend.clean_arch.application.exception.ElementAlreadyExistsException;
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,5 +17,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ElementNotFoundException.class)
     public ResponseEntity<String> handleElementNotFoundException(ElementNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ElementAlreadyExistsException.class)
+    public ResponseEntity<String> handleElementAlreadyExistsException(ElementAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }

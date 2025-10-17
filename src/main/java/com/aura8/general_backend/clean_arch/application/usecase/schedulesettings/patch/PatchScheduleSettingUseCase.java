@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatchScheduleSettingUseCase {
     private final ScheduleSettingGateway repository;
-    private final FindPrincipalScheduleSettingUseCase findPrincipalScheduleSettingUseCase;
 
-    public PatchScheduleSettingUseCase(ScheduleSettingGateway repository, FindPrincipalScheduleSettingUseCase findPrincipalScheduleSettingUseCase) {
+    public PatchScheduleSettingUseCase(ScheduleSettingGateway repository) {
         this.repository = repository;
-        this.findPrincipalScheduleSettingUseCase = findPrincipalScheduleSettingUseCase;
     }
 
     public ScheduleSetting patch(PatchScheduleSettingCommand patchScheduleSettingCommand) {
-        ScheduleSetting scheduleSetting = findPrincipalScheduleSettingUseCase.find();
+        ScheduleSetting scheduleSetting = repository.findById(1);
         ScheduleSettingMapper.merge(scheduleSetting, patchScheduleSettingCommand);
         return repository.patch(scheduleSetting);
     }

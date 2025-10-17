@@ -17,10 +17,8 @@ public class UsersEntity extends AuditableEntity {
     private String phone;
     private LocalDate dateOfBirth;
     private String observation;
-    @ManyToOne
-    @JsonBackReference
-    private RoleEntity role;
-    private Boolean deleted;
+    private Integer roleId;
+    private Boolean deleted = false;
 
     public UsersEntity() {
     }
@@ -32,7 +30,17 @@ public class UsersEntity extends AuditableEntity {
         this.phone = phone;
     }
 
-    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, String observation, RoleEntity role, Boolean deleted) {
+    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, Integer roleId) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.dateOfBirth = dateOfBirth;
+        this.roleId = roleId;
+    }
+
+    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, String observation, Integer roleId, Boolean deleted) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -40,7 +48,7 @@ public class UsersEntity extends AuditableEntity {
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
         this.observation = observation;
-        this.role = role;
+        this.roleId = roleId;
         this.deleted = deleted;
     }
 
@@ -100,12 +108,12 @@ public class UsersEntity extends AuditableEntity {
         this.observation = observation;
     }
 
-    public RoleEntity getRole() {
-        return role;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole(RoleEntity role) {
-        this.role = role;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public Boolean getDeleted() {

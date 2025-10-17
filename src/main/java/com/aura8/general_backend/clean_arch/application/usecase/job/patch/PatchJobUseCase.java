@@ -12,15 +12,13 @@ import java.util.Optional;
 @Service
 public class PatchJobUseCase {
     private final JobGateway jobRepository;
-    private final FindByIdJobUseCase findByIdJobUseCase;
 
-    public PatchJobUseCase(JobGateway jobRepository, FindByIdJobUseCase findByIdJobUseCase) {
+    public PatchJobUseCase(JobGateway jobRepository) {
         this.jobRepository = jobRepository;
-        this.findByIdJobUseCase = findByIdJobUseCase;
     }
 
     public Job patch(PatchJobCommand patchJobCommand, Integer id) {
-        Optional<Job> optionalJob = findByIdJobUseCase.findById(id);
+        Optional<Job> optionalJob = jobRepository.findById(id);
         if (optionalJob.isEmpty()) {
             throw new ElementNotFoundException("Serviço de id: %d não encontrado".formatted(id));
         }

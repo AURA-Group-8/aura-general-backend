@@ -21,7 +21,10 @@ public class UsersAdapterRepository implements UsersGateway {
 
     @Override
     public Users save(Users user) {
-        return null;
+        UsersEntity usersEntity = UsersMapper.toEntity(user);
+        UsersEntity saved = repository.save(usersEntity);
+        Users savedUser = UsersMapper.toDomain(saved);
+        return savedUser;
     }
 
     @Override
@@ -45,8 +48,14 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
-    public Users patch(Users user) {
-        return null;
+    public Users patch(Users user, Integer userId) {
+        Optional<UsersEntity> usersEntity = findById(userId).map(UsersMapper::toEntity);
+        if(usersEntity.isEmpty()) throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
+        UsersEntity entity = usersEntity.get();
+        UsersMapper.mergeToEntity(entity, user);
+        UsersEntity saved = repository.save(entity);
+        Users savedUser = UsersMapper.toDomain(saved);
+        return savedUser;
     }
 
     @Override
@@ -56,5 +65,10 @@ public class UsersAdapterRepository implements UsersGateway {
         UsersEntity userToDelete = usersEntity.get();
         userToDelete.setDeleted(true);
         repository.save(userToDelete);
+    }
+
+    @Override
+    public Boolean existsByEmailOrPhone(String email, String phone) {
+        return repository.existsByEmailAndDeletedFalseOrPhoneAndDeletedFalse(email, phone);
     }
 }

@@ -1,16 +1,20 @@
 package com.aura8.general_backend.clean_arch.infraestructure.controller;
 
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
+import com.aura8.general_backend.clean_arch.application.usecase.users.create.CreateUsersCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.users.create.CreateUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.delete.DeleteUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.find.findall.FindAllUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.find.findbyid.FindByIdUsersUseCase;
+import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
-import com.aura8.general_backend.clean_arch.infraestructure.dto.users.FindUsersResponse;
+import com.aura8.general_backend.clean_arch.infraestructure.dto.users.*;
 import com.aura8.general_backend.clean_arch.infraestructure.mapper.UsersMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.hibernate.sql.exec.ExecutionException;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +25,30 @@ import java.util.Optional;
 @RequestMapping("/v2/usuarios")
 public class UsersController {
 
+    private final CreateUsersUseCase createUsersUseCase;
     private final FindAllUsersUseCase findAllUsersUseCase;
     private final FindByIdUsersUseCase findByIdUsersUseCase;
+    private final PatchUsersUseCase patchUsersUseCase;
     private final DeleteUsersUseCase deleteUsersUseCase;
 
-    public UsersController(FindAllUsersUseCase findAllUsersUseCase, FindByIdUsersUseCase findByIdUsersUseCase, DeleteUsersUseCase deleteUsersUseCase) {
+    public UsersController(CreateUsersUseCase createUsersUseCase, FindAllUsersUseCase findAllUsersUseCase, FindByIdUsersUseCase findByIdUsersUseCase, PatchUsersUseCase patchUsersUseCase, DeleteUsersUseCase deleteUsersUseCase) {
+        this.createUsersUseCase = createUsersUseCase;
         this.findAllUsersUseCase = findAllUsersUseCase;
         this.findByIdUsersUseCase = findByIdUsersUseCase;
+        this.patchUsersUseCase = patchUsersUseCase;
         this.deleteUsersUseCase = deleteUsersUseCase;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping
+    @Operation(summary = "Registrar um novo usuario", description = "Registra um novo usuario no sistema")
+    @ApiResponse(responseCode = "201", description = "Usuario registrado com sucesso")
+    @ApiResponse(responseCode = "409", description = "Usuário já existe")
+    public ResponseEntity<CreateUsersResponse> register(@Valid @RequestBody CreateUsersRequest user) {
+        CreateUsersCommand createUsersCommand = UsersMapper.toCommand(user);
+        Users users = createUsersUseCase.create(createUsersCommand);
+        CreateUsersResponse createResponse = UsersMapper.toCreateResponse(users);
+        return ResponseEntity.status(201).body(createResponse);
     }
 
     @CrossOrigin(origins = "*")
@@ -57,6 +77,19 @@ public class UsersController {
         Optional<Users> user = findByIdUsersUseCase.findById(id);
         if (user.isEmpty()) throw new ElementNotFoundException("User de id: " + id + " não encontrado");
         FindUsersResponse response = UsersMapper.toResponse(user.get());
+        return ResponseEntity.status(200).body(response);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PatchMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Atualizar usuário", description = "Atualiza os dados de um usuário existente pelo ID fornecido")
+    @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    public ResponseEntity<PatchUsersResponse> updateUser(@PathVariable Integer id, @Valid @RequestBody PatchUsersRequest usersToUpdate) {
+        PatchUsersCommand command = UsersMapper.toCommand(usersToUpdate);
+        Users patch = patchUsersUseCase.patch(command, id);
+        PatchUsersResponse response = UsersMapper.toPatchResponse(patch);
         return ResponseEntity.status(200).body(response);
     }
 
