@@ -2,8 +2,6 @@ package com.aura8.general_backend.clean_arch.infraestructure.security;
 
 import com.aura8.general_backend.clean_arch.core.domain.UsersToken;
 import com.aura8.general_backend.clean_arch.core.gateway.SecurityGateway;
-import com.aura8.general_backend.exception.UnauthorizedUserException;
-import com.aura8.general_backend.infraestructure.entities.Users;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

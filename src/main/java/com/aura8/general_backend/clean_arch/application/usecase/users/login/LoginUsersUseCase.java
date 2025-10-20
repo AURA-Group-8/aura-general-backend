@@ -28,9 +28,9 @@ public class LoginUsersUseCase {
         }
         UsersToken token = securityGateway.getTokenFromLogin(command.email(), command.password());
         Users users = usersGateway.findByEmail(command.email()).get();
-        token.setUserId(users.getId());
+        token.setId(users.getId());
         token.setUsername(users.getUsername().get());
-        token.setUserEmail(users.getEmail().get());
+        token.setEmail(users.getEmail().get());
         return token;
     }
 }

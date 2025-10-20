@@ -2,19 +2,19 @@ package com.aura8.general_backend.clean_arch.core.domain;
 
 public class UsersToken {
     private String token;
-    private Integer userId;
+    private Integer id;
     private String username;
-    private String userEmail;
+    private String email;
 
     public UsersToken(String token) {
         this.token = token;
     }
 
-    public UsersToken(String token, Integer userId, String username, String userEmail) {
+    public UsersToken(String token, Integer id, String username, String email) {
         this.token = token;
-        this.userId = userId;
+        this.id = id;
         this.username = username;
-        this.userEmail = userEmail;
+        this.email = email;
     }
 
     public String getToken() {
@@ -25,12 +25,12 @@ public class UsersToken {
         this.token = token;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -41,11 +41,11 @@ public class UsersToken {
         this.username = username;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
