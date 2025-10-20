@@ -1,6 +1,5 @@
-package com.aura8.general_backend.infraestructure.config;
+package com.aura8.general_backend.clean_arch.infraestructure.security;
 
-import com.aura8.general_backend.service.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

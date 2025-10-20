@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.infraestructure.mapper;
 
 import com.aura8.general_backend.clean_arch.application.usecase.users.create.CreateUsersCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.users.login.LoginUsersCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersCommand;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.domain.attribute.Email;
@@ -193,5 +194,15 @@ public class UsersMapper {
         if (domain.getObservation() != null) {
             entity.setObservation(domain.getObservation());
         }
+    }
+
+    public static LoginUsersCommand toLoginCommand(LoginUsersRequest request) {
+        if (request == null) {
+            return null;
+        }
+        return new LoginUsersCommand(
+                request.getEmail(),
+                request.getPassword()
+        );
     }
 }

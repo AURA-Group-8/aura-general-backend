@@ -1,6 +1,10 @@
-package com.aura8.general_backend.infraestructure.config;
+package com.aura8.general_backend.clean_arch.infraestructure.config;
 
-import com.aura8.general_backend.service.AuthenticationService;
+import com.aura8.general_backend.clean_arch.infraestructure.security.AuthenticEntryPoint;
+import com.aura8.general_backend.clean_arch.infraestructure.security.AuthenticFilter;
+import com.aura8.general_backend.clean_arch.infraestructure.security.AuthenticProvider;
+import com.aura8.general_backend.clean_arch.infraestructure.security.GerenciadorTokenJwt;
+import com.aura8.general_backend.clean_arch.infraestructure.security.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +59,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/usuarios/login/**"),
+            new AntPathRequestMatcher("/v2/usuarios/login/**"),
             new AntPathRequestMatcher("/usuarios"),
             new AntPathRequestMatcher("/v2/usuarios"),
             new AntPathRequestMatcher("/usuarios/alterar-senha/**"),

@@ -1,5 +1,6 @@
 package com.aura8.general_backend.service;
 
+import com.aura8.general_backend.clean_arch.infraestructure.security.AuthenticationService;
 import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.infraestructure.repository.UsersRepository;
 import org.junit.jupiter.api.DisplayName;

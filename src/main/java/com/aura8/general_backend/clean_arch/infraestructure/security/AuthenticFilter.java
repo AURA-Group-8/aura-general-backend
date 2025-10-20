@@ -1,6 +1,5 @@
-package com.aura8.general_backend.infraestructure.config;
+package com.aura8.general_backend.clean_arch.infraestructure.security;
 
-import com.aura8.general_backend.service.AuthenticationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

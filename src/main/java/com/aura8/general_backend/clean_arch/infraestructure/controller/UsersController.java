@@ -6,9 +6,12 @@ import com.aura8.general_backend.clean_arch.application.usecase.users.create.Cre
 import com.aura8.general_backend.clean_arch.application.usecase.users.delete.DeleteUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.find.findall.FindAllUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.find.findbyid.FindByIdUsersUseCase;
+import com.aura8.general_backend.clean_arch.application.usecase.users.login.LoginUsersCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.users.login.LoginUsersUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
+import com.aura8.general_backend.clean_arch.core.domain.UsersToken;
 import com.aura8.general_backend.clean_arch.infraestructure.dto.users.*;
 import com.aura8.general_backend.clean_arch.infraestructure.mapper.UsersMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,13 +33,20 @@ public class UsersController {
     private final FindByIdUsersUseCase findByIdUsersUseCase;
     private final PatchUsersUseCase patchUsersUseCase;
     private final DeleteUsersUseCase deleteUsersUseCase;
+    private final LoginUsersUseCase loginUsersUseCase;
 
-    public UsersController(CreateUsersUseCase createUsersUseCase, FindAllUsersUseCase findAllUsersUseCase, FindByIdUsersUseCase findByIdUsersUseCase, PatchUsersUseCase patchUsersUseCase, DeleteUsersUseCase deleteUsersUseCase) {
+    public UsersController(CreateUsersUseCase createUsersUseCase,
+                           FindAllUsersUseCase findAllUsersUseCase,
+                           FindByIdUsersUseCase findByIdUsersUseCase,
+                           PatchUsersUseCase patchUsersUseCase,
+                           DeleteUsersUseCase deleteUsersUseCase,
+                           LoginUsersUseCase loginUsersUseCase) {
         this.createUsersUseCase = createUsersUseCase;
         this.findAllUsersUseCase = findAllUsersUseCase;
         this.findByIdUsersUseCase = findByIdUsersUseCase;
         this.patchUsersUseCase = patchUsersUseCase;
         this.deleteUsersUseCase = deleteUsersUseCase;
+        this.loginUsersUseCase = loginUsersUseCase;
     }
 
     @CrossOrigin(origins = "*")
@@ -49,6 +59,17 @@ public class UsersController {
         Users users = createUsersUseCase.create(createUsersCommand);
         CreateUsersResponse createResponse = UsersMapper.toCreateResponse(users);
         return ResponseEntity.status(201).body(createResponse);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/login")
+    @Operation(summary = "Login de usuário", description = "Realiza o login de um usuário no sistema")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
+    public ResponseEntity<UsersToken> login(@Valid @RequestBody LoginUsersRequest userInfo) {
+        LoginUsersCommand loginCommand = UsersMapper.toLoginCommand(userInfo);
+        UsersToken token = loginUsersUseCase.login(loginCommand);
+        return ResponseEntity.status(200).body(token);
     }
 
     @CrossOrigin(origins = "*")

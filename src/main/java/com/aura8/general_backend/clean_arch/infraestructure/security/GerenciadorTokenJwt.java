@@ -1,4 +1,4 @@
-package com.aura8.general_backend.infraestructure.config;
+package com.aura8.general_backend.clean_arch.infraestructure.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

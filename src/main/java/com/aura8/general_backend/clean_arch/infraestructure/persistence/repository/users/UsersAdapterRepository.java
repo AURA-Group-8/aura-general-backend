@@ -43,8 +43,11 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
-    public Users findByEmail(String email) {
-        return null;
+    public Optional<Users> findByEmail(String email) {
+        Optional<UsersEntity> usersEntity = repository.findByEmailAndDeletedFalse(email);
+        if (usersEntity.isEmpty()) return Optional.empty();
+        Users user = UsersMapper.toDomain(usersEntity.get());
+        return Optional.of(user);
     }
 
     @Override
@@ -70,5 +73,10 @@ public class UsersAdapterRepository implements UsersGateway {
     @Override
     public Boolean existsByEmailOrPhone(String email, String phone) {
         return repository.existsByEmailAndDeletedFalseOrPhoneAndDeletedFalse(email, phone);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return repository.existsByEmailAndDeletedFalse(email);
     }
 }
