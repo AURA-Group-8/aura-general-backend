@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.application.usecase.users.login;
 
 import com.aura8.general_backend.clean_arch.application.exception.ForbiddenException;
+import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.domain.UsersToken;
 import com.aura8.general_backend.clean_arch.core.gateway.SecurityGateway;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
@@ -25,6 +26,11 @@ public class LoginUsersUseCase {
         if (!userExists) {
             throw new ForbiddenException("Invalid email or password");
         }
-        return securityGateway.getTokenFromLogin(command.email(), command.password());
+        UsersToken token = securityGateway.getTokenFromLogin(command.email(), command.password());
+        Users users = usersGateway.findByEmail(command.email()).get();
+        token.setUserId(users.getId());
+        token.setUsername(users.getUsername().get());
+        token.setUserEmail(users.getEmail().get());
+        return token;
     }
 }
