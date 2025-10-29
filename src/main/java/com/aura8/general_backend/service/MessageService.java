@@ -4,10 +4,8 @@ import com.aura8.general_backend.infraestructure.config.MailConfig;
 import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
 import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
-import com.aura8.general_backend.exception.EmailFailedException;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,8 +16,10 @@ public class MessageService {
 
     private final UsersService usersService;
     private final MailConfig mailConfig;
+    private final RabbitService rabbitService;
 
-    public MessageService(UsersService usersService, MailConfig mailConfig) {
+    public MessageService(UsersService usersService, MailConfig mailConfig, RabbitService rabbitService) {
+        this.rabbitService = rabbitService;
         this.usersService = usersService;
         this.mailConfig = mailConfig;
     }
@@ -28,7 +28,11 @@ public class MessageService {
         List<Users> usersList = usersService.getAllUsers();
         if(usersList.isEmpty()) return;
         usersList.forEach(users -> {
-            TwilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
+            // enviar mensagem para o rabbitmq
+
+            //TwilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
+
+            rabbitService.sendMessage(users.getPhone(), assunto, mensagem);
         });
     }
 
@@ -77,43 +81,65 @@ public class MessageService {
                 minutoString
         );
         if (event.getAdminScheduling())
-            TwilioService.sendWhatsappMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
+            //enviar mensagem para o rabbitmq
+            //TwilioService.sendWhatsappMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
+            rabbitService.sendMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
     }
 
     public ChangePasswordResponseDto sendToken(String to) {
+
+//        try {
+//            JavaMailSender emailSender = mailConfig.getJavaMailSender();
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setFrom("aura.noreply@gmail.com");
+//            message.setTo(to);
+//            message.setSubject("AURA - Mudar senha");
+//            message.setText("O codigo para mudar sua senha é: %s".formatted(token));
+//            // enviar o email para o RabbitMQ
+//            rabbitService.sendEmailAura(message);
+//            //emailSender.send(message);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
+//        }
+
         Users userByEmail = usersService.findByEmail(to);
 
         Integer token = (int) Math.ceil(Math.random() * 89999) + 10000;
         String responseToken = token.toString();
-        try {
-            JavaMailSender emailSender = mailConfig.getJavaMailSender();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("aura.noreply@gmail.com");
             message.setTo(to);
             message.setSubject("AURA - Mudar senha");
             message.setText("O codigo para mudar sua senha é: %s".formatted(token));
-            emailSender.send(message);
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
-        }
+            rabbitService.sendEmailToken(message);
+
 
         return new ChangePasswordResponseDto(responseToken, userByEmail.getId());
     }
 
     public void sendToAuraEmail(String mensagem) {
-        try {
-            JavaMailSender emailSender = mailConfig.getJavaMailSender();
+//        try {
+//            JavaMailSender emailSender = mailConfig.getJavaMailSender();
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setFrom("");
+//            message.setTo("");
+//            message.setSubject("Mensagem para Aura");
+//            message.setText(mensagem);
+//            // enviar o email para o RabbitMQ
+//            emailSender.send(message);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
+//        }
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("");
             message.setTo("");
             message.setSubject("Mensagem para Aura");
             message.setText(mensagem);
-            emailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
-        }
+            // enviar o email para o RabbitMQ
+            rabbitService.sendEmailAura(mensagem);
+
     }
 
     public void sendMensagemValidUserPresence(String number){
@@ -122,6 +148,8 @@ public class MessageService {
                 "Caso não possa comparecer, por favor, cancele o agendamento com antecedência para liberar o horário.\n" +
                 "\n" +
                 "Agradecemos sua colaboração!";
-        TwilioService.sendWhatsappMessage(number, mensagem);
+        // enviar mensagem para o rabbitmq
+        rabbitService.sendMessage(number, mensagem);
+        //TwilioService.sendWhatsappMessage(number, mensagem);
     }
 }

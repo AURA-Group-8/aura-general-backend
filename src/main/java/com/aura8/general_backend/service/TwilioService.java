@@ -6,7 +6,7 @@ import com.twilio.type.PhoneNumber;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+//migrado para o rabbitmq consumer
 @Service
 public class TwilioService {
     @Value("${twilio.accountsid}")
