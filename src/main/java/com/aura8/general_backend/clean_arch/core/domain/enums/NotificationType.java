@@ -14,7 +14,7 @@ public enum NotificationType {
     }
 
     public void setMessage(String message) {
-        this.message = this.message;
+        this.message = message;
     }
 
     public String getActor() {

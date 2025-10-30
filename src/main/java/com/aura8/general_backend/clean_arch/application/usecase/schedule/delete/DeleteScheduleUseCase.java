@@ -28,12 +28,19 @@ public class DeleteScheduleUseCase {
             throw new ElementNotFoundException("Agendamento de id: %d não encontrado".formatted(id));
         }
         scheduleGateway.deleteById(id);
+
+        Users sender = schedule.getUsers();
+        Users receiver = schedule.getUsers();
         Integer adminId = 1;
         Integer adminRoleId = 1;
-        Users receiver = schedule.getUsers();
-        if(roleId != adminRoleId) receiver = usersGateway.findById(adminId).get();
+        if(roleId != adminRoleId) {
+            receiver = usersGateway.findById(adminId).get();
+        } else {
+            sender = usersGateway.findById(adminId).get();
+        }
         NotificationType notificationType = NotificationType.SCHEDULE_CANCELED;
         notificationType.setMessage(motivo);
+        notificationType.setActor(sender.getUsername().get());
         Notification notification = new Notification(
                 receiver,
                 schedule,
