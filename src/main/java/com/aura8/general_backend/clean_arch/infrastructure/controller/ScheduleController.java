@@ -107,9 +107,6 @@ public class ScheduleController {
     ) {
         Page<Schedule> schedulePage = findAllScheduleUseCase.findAll(page, size, sortBy, direction.getDirection());
         Page<ScheduleCardResponse> cards = schedulePage.map(ScheduleMapper::toScheduleCardResponse);
-        if(cards.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(cards);
     }
 }
