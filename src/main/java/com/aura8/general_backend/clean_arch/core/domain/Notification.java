@@ -39,7 +39,7 @@ public class Notification {
         switch (type) {
             case SCHEDULE_CONFIRMED:
                 this.setHasButtonToRate(false);
-                this.setMessage("%s agendou um atendimento com você as %s no dia %02d/%02d/%04d".formatted(
+                this.setMessage("%s agendou um atendimento com você ás %s no dia %02d/%02d/%04d".formatted(
                         type.getActor(),
                         this.schedule.getStartDatetime().toLocalTime().toString(),
                         this.schedule.getStartDatetime().getDayOfMonth(),
@@ -49,7 +49,7 @@ public class Notification {
                 break;
             case SCHEDULE_CANCELED:
                 this.setHasButtonToRate(false);
-                this.setMessage("%s cancelou o atendimento das %s do dia %02d/%02d/%04d; motivo: %s".formatted(
+                this.setMessage("%s cancelou o atendimento das %s do dia %02d/%02d/%04d. Motivo: %s".formatted(
                         type.getActor(),
                         this.schedule.getStartDatetime().toLocalTime().toString(),
                         this.schedule.getStartDatetime().getDayOfMonth(),
