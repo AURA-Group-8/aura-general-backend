@@ -3,7 +3,7 @@ package com.aura8.general_backend.clean_arch.application.usecase.users.patch;
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
-import com.aura8.general_backend.clean_arch.infraestructure.mapper.UsersMapper;
+import com.aura8.general_backend.clean_arch.infrastructure.mapper.UsersMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

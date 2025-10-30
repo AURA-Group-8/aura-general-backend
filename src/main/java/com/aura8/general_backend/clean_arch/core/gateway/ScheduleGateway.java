@@ -2,6 +2,7 @@ package com.aura8.general_backend.clean_arch.core.gateway;
 
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleGateway {
@@ -9,5 +10,6 @@ public interface ScheduleGateway {
     Schedule findById(Integer id);
     void deleteById(Integer id);
     Schedule patch(Schedule schedule);
-    List<Schedule> findAll(Integer userId);
+    List<Schedule> findAll(Integer page, Integer size, String sortBy, String direction);
+    List<Schedule> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

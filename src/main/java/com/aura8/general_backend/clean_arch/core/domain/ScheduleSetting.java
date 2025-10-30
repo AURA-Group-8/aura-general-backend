@@ -50,6 +50,23 @@ public class ScheduleSetting {
         return time;
     }
 
+    public Boolean isScheduleInAvaliableDateTime(Schedule schedule) {
+        DayOfWeek scheduleDay = schedule.getStartDatetime().getDayOfWeek();
+        if (!daysOfWeek.contains(scheduleDay)) {
+            return false;
+        }
+
+        LocalTime scheduleStartTime = schedule.getStartDatetime().toLocalTime();
+        LocalTime scheduleEndTime = schedule.getEndDatetime().toLocalTime();
+
+        boolean isStartInWorkHours = !scheduleStartTime.isBefore(workStart) && !scheduleStartTime.isAfter(workEnd);
+        boolean isEndInWorkHours = !scheduleEndTime.isBefore(workStart) && !scheduleEndTime.isAfter(workEnd);
+
+        boolean isDuringBreak = (scheduleStartTime.isBefore(breakEnd) && scheduleEndTime.isAfter(breakStart));
+
+        return isStartInWorkHours && isEndInWorkHours && !isDuringBreak;
+    }
+
     public List<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }

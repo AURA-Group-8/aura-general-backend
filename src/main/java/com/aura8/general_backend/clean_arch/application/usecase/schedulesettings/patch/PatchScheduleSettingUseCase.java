@@ -1,9 +1,8 @@
 package com.aura8.general_backend.clean_arch.application.usecase.schedulesettings.patch;
 
-import com.aura8.general_backend.clean_arch.application.usecase.schedulesettings.find.FindPrincipalScheduleSettingUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.ScheduleSetting;
 import com.aura8.general_backend.clean_arch.core.gateway.ScheduleSettingGateway;
-import com.aura8.general_backend.clean_arch.infraestructure.mapper.ScheduleSettingMapper;
+import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleSettingMapper;
 import org.springframework.stereotype.Service;
 
 @Service
