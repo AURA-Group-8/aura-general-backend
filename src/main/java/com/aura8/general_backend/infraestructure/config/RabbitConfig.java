@@ -1,4 +1,4 @@
-package com.aura8.general_backend.rabbitmq;
+package com.aura8.general_backend.infraestructure.config;
 import org.springframework.amqp.core.*;
 
 import org.springframework.context.annotation.Bean;

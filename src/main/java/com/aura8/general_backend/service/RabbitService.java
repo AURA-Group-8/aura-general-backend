@@ -1,5 +1,6 @@
 package com.aura8.general_backend.service;
 
+import com.aura8.general_backend.dtos.message.MessageSendEmailDto;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.rabbitmq.json.MessageJson;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,19 +41,11 @@ public class RabbitService {
 
     public void sendCreatedSchedule(SchedulingCreateEvent event) {}
 
-    public void sendEmailToken(SimpleMailMessage mensagem) {
+    public void sendEmail(MessageSendEmailDto mensagem) {
         Object payload = mensagem;
         sendJson(payload, EMAIL_QUEUE_NAME);
         System.out.println("Mensagem enviada");
     }
-    public void sendEmailAura(String mensagem) {
-        Object payload = mensagem;
-        sendJson(payload, EMAIL_QUEUE_NAME);
-        System.out.println("Mensagem enviada");
-    }
-
-
-
 
     private void sendJson(Object payload, String queueName) {
         try {
