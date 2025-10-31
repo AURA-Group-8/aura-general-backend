@@ -95,27 +95,6 @@ public class MessageService {
     }
 
     public void sendToAuraEmail(String mensagem) {
-//        try {
-//            JavaMailSender emailSender = mailConfig.getJavaMailSender();
-//            SimpleMailMessage message = new SimpleMailMessage();
-//            message.setFrom("");
-//            message.setTo("");
-//            message.setSubject("Mensagem para Aura");
-//            message.setText(mensagem);
-//            // enviar o email para o RabbitMQ
-//            emailSender.send(message);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
-//        }
-//            SimpleMailMessage message = new SimpleMailMessage();
-//            message.setFrom("");
-//            message.setTo("");
-//            message.setSubject("Mensagem para Aura");
-//            message.setText(mensagem);
-//            // enviar o email para o RabbitMQ
-//            rabbitService.sendEmailAura(mensagem);
-
 
         MessageSendEmailDto messageSendEmailDto = new MessageSendEmailDto();
         messageSendEmailDto.setFrom("");
@@ -132,8 +111,6 @@ public class MessageService {
                 "Caso não possa comparecer, por favor, cancele o agendamento com antecedência para liberar o horário.\n" +
                 "\n" +
                 "Agradecemos sua colaboração!";
-        // enviar mensagem para o rabbitmq
         rabbitService.sendMessage(number, mensagem);
-        //TwilioService.sendWhatsappMessage(number, mensagem);
     }
 }
