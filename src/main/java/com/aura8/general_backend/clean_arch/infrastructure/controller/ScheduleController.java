@@ -1,16 +1,20 @@
 package com.aura8.general_backend.clean_arch.infrastructure.controller;
 
+import com.aura8.general_backend.clean_arch.application.usecase.availableday.GetAvailiblesDaysUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.CreateScheduleCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.CreateScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.delete.DeleteScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findbyid.FindByIdScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findall.FindAllScheduleUseCase;
+import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.CreateScheduleRequest;
+import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.GetAvailableDaysResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleCardResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
+import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController("ScheduleControllerV2")
@@ -30,12 +35,18 @@ public class ScheduleController {
     private final DeleteScheduleUseCase deleteScheduleUseCase;
     private final FindByIdScheduleUseCase findByIdScheduleUseCase;
     private final FindAllScheduleUseCase findAllScheduleUseCase;
+    private final GetAvailiblesDaysUseCase getAvailableTimesUseCase;
 
-    public ScheduleController(CreateScheduleUseCase createScheduleUseCase, DeleteScheduleUseCase deleteScheduleUseCase, FindByIdScheduleUseCase findByIdScheduleUseCase, FindAllScheduleUseCase findAllScheduleUseCase) {
+    public ScheduleController(CreateScheduleUseCase createScheduleUseCase,
+                              DeleteScheduleUseCase deleteScheduleUseCase,
+                              FindByIdScheduleUseCase findByIdScheduleUseCase,
+                              FindAllScheduleUseCase findAllScheduleUseCase,
+                              GetAvailiblesDaysUseCase getAvailableTimesUseCase) {
         this.createScheduleUseCase = createScheduleUseCase;
         this.deleteScheduleUseCase = deleteScheduleUseCase;
         this.findByIdScheduleUseCase = findByIdScheduleUseCase;
         this.findAllScheduleUseCase = findAllScheduleUseCase;
+        this.getAvailableTimesUseCase = getAvailableTimesUseCase;
     }
 
     @CrossOrigin(origins = "*")
@@ -108,5 +119,21 @@ public class ScheduleController {
         Page<Schedule> schedulePage = findAllScheduleUseCase.findAll(page, size, sortBy, direction.getDirection());
         Page<ScheduleCardResponse> cards = schedulePage.map(ScheduleMapper::toScheduleCardResponse);
         return ResponseEntity.ok(cards);
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/available-times")
+    public ResponseEntity<List<GetAvailableDaysResponse>> getAvaliablesTimes(
+            @Parameter(description = "Duração em minutos", example = "30")
+            @RequestParam Integer durationInMinutes,
+            @Parameter(description = "Primeiro dia da semana (formato yyyy-MM-dd)", example = "2025-01-01")
+            @RequestParam LocalDate firstDayOfWeek
+    ) {
+        List<AvailableDay> availablesDays = getAvailableTimesUseCase.getAvailablesDays(durationInMinutes, firstDayOfWeek);
+        List<GetAvailableDaysResponse> availablesDaysDto = availablesDays.stream()
+                .map(ScheduleMapper::toAvailableDayDto)
+                .toList();
+        return ResponseEntity.ok(availablesDaysDto);
     }
 }

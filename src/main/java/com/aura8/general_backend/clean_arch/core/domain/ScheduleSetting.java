@@ -67,6 +67,14 @@ public class ScheduleSetting {
         return isStartInWorkHours && isEndInWorkHours && !isDuringBreak;
     }
 
+    public Boolean isTimeInUnavailableIntervals(LocalTime time) {
+        boolean isBeforeWorkStart = time.isBefore(workStart);
+        boolean isAfterWorkEnd = time.isAfter(workEnd);
+        boolean isDuringBreak = time.isAfter(breakStart) && !time.isAfter(breakEnd);
+
+        return isBeforeWorkStart || isAfterWorkEnd || isDuringBreak;
+    }
+
     public List<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
