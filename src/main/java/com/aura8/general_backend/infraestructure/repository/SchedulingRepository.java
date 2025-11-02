@@ -1,7 +1,7 @@
 package com.aura8.general_backend.infraestructure.repository;
 
 import com.aura8.general_backend.infraestructure.entities.Scheduling;
-import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.enums.ScheduleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -35,7 +35,7 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Integer>
     @Query("SELECT MIN(s.startDatetime) FROM Scheduling s WHERE s.isCanceled = false")
     Optional<LocalDateTime> findFirstDateScheduling();
 
-    Integer countByUsersIdAndStatusAndIsCanceledFalse(Integer userId, SchedulingStatus status);
+    Integer countByUsersIdAndStatusAndIsCanceledFalse(Integer userId, ScheduleStatus status);
 
     Optional<Scheduling> findByIdAndIsDeletedFalse(Integer id);
 }

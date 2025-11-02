@@ -1,7 +1,7 @@
 package com.aura8.general_backend.clean_arch.core.domain;
 
-import com.aura8.general_backend.enums.PaymentStatus;
-import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.clean_arch.core.domain.enums.PaymentStatus;
+import com.aura8.general_backend.clean_arch.core.domain.enums.ScheduleStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +13,7 @@ public class Schedule {
     private Double totalPrice;
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
-    private SchedulingStatus status = SchedulingStatus.PENDENTE;
+    private ScheduleStatus status = ScheduleStatus.PENDENTE;
     private PaymentStatus paymentStatus = PaymentStatus.PENDENTE;
     private Integer feedback;
     private LocalDateTime canceledAt;
@@ -35,7 +35,7 @@ public class Schedule {
                 .mapToDouble(Job::getPrice).sum();
     }
 
-    public Schedule(Integer id, Users users, LocalDateTime startDatetime, LocalDateTime endDatetime, Double totalPrice, SchedulingStatus status, PaymentStatus paymentStatus, Integer feedback) {
+    public Schedule(Integer id, Users users, LocalDateTime startDatetime, LocalDateTime endDatetime, Double totalPrice, ScheduleStatus status, PaymentStatus paymentStatus, Integer feedback) {
         this.id = id;
         this.users = users;
         this.startDatetime = startDatetime;
@@ -46,7 +46,7 @@ public class Schedule {
         this.feedback = feedback;
     }
 
-    public Schedule(Integer id, Users users, List<JobSchedule> jobSchedules, LocalDateTime startDatetime, LocalDateTime endDatetime, Double totalPrice, SchedulingStatus status, PaymentStatus paymentStatus, Integer feedback) {
+    public Schedule(Integer id, Users users, List<JobSchedule> jobSchedules, LocalDateTime startDatetime, LocalDateTime endDatetime, Double totalPrice, ScheduleStatus status, PaymentStatus paymentStatus, Integer feedback) {
         this.id = id;
         this.users = users;
         this.jobSchedules = jobSchedules;
@@ -182,11 +182,11 @@ public class Schedule {
         this.endDatetime = validateEndDatetime(endDatetime);
     }
 
-    public SchedulingStatus getStatus() {
+    public ScheduleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SchedulingStatus status) {
+    public void setStatus(ScheduleStatus status) {
         this.status = status;
     }
 

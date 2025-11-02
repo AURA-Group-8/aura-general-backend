@@ -56,7 +56,7 @@ public class CreateScheduleUseCase {
         int rangeInDaysOfNextSchedules = 7;
         LocalDateTime startRange = schedule.getStartDatetime().truncatedTo(ChronoUnit.DAYS);
         LocalDateTime endRange = startRange.plusDays(rangeInDaysOfNextSchedules);
-        List<Schedule> schedulesInRange = scheduleGateway.findByStartDateBetween(startRange, endRange);
+        List<Schedule> schedulesInRange = scheduleGateway.findByStartDateBetween(startRange, endRange, false);
         boolean hasConflict = schedulesInRange.stream().anyMatch(schedule::isScheduleColliding);
         if (hasConflict) {
             throw new ConflictException("Conflito de agendamento: já existe um agendamento nesse período. Das %s ás %s de %s".formatted(

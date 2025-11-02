@@ -11,5 +11,6 @@ public interface ScheduleGateway {
     void deleteById(Integer id);
     Schedule patch(Schedule schedule);
     List<Schedule> findAll(Integer page, Integer size, String sortBy, String direction);
-    List<Schedule> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Schedule> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate, boolean getCanceled);
+    List<Schedule> findByUsersId(Integer userId);
 }

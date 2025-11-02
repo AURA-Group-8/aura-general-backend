@@ -12,9 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Integer> {
-    List<ScheduleEntity> findByStartDatetimeBetweenAndCanceledFalse(LocalDateTime startDate, LocalDateTime endDate);
+    List<ScheduleEntity> findByStartDatetimeBetweenAndCanceled(LocalDateTime startDate, LocalDateTime endDate, boolean canceled);
 
-    Optional<ScheduleEntity> findByIdAndCanceledFalse(Integer id);
+    Optional<ScheduleEntity> findByIdAndCanceled(Integer id, boolean canceled);
 
-    Page<ScheduleEntity> findAllByCanceledFalse(Pageable pageable);
+    Page<ScheduleEntity> findAllByCanceled(Pageable pageable, boolean canceled);
+
+    List<ScheduleEntity> findByUsersIdAndCanceled(Integer userId, boolean canceled);
 }

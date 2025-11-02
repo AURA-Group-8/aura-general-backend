@@ -6,15 +6,14 @@ import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.delete.DeleteScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findbyid.FindByIdScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findall.FindAllScheduleUseCase;
+import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.CreateScheduleRequest;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.GetAvailableDaysResponse;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleCardResponse;
+import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
-import com.aura8.general_backend.dtos.jobscheduling.AvailableDayDto;
+import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,17 +35,15 @@ public class ScheduleController {
     private final FindByIdScheduleUseCase findByIdScheduleUseCase;
     private final FindAllScheduleUseCase findAllScheduleUseCase;
     private final GetAvailiblesDaysUseCase getAvailableTimesUseCase;
+    private final PatchScheduleUseCase patchScheduleUseCase;
 
-    public ScheduleController(CreateScheduleUseCase createScheduleUseCase,
-                              DeleteScheduleUseCase deleteScheduleUseCase,
-                              FindByIdScheduleUseCase findByIdScheduleUseCase,
-                              FindAllScheduleUseCase findAllScheduleUseCase,
-                              GetAvailiblesDaysUseCase getAvailableTimesUseCase) {
+    public ScheduleController(CreateScheduleUseCase createScheduleUseCase, DeleteScheduleUseCase deleteScheduleUseCase, FindByIdScheduleUseCase findByIdScheduleUseCase, FindAllScheduleUseCase findAllScheduleUseCase, GetAvailiblesDaysUseCase getAvailableTimesUseCase, PatchScheduleUseCase patchScheduleUseCase) {
         this.createScheduleUseCase = createScheduleUseCase;
         this.deleteScheduleUseCase = deleteScheduleUseCase;
         this.findByIdScheduleUseCase = findByIdScheduleUseCase;
         this.findAllScheduleUseCase = findAllScheduleUseCase;
         this.getAvailableTimesUseCase = getAvailableTimesUseCase;
+        this.patchScheduleUseCase = patchScheduleUseCase;
     }
 
     @CrossOrigin(origins = "*")
@@ -135,5 +132,18 @@ public class ScheduleController {
                 .map(ScheduleMapper::toAvailableDayDto)
                 .toList();
         return ResponseEntity.ok(availablesDaysDto);
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @PatchMapping("/{idSchedule}")
+    public ResponseEntity<ScheduleResponse> updateScheduling(
+            @Parameter(description = "ID do agendamento", example = "1")
+            @PathVariable Integer idSchedule,
+            @Valid @RequestBody SchedulePatchRequest schedulingPatchRequest) {
+        PatchScheduleCommand command = ScheduleMapper.toPatchScheduleCommand(schedulingPatchRequest);
+        Schedule updatedSchedule = patchScheduleUseCase.patch(idSchedule, command);
+        ScheduleResponse response = ScheduleMapper.toResponse(updatedSchedule);
+        return ResponseEntity.ok(response);
     }
 }

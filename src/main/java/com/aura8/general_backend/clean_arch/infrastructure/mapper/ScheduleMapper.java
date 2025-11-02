@@ -1,15 +1,13 @@
 package com.aura8.general_backend.clean_arch.infrastructure.mapper;
 
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.CreateScheduleCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleCommand;
 import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.CreateScheduleRequest;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.GetAvailableDaysResponse;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleCardResponse;
+import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleResponse;
 
 import java.util.List;
 
@@ -114,5 +112,38 @@ public class ScheduleMapper {
                 availableDay.getAvailable(),
                 availableDay.getAvailableTimes()
         );
+    }
+
+    public static PatchScheduleCommand toPatchScheduleCommand(SchedulePatchRequest request) {
+        return new PatchScheduleCommand(
+                request.id(),
+                request.feedback(),
+                request.status(),
+                request.paymentStatus()
+        );
+    }
+
+    public static void mergePatchCommandInDomain(PatchScheduleCommand command, Schedule schedule) {
+        if (command.feedback() != null) {
+            schedule.setFeedback(command.feedback());
+        }
+        if (command.status() != null) {
+            schedule.setStatus(command.status());
+        }
+        if (command.paymentStatus() != null) {
+            schedule.setPaymentStatus(command.paymentStatus());
+        }
+    }
+
+    public static void mergePatchInEntity(ScheduleEntity patch, ScheduleEntity entity) {
+        if (patch.getFeedback() != null) {
+            entity.setFeedback(patch.getFeedback());
+        }
+        if (patch.getStatus() != null) {
+            entity.setStatus(patch.getStatus());
+        }
+        if (patch.getPaymentStatus() != null) {
+            entity.setPaymentStatus(patch.getPaymentStatus());
+        }
     }
 }

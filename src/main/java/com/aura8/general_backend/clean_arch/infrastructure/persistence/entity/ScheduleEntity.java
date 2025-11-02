@@ -1,7 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
-import com.aura8.general_backend.enums.PaymentStatus;
-import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.clean_arch.core.domain.enums.PaymentStatus;
+import com.aura8.general_backend.clean_arch.core.domain.enums.ScheduleStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class ScheduleEntity extends AuditableEntity{
     private List<JobScheduleEntity> jobSchedules;
     private Integer feedback;
     @Enumerated(EnumType.STRING)
-    private SchedulingStatus status;
+    private ScheduleStatus status;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
     private Double totalPrice;
@@ -58,11 +58,11 @@ public class ScheduleEntity extends AuditableEntity{
         this.feedback = feedback;
     }
 
-    public SchedulingStatus getStatus() {
+    public ScheduleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SchedulingStatus status) {
+    public void setStatus(ScheduleStatus status) {
         this.status = status;
     }
 

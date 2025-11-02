@@ -3,6 +3,7 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.reposito
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
+import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.JobScheduleGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.JobScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.JobScheduleEntity;
@@ -64,7 +65,22 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
     }
 
     @Override
-    public List<JobSchedule> findTopServicos() {
-        return List.of();
+    public List<String> findTopServicos() {
+        List<String> topServicos = repository.getTopServicos();
+        topServicos = topServicos.stream()
+                .map(servico -> servico.split(",")[0])
+                .toList();
+        System.out.println("Top Serviços: " + topServicos);
+        return topServicos;
+    }
+
+    @Override
+    public List<String> findTopUsers() {
+        List<String> topServicos = repository.getTopClientes();
+        topServicos = topServicos.stream()
+                .map(servico -> servico.split(",")[0])
+                .toList();
+        System.out.println("Top Serviços: " + topServicos);
+        return topServicos;
     }
 }

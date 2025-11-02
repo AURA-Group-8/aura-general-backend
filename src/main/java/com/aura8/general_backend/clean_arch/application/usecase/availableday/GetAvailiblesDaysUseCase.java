@@ -58,7 +58,8 @@ public class GetAvailiblesDaysUseCase {
 
             scheduleGateway.findByStartDateBetween(
                     currentDate.atStartOfDay(),
-                    currentDate.plusDays(1).atStartOfDay()
+                    currentDate.plusDays(1).atStartOfDay(),
+                    false
             ).forEach(schedule -> {
                 availableDay.removeTimesSlots(durationInMinutes, schedule);
             });
