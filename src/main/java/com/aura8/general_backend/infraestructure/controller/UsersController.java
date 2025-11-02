@@ -98,14 +98,14 @@ import java.util.List;
         return ResponseEntity.status(204).build();
     }
 
-    @CrossOrigin(origins = "*")
-    @Operation(summary = "Altera a senha")
-    @PatchMapping("/alterar-senha/{id}")
-    public ResponseEntity<Void> updatePassword(
-            @PathVariable Integer id,
-            @RequestParam String password
-    ){
-        service.changePassword(id, password);
-        return ResponseEntity.noContent().build();
-    }
+//    @CrossOrigin(origins = "*")
+//    @Operation(summary = "Altera a senha")
+//    @PatchMapping("/alterar-senha/{id}")
+//    public ResponseEntity<Void> updatePassword(
+//            @PathVariable Integer id,
+//            @RequestParam String password
+//    ){
+//        service.changePassword(id, password);
+//        return ResponseEntity.noContent().build();
+//    }
 }

@@ -5,15 +5,15 @@ import com.aura8.general_backend.dtos.users.UsersTokenDto;
 import com.aura8.general_backend.exception.ElementAlreadyExists;
 import com.aura8.general_backend.exception.ElementNotFoundException;
 import com.aura8.general_backend.exception.UnauthorizedUserException;
-import com.aura8.general_backend.infraestructure.config.GerenciadorTokenJwt;
+//import com.aura8.general_backend.infraestructure.config.GerenciadorTokenJwt;
 import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.infraestructure.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,14 +28,14 @@ public class UsersService {
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private GerenciadorTokenJwt gerenciadorTokenJwt;
+//    @Autowired
+//    private GerenciadorTokenJwt gerenciadorTokenJwt;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     public Users register(Users user, Integer roleId) {
         user.setRole(roleService.getRoleById(roleId));
@@ -49,7 +49,7 @@ public class UsersService {
         if (user.getPassword() == null) {
             throw new NullPointerException("A senha do usuário não pode ser nula.");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return repository.save(user);
     }
@@ -59,16 +59,17 @@ public class UsersService {
                 userInfo.getEmail(), userInfo.getPassword());
 
         var user = repository.findByEmailAndDeletedFalse(userInfo.getEmail());
-        final Authentication authentication = this.authenticationManager.authenticate(credentials);
+//        final Authentication authentication = this.authenticationManager.authenticate(credentials);
         Users usuarioAutenticado = user.orElseThrow(
                 () -> new UnauthorizedUserException("Senha ou Email Invalidos")
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
+//        final String token = gerenciadorTokenJwt.generateToken(authentication);
 
-        return UsersMapper.toTokenDto(usuarioAutenticado, token);
+//        return UsersMapper.toTokenDto(usuarioAutenticado, token);
+        return null;
     }
 
     public List<Users> getAllUsers() {
@@ -96,9 +97,10 @@ public class UsersService {
         }
         if (userToUpdate.getPassword() == null || userToUpdate.getPassword().trim().isEmpty()) {
             userToUpdate.setPassword(user.getPassword());
-        } else {
-            userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
         }
+//        else {
+//            userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+//        }
         if (userToUpdate.getPhone() == null || userToUpdate.getPhone().trim().isEmpty()) {
             userToUpdate.setPhone(user.getPhone());
         }
@@ -128,9 +130,9 @@ public class UsersService {
         );
     }
 
-    public void changePassword(Integer id, String newPassword) {
-        Users user = getUserById(id);
-        user.setPassword(passwordEncoder.encode(newPassword));
-        repository.save(user);
-    }
+//    public void changePassword(Integer id, String newPassword) {
+//        Users user = getUserById(id);
+//        user.setPassword(passwordEncoder.encode(newPassword));
+//        repository.save(user);
+//    }
 }

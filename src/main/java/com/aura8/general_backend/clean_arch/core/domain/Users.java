@@ -15,27 +15,27 @@ public class Users {
     private Phone phone;
     private LocalDate dateOfBirth;
     private String observation;
-    private Role role;
+    private Integer roleId;
     private Boolean deleted = false;
 
-    public Users(Username username, Email email, Password password, Phone phone, Role role) {
+    public Users(Username username, Email email, Password password, Phone phone, Integer roleId) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.role = role;
+        this.roleId = roleId;
     }
 
-    public Users(Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, Role role) {
+    public Users(Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, Integer roleId) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
-        this.role = role;
+        this.roleId = roleId;
     }
 
-    public Users(Integer id, Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, String observation, Role role, Boolean deleted) {
+    public Users(Integer id, Username username, Email email, Password password, Phone phone, LocalDate dateOfBirth, String observation, Integer roleId, Boolean deleted) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -43,7 +43,7 @@ public class Users {
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
         this.observation = observation;
-        this.role = role;
+        this.roleId = roleId;
         this.deleted = deleted;
     }
 
@@ -103,12 +103,12 @@ public class Users {
         this.observation = observation;
     }
 
-    public Role getRole() {
-        return role;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public Boolean isDeleted() {
@@ -128,7 +128,7 @@ public class Users {
                 ", phone=" + phone +
                 ", dateOfBirth=" + dateOfBirth +
                 ", observation='" + observation + '\'' +
-                ", role=" + role +
+                ", roleId=" + roleId +
                 '}';
     }
 }

@@ -1,7 +1,7 @@
 package com.aura8.general_backend.infraestructure.entities;
 
 import com.aura8.general_backend.enums.PaymentStatus;
-import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.enums.ScheduleStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ public class Scheduling {
     private Users users;
     private Integer feedback;
     @Enumerated(EnumType.STRING)
-    private SchedulingStatus status;
+    private ScheduleStatus status;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
     private Double totalPrice;
@@ -66,11 +66,11 @@ public class Scheduling {
         this.feedback = feedback;
     }
 
-    public SchedulingStatus getStatus() {
+    public ScheduleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SchedulingStatus status) {
+    public void setStatus(ScheduleStatus status) {
         this.status = status;
     }
 

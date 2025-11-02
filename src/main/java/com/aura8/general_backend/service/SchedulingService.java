@@ -11,7 +11,7 @@ import com.aura8.general_backend.infraestructure.entities.SchedulingSettings;
 import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.enums.DayOfWeekEnum;
 import com.aura8.general_backend.enums.PaymentStatus;
-import com.aura8.general_backend.enums.SchedulingStatus;
+import com.aura8.general_backend.enums.ScheduleStatus;
 import com.aura8.general_backend.enums.UpdateTypeEnum;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
 import com.aura8.general_backend.event.SchedulingDeletedEvent;
@@ -66,7 +66,7 @@ public class SchedulingService {
         scheduling.setTotalPrice(totalPrice);
         scheduling.setUsers(user);
         scheduling.setPaymentStatus(PaymentStatus.PENDENTE);
-        scheduling.setStatus(SchedulingStatus.PENDENTE);
+        scheduling.setStatus(ScheduleStatus.PENDENTE);
 
 //      Validar de dia está disponível
         // 1. Pegar configurações
@@ -260,8 +260,8 @@ public class SchedulingService {
         }
         if (schedulingPatchRequestDto.getStatus() != null) {
             try {
-                scheduling.setStatus(SchedulingStatus.valueOf(schedulingPatchRequestDto.getStatus()));
-                if(SchedulingStatus.valueOf(schedulingPatchRequestDto.getStatus()).equals(SchedulingStatus.FEITO)) statusHasModified = true;
+                scheduling.setStatus(ScheduleStatus.valueOf(schedulingPatchRequestDto.getStatus()));
+                if(ScheduleStatus.valueOf(schedulingPatchRequestDto.getStatus()).equals(ScheduleStatus.FEITO)) statusHasModified = true;
             } catch (IllegalArgumentException e) {
                 throw new ElementNotFoundException("Status de agendamento inválido: %s. Tente: [FEITO, PENDENTE, CANCELADO]".formatted(schedulingPatchRequestDto.getStatus()));
             }
@@ -274,7 +274,7 @@ public class SchedulingService {
             }
         }
         Scheduling savedScheduling = schedulingRepository.save(scheduling);
-        Integer agendamentos = schedulingRepository.countByUsersIdAndStatusAndIsCanceledFalse(savedScheduling.getUsers().getId(), SchedulingStatus.FEITO);
+        Integer agendamentos = schedulingRepository.countByUsersIdAndStatusAndIsCanceledFalse(savedScheduling.getUsers().getId(), ScheduleStatus.FEITO);
         if(statusHasModified && agendamentos == 1) publisher.publishEvent(new SchedulingUpdatedEvent(this, savedScheduling, savedScheduling.getUsers(), true, UpdateTypeEnum.STATUS));
         if(feedbackHasModified) publisher.publishEvent(new SchedulingUpdatedEvent(this, savedScheduling, savedScheduling.getUsers(), false, UpdateTypeEnum.FEEDBACK));
         return savedScheduling;
@@ -330,7 +330,7 @@ public class SchedulingService {
         Scheduling scheduling = findById(idScheduling);
         scheduling.setCanceled(true);
         scheduling.setCanceledAt(LocalDateTime.now());
-        scheduling.setStatus(SchedulingStatus.CANCELADO);
+        scheduling.setStatus(ScheduleStatus.CANCELADO);
         Users user = scheduling.getUsers();
         Boolean isAdmin = false;
         int adminId = 1;

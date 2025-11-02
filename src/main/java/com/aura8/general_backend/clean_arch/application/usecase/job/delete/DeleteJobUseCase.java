@@ -11,15 +11,13 @@ import java.util.Optional;
 @Service
 public class DeleteJobUseCase {
     private final JobGateway jobRepository;
-    private final FindByIdJobUseCase findByIdJobUseCase;
 
-    public DeleteJobUseCase(JobGateway jobRepository, FindByIdJobUseCase findByIdJobUseCase) {
+    public DeleteJobUseCase(JobGateway jobRepository) {
         this.jobRepository = jobRepository;
-        this.findByIdJobUseCase = findByIdJobUseCase;
     }
 
     public void delete(Integer id) {
-        Optional<Job> optionalJob = findByIdJobUseCase.findById(id);
+        Optional<Job> optionalJob = jobRepository.findById(id);
         if(optionalJob.isEmpty()) throw new ElementNotFoundException("Serviço de id: %d não encontrado".formatted(id));
         jobRepository.delete(id);
     }
