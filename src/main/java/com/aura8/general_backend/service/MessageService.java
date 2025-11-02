@@ -1,13 +1,10 @@
 package com.aura8.general_backend.service;
 
-import com.aura8.general_backend.infraestructure.config.MailConfig;
+import com.aura8.general_backend.dtos.message.MessageSendEmailDto;
 import com.aura8.general_backend.dtos.message.ChangePasswordResponseDto;
 import com.aura8.general_backend.infraestructure.entities.Users;
 import com.aura8.general_backend.event.SchedulingCreateEvent;
-import com.aura8.general_backend.exception.EmailFailedException;
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,18 +14,20 @@ import java.util.List;
 public class MessageService {
 
     private final UsersService usersService;
-    private final MailConfig mailConfig;
 
-    public MessageService(UsersService usersService, MailConfig mailConfig) {
+    private final RabbitService rabbitService;
+
+    public MessageService(UsersService usersService, RabbitService rabbitService) {
+        this.rabbitService = rabbitService;
         this.usersService = usersService;
-        this.mailConfig = mailConfig;
     }
 
     public void sendToAllUsersWhatsapp(String assunto, String mensagem){
         List<Users> usersList = usersService.getAllUsers();
         if(usersList.isEmpty()) return;
         usersList.forEach(users -> {
-            TwilioService.sendWhatsappMessage(users.getPhone(), assunto, mensagem);
+
+            rabbitService.sendMessage(users.getPhone(), assunto, mensagem);
         });
     }
 
@@ -77,43 +76,33 @@ public class MessageService {
                 minutoString
         );
         if (event.getAdminScheduling())
-            TwilioService.sendWhatsappMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
+            rabbitService.sendMessage(event.getUser().getPhone(), "Novo Atendimento", mensagem);
     }
 
     public ChangePasswordResponseDto sendToken(String to) {
-        Users userByEmail = usersService.findByEmail(to);
 
         Integer token = (int) Math.ceil(Math.random() * 89999) + 10000;
         String responseToken = token.toString();
-        try {
-            JavaMailSender emailSender = mailConfig.getJavaMailSender();
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("aura.noreply@gmail.com");
-            message.setTo(to);
-            message.setSubject("AURA - Mudar senha");
-            message.setText("O codigo para mudar sua senha é: %s".formatted(token));
-            emailSender.send(message);
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
-        }
+        MessageSendEmailDto messageSendEmailDto = new MessageSendEmailDto();
+        messageSendEmailDto.setFrom("aura.noreply@gmail.com");
+        messageSendEmailDto.setTo(to);
+        messageSendEmailDto.setSubject("AURA - Mudar senha");
+        messageSendEmailDto.setText("O codigo para mudar sua senha é: %s".formatted(token));
+        rabbitService.sendEmail(messageSendEmailDto);
 
-        return new ChangePasswordResponseDto(responseToken, userByEmail.getId());
+
+        return new ChangePasswordResponseDto(responseToken, 1);
     }
 
     public void sendToAuraEmail(String mensagem) {
-        try {
-            JavaMailSender emailSender = mailConfig.getJavaMailSender();
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("");
-            message.setTo("");
-            message.setSubject("Mensagem para Aura");
-            message.setText(mensagem);
-            emailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EmailFailedException("Erro ao enviar e-mail, tente verificar as credênciais");
-        }
+
+        MessageSendEmailDto messageSendEmailDto = new MessageSendEmailDto();
+        messageSendEmailDto.setFrom("");
+        messageSendEmailDto.setTo("");
+        messageSendEmailDto.setSubject("Mensagem para Aura");
+        messageSendEmailDto.setText(mensagem);
+        rabbitService.sendEmail(messageSendEmailDto);
+
     }
 
     public void sendMensagemValidUserPresence(String number){
@@ -122,6 +111,6 @@ public class MessageService {
                 "Caso não possa comparecer, por favor, cancele o agendamento com antecedência para liberar o horário.\n" +
                 "\n" +
                 "Agradecemos sua colaboração!";
-        TwilioService.sendWhatsappMessage(number, mensagem);
+        rabbitService.sendMessage(number, mensagem);
     }
 }
