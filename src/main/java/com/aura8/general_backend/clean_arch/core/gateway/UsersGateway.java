@@ -9,7 +9,9 @@ public interface UsersGateway {
     Users save(Users user);
     List<Users> findAll();
     Optional<Users> findById(Integer id);
-    Users findByEmail(String email);
-    Users patch(Users user);
+    Optional<Users> findByEmail(String email);
+    Users patch(Users user, Integer userId);
     void delete(Integer userId);
+    Boolean existsByEmailOrPhone(String email, String phone);
+    Boolean existsByEmail(String email);
 }

@@ -2,7 +2,7 @@ package com.aura8.general_backend.clean_arch.application.usecase.users.find.find
 
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
-import com.aura8.general_backend.clean_arch.infraestructure.persistence.repository.users.UsersAdapterRepository;
+import com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.users.UsersAdapterRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

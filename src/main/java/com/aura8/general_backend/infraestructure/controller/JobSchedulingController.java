@@ -36,61 +36,61 @@ public class JobSchedulingController {
         this.schedulingService = schedulingService;
     }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @PostMapping
-    @Operation(summary = "Criar agendamento", description = "Cria um novo agendamento com base nos dados fornecidos")
-    @ApiResponse(responseCode = "201", description = "Agendamento criado com sucesso")
-    @ApiResponse(responseCode = "400", description = "Erro na validação dos dados da requisição")
-    public ResponseEntity<Scheduling> create(@Valid @RequestBody JobSchedulingRequestDto jobSchedulingRequestDto){
-        return ResponseEntity.status(201).body(
-                jobSchedulingService.create(
-                        jobSchedulingRequestDto.getUserId(),
-                        jobSchedulingRequestDto.getJobsIds(),
-                        jobSchedulingRequestDto.getStartDatetime(),
-                        jobSchedulingRequestDto.getRoleId()
-                ));
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @PostMapping
+//    @Operation(summary = "Criar agendamento", description = "Cria um novo agendamento com base nos dados fornecidos")
+//    @ApiResponse(responseCode = "201", description = "Agendamento criado com sucesso")
+//    @ApiResponse(responseCode = "400", description = "Erro na validação dos dados da requisição")
+//    public ResponseEntity<Scheduling> create(@Valid @RequestBody JobSchedulingRequestDto jobSchedulingRequestDto){
+//        return ResponseEntity.status(201).body(
+//                jobSchedulingService.create(
+//                        jobSchedulingRequestDto.getUserId(),
+//                        jobSchedulingRequestDto.getJobsIds(),
+//                        jobSchedulingRequestDto.getStartDatetime(),
+//                        jobSchedulingRequestDto.getRoleId()
+//                ));
+//    }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping
-    @Operation(summary = "Listar agendamentos", description = "Retorna uma lista paginada de todos os agendamentos")
-    @ApiResponse(responseCode = "200", description = "Lista de agendamentos retornada com sucesso")
-    public ResponseEntity<Page<Scheduling>> getAll(@ParameterObject Pageable pageable){
-        return ResponseEntity.ok(schedulingService.findAll(pageable));
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @GetMapping
+//    @Operation(summary = "Listar agendamentos", description = "Retorna uma lista paginada de todos os agendamentos")
+//    @ApiResponse(responseCode = "200", description = "Lista de agendamentos retornada com sucesso")
+//    public ResponseEntity<Page<Scheduling>> getAll(@ParameterObject Pageable pageable){
+//        return ResponseEntity.ok(schedulingService.findAll(pageable));
+//    }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping("/available-times")
-    public ResponseEntity<List<AvailableDayDto>> getAvaliablesTimes(
-            @Parameter(description = "Duração em minutos", example = "30")
-            @RequestParam Integer durationInMinutes,
-            @Parameter(description = "Primeiro dia da semana (formato yyyy-MM-dd)", example = "2025-01-01")
-            @RequestParam LocalDate firstDayOfWeek
-            ) {
-        return ResponseEntity.ok(schedulingService.getAvailableTimes(durationInMinutes, firstDayOfWeek));
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @GetMapping("/available-times")
+//    public ResponseEntity<List<AvailableDayDto>> getAvaliablesTimes(
+//            @Parameter(description = "Duração em minutos", example = "30")
+//            @RequestParam Integer durationInMinutes,
+//            @Parameter(description = "Primeiro dia da semana (formato yyyy-MM-dd)", example = "2025-01-01")
+//            @RequestParam LocalDate firstDayOfWeek
+//            ) {
+//        return ResponseEntity.ok(schedulingService.getAvailableTimes(durationInMinutes, firstDayOfWeek));
+//    }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping("/card")
-    public ResponseEntity<List<SchedulingCardResponseDto>> getCardInfos() {
-        List<SchedulingCardResponseDto> cards = schedulingService.getCardInfos();
-        cards.forEach(card -> {
-            card.setJobsNames(
-                    jobSchedulingService.getJobsInScheduling(card.getIdScheduling())
-                            .stream()
-                            .map(job -> job.getName())
-                            .toList()
-            );
-            });
-        if( cards.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(cards);
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @GetMapping("/card")
+//    public ResponseEntity<List<SchedulingCardResponseDto>> getCardInfos() {
+//        List<SchedulingCardResponseDto> cards = schedulingService.getCardInfos();
+//        cards.forEach(card -> {
+//            card.setJobsNames(
+//                    jobSchedulingService.getJobsInScheduling(card.getIdScheduling())
+//                            .stream()
+//                            .map(job -> job.getName())
+//                            .toList()
+//            );
+//            });
+//        if( cards.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(cards);
+//    }
 
     @CrossOrigin(origins = "*")
     @SecurityRequirement(name = "Bearer")
@@ -103,20 +103,20 @@ public class JobSchedulingController {
         return ResponseEntity.ok(updatedScheduling);
     }
 
-    @CrossOrigin(origins = "*")
-    @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{idScheduling}")
-    public ResponseEntity<Void> deleteScheduling(
-            @Parameter(description = "ID do agendamento", example = "1")
-            @PathVariable Integer idScheduling,
-            @Parameter(description = "Role do usuário que está deletand o agendamento", example = "1")
-            @RequestParam Integer roleId,
-            @Parameter(description = "Motivo do cancelamento", example = "Fiquei doente")
-            @RequestParam String message
-    ) {
-        schedulingService.delete(idScheduling, message, roleId);
-        return ResponseEntity.noContent().build();
-    }
+//    @CrossOrigin(origins = "*")
+//    @SecurityRequirement(name = "Bearer")
+//    @DeleteMapping("/{idScheduling}")
+//    public ResponseEntity<Void> deleteScheduling(
+//            @Parameter(description = "ID do agendamento", example = "1")
+//            @PathVariable Integer idScheduling,
+//            @Parameter(description = "Role do usuário que está deletand o agendamento", example = "1")
+//            @RequestParam Integer roleId,
+//            @Parameter(description = "Motivo do cancelamento", example = "Fiquei doente")
+//            @RequestParam String message
+//    ) {
+//        schedulingService.delete(idScheduling, message, roleId);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @CrossOrigin(origins = "*")
     @SecurityRequirement(name = "Bearer")
@@ -130,8 +130,8 @@ public class JobSchedulingController {
         return ResponseEntity.ok(jobsInScheduling);
     }
 
-    @GetMapping("/{idScheduling}")
-    public ResponseEntity<Scheduling> getById(@PathVariable Integer idScheduling){
-        return ResponseEntity.ok(schedulingService.findByIdAndDeletedFalse(idScheduling));
-    }
+//    @GetMapping("/{idScheduling}")
+//    public ResponseEntity<Scheduling> getById(@PathVariable Integer idScheduling){
+//        return ResponseEntity.ok(schedulingService.findByIdAndDeletedFalse(idScheduling));
+//    }
 }

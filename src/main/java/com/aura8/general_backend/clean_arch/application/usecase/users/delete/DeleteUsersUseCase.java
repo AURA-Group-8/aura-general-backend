@@ -11,15 +11,13 @@ import java.util.Optional;
 @Service
 public class DeleteUsersUseCase {
     private final UsersGateway repository;
-    private final FindByIdUsersUseCase findByIdUsersUseCase;
 
-    public DeleteUsersUseCase(UsersGateway repository, FindByIdUsersUseCase findByIdUsersUseCase) {
+    public DeleteUsersUseCase(UsersGateway repository) {
         this.repository = repository;
-        this.findByIdUsersUseCase = findByIdUsersUseCase;
     }
 
     public void delete(Integer userId) {
-        Optional<Users> optionalUsers = findByIdUsersUseCase.findById(userId);
+        Optional<Users> optionalUsers = repository.findById(userId);
         if (optionalUsers.isEmpty()) {
             throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
         }

@@ -28,6 +28,28 @@ VALUES ('Design com Henna', 'Design de sobrancelhas com aplicação de henna.', 
         'Técnica semi-definitiva com sombreamento semelhante à henna. Cobre falhas e harmoniza as sobrancelhas com duração de 8 meses a 1 ano e meio.',
         180, 550.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO job_entity (name, description, expected_duration_minutes, price, deleted, created_at, modified_at)
+VALUES ('Design com Henna', 'Design de sobrancelhas com aplicação de henna.', 60, 55.00, false, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('Design Personalizado', 'Design de sobrancelhas feito de forma personalizada conforme o formato do rosto.', 30,
+        40.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Design com Tintura', 'Design de sobrancelhas com aplicação de tintura para definição e realce da cor.', 60,
+        60.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Brow Lamination', 'Alinhamento e fixação dos fios das sobrancelhas para um efeito de volume e definição.', 120,
+        160.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Lash Lifting', 'Curvatura dos cílios naturais, promovendo efeito de alongamento e definição.', 180, 150.00,
+        false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Epilação Buço', 'Remoção dos pelos da região do buço com técnica de epilação.', 30, 15.00, false,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Hydragloss', 'Revitalização profunda dos lábios com hidratação intensiva.', 30, 120.00, false,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Nanopigmentação',
+        'Técnica semi-definitiva com duração de 6 meses a 1 ano. Pelos artificiais são desenhados para cobrir falhas e harmonizar as sobrancelhas naturalmente.',
+        180, 600.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('Shadow',
+        'Técnica semi-definitiva com sombreamento semelhante à henna. Cobre falhas e harmoniza as sobrancelhas com duração de 8 meses a 1 ano e meio.',
+        180, 550.00, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 INSERT INTO users (role_id, created_at, date_of_birth, modified_at, email, password, phone, username, deleted)
 VALUES (1, '2025-04-29 17:56:15.430192', '2025-04-01 00:00:00', '2025-04-29 17:56:15.430192', 'aura@gmail.com',
         '$2a$10$8vpObEvYrKb1/wWqDk1Rmu8At3QsvfOOejOP8hYPPYWMPbr7uwJNa', '11977972747', 'AURA', FALSE),
