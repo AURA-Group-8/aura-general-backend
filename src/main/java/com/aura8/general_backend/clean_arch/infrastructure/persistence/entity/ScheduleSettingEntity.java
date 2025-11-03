@@ -1,11 +1,9 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -14,7 +12,7 @@ public class ScheduleSettingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private List<String> daysOfWeek;
+    private String daysOfWeek;
     private LocalTime workStart;
     private LocalTime workEnd;
     private LocalTime breakStart;
@@ -32,11 +30,11 @@ public class ScheduleSettingEntity {
     }
 
     public List<String> getDaysOfWeek() {
-        return daysOfWeek;
+        return Arrays.stream(daysOfWeek.split(",")).toList();
     }
 
     public void setDaysOfWeek(List<String> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
+        this.daysOfWeek = daysOfWeek.stream().reduce((a, b) -> a + "," + b).orElse("");
     }
 
     public LocalTime getWorkStart() {
