@@ -107,10 +107,3 @@ VALUES
 (3, 3, 60.00, '', false),
 (4, 8, 600.00, '', false),
 (4, 5, 150.00, '', false);
-
-INSERT INTO notification_entity (user_id, scheduling_id, message, has_button_to_rate, was_answered, was_read)
-VALUES
- (1, 1, 'Consulta marcada para amanhã às 10h', true, false, false),
- (2, 2, 'Seu agendamento foi confirmado', false, false, false),
- (3, 3, 'Deseja avaliar o atendimento?', true, true, false),
- (1, 4, 'Notificação teste já lida', false, true, true);

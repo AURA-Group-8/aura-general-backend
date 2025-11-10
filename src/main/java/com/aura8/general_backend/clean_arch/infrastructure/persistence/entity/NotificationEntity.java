@@ -1,10 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
 import com.aura8.general_backend.infraestructure.entities.AuditableEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -12,8 +9,10 @@ public class NotificationEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer userId;
-    private Integer schedulingId;
+    @ManyToOne
+    private UsersEntity users;
+    @ManyToOne
+    private ScheduleEntity schedule;
     private String message;
     private Boolean hasButtonToRate;
     private Boolean wasAnswered = false;
@@ -27,20 +26,20 @@ public class NotificationEntity extends AuditableEntity {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public UsersEntity getUsers() {
+        return users;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsers(UsersEntity users) {
+        this.users = users;
     }
 
-    public Integer getSchedulingId() {
-        return schedulingId;
+    public ScheduleEntity getSchedule() {
+        return schedule;
     }
 
-    public void setSchedulingId(Integer schedulingId) {
-        this.schedulingId = schedulingId;
+    public void setSchedule(ScheduleEntity schedule) {
+        this.schedule = schedule;
     }
 
     public String getMessage() {

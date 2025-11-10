@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NotificationAdapterRepository implements NotificationGateway {
@@ -29,13 +30,18 @@ public class NotificationAdapterRepository implements NotificationGateway {
     }
 
     @Override
-    public Notification getById(Integer id) {
-        return null;
+    public Optional<Notification> findById(Integer id) {
+        return repository.findById(id).map(NotificationMapper::toDomain);
     }
 
     @Override
     public Notification patch(Notification notification) {
-        return null;
+        NotificationEntity entity = repository.findById(notification.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Notification de id (%d) não encontrado".formatted(notification.getId())));
+        NotificationEntity entityToSave = NotificationMapper.toEntity(notification);
+        NotificationMapper.merge(entity, entityToSave);
+        NotificationEntity saved = repository.save(entity);
+        return NotificationMapper.toDomain(saved);
     }
 
     @Override

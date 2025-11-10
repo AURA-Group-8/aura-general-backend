@@ -1,8 +1,12 @@
 package com.aura8.general_backend.clean_arch.infrastructure.controller;
 
 import com.aura8.general_backend.clean_arch.application.usecase.notification.find.FindByUserIdNotificationUseCase;
+import com.aura8.general_backend.clean_arch.application.usecase.notification.patch.PatchNotificationCommand;
+import com.aura8.general_backend.clean_arch.application.usecase.notification.patch.PatchNotificationUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Notification;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.FindAllByUserIdNotificationResponse;
+import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.PatchNotificationRequest;
+import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.PatchNotificationResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.NotificationMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,9 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class NotificationController {
 
     private final FindByUserIdNotificationUseCase findByUserIdNotificationUseCase;
+    private final PatchNotificationUseCase patchNotificationUseCase;
 
-    public NotificationController(FindByUserIdNotificationUseCase findByUserIdNotificationUseCase) {
+    public NotificationController(FindByUserIdNotificationUseCase findByUserIdNotificationUseCase,
+                                  PatchNotificationUseCase patchNotificationUseCase) {
         this.findByUserIdNotificationUseCase = findByUserIdNotificationUseCase;
+        this.patchNotificationUseCase = patchNotificationUseCase;
     }
 
     @CrossOrigin(origins = "*")
@@ -36,5 +43,19 @@ public class NotificationController {
         Page<Notification> notificationPage = findByUserIdNotificationUseCase.findByUserId(userId, page, size, sortBy, direction.getDirection());
         Page<FindAllByUserIdNotificationResponse> responsePage = notificationPage.map(NotificationMapper::toResponse);
         return ResponseEntity.ok(responsePage);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PatchMapping("/{notificationId}")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Atualizar notificação", description = "Atualiza uma notificação")
+    public ResponseEntity<PatchNotificationResponse> patchNotification(
+            @PathVariable Integer notificationId,
+            @RequestBody PatchNotificationRequest request
+    ) {
+        PatchNotificationCommand command = NotificationMapper.toCommand(request);
+        Notification patch = patchNotificationUseCase.patch(notificationId, command);
+        PatchNotificationResponse response = NotificationMapper.toPatchResponse(patch);
+        return ResponseEntity.ok(response);
     }
 }
