@@ -7,7 +7,6 @@ public record CreateUsersCommand(
         String email,
         String password,
         String phone,
-        LocalDate dateOfBirth,
-        Integer roleId
+        LocalDate dateOfBirth
 ) {
 }

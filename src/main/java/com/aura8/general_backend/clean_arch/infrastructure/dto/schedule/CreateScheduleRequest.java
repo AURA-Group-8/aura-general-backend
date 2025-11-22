@@ -19,9 +19,6 @@ public record CreateScheduleRequest(
 
         @NotNull
         @Schema(description = "Horario e dia do agendamento", example = "2025-01-01T10:00:00")
-        LocalDateTime startDatetime,
-
-        @Schema(description = "Role do usuário que está criando o agendamento", example = "1")
-        Integer roleId
+        LocalDateTime startDatetime
 ) {
 }

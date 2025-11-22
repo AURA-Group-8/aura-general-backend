@@ -11,4 +11,13 @@ public class RoleMapper {
                 entity.getName()
         );
     }
+    public static RoleEntity toEntity(Role domain) {
+        if (domain == null) return null;
+        return new RoleEntity(
+                domain.getId(),
+                domain.getUsers() == null || domain.getUsers().isEmpty() ? null : domain.getUsers().stream().map(UsersMapper::toEntity).toList(),
+                domain.getName(),
+                domain.getDeleted()
+        );
+    }
 }

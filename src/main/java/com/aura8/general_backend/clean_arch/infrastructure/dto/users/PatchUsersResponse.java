@@ -1,5 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.dto.users;
 
+import com.aura8.general_backend.clean_arch.core.domain.Role;
+
 import java.time.LocalDate;
 
 public record PatchUsersResponse (
@@ -9,6 +11,6 @@ public record PatchUsersResponse (
         String phone,
         LocalDate dateOfBirth,
         String observation,
-        Integer roleId
+        Role role
 ) {
 }

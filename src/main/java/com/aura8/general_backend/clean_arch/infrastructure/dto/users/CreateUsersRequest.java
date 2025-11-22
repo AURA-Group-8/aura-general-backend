@@ -11,7 +11,6 @@ public record CreateUsersRequest (
     @Email String email,
     @NotNull String password,
     @NotNull String phone,
-    @Past LocalDate dateOfBirth,
-    @NotNull Integer roleId
+    @Past LocalDate dateOfBirth
 ) {
 }

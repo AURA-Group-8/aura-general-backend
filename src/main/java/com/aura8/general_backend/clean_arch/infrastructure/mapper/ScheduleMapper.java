@@ -55,12 +55,12 @@ public class ScheduleMapper {
         return schedule;
     }
 
-    public static CreateScheduleCommand toCreateScheduleCommand(CreateScheduleRequest request) {
+    public static CreateScheduleCommand toCreateScheduleCommand(CreateScheduleRequest request, Integer roleId) {
         return new CreateScheduleCommand(
                 request.userId(),
                 request.jobsIds(),
                 request.startDatetime(),
-                request.roleId()
+                roleId
         );
     }
 

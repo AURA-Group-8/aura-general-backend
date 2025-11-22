@@ -13,6 +13,8 @@ import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
+import com.aura8.general_backend.clean_arch.infrastructure.security.GerenciadorTokenJwt;
+import com.aura8.general_backend.clean_arch.infrastructure.security.SecurityService;
 import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,14 +38,22 @@ public class ScheduleController {
     private final FindAllScheduleUseCase findAllScheduleUseCase;
     private final GetAvailiblesDaysUseCase getAvailableTimesUseCase;
     private final PatchScheduleUseCase patchScheduleUseCase;
+    private final GerenciadorTokenJwt gerenciadorTokenJwt;
 
-    public ScheduleController(CreateScheduleUseCase createScheduleUseCase, DeleteScheduleUseCase deleteScheduleUseCase, FindByIdScheduleUseCase findByIdScheduleUseCase, FindAllScheduleUseCase findAllScheduleUseCase, GetAvailiblesDaysUseCase getAvailableTimesUseCase, PatchScheduleUseCase patchScheduleUseCase) {
+    public ScheduleController(CreateScheduleUseCase createScheduleUseCase,
+                              DeleteScheduleUseCase deleteScheduleUseCase,
+                              FindByIdScheduleUseCase findByIdScheduleUseCase,
+                              FindAllScheduleUseCase findAllScheduleUseCase,
+                              GetAvailiblesDaysUseCase getAvailableTimesUseCase,
+                              PatchScheduleUseCase patchScheduleUseCase,
+                              GerenciadorTokenJwt gerenciadorTokenJwt) {
         this.createScheduleUseCase = createScheduleUseCase;
         this.deleteScheduleUseCase = deleteScheduleUseCase;
         this.findByIdScheduleUseCase = findByIdScheduleUseCase;
         this.findAllScheduleUseCase = findAllScheduleUseCase;
         this.getAvailableTimesUseCase = getAvailableTimesUseCase;
         this.patchScheduleUseCase = patchScheduleUseCase;
+        this.gerenciadorTokenJwt = gerenciadorTokenJwt;
     }
 
     @CrossOrigin(origins = "*")
@@ -52,8 +62,16 @@ public class ScheduleController {
     @Operation(summary = "Criar agendamento", description = "Cria um novo agendamento com base nos dados fornecidos")
     @ApiResponse(responseCode = "201", description = "Agendamento criado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro na validação dos dados da requisição")
-    public ResponseEntity<ScheduleResponse> create(@Valid @RequestBody CreateScheduleRequest SchedulingRequestDto) {
-        CreateScheduleCommand command = ScheduleMapper.toCreateScheduleCommand(SchedulingRequestDto);
+    public ResponseEntity<ScheduleResponse> create(@Valid @RequestBody CreateScheduleRequest SchedulingRequestDto, @RequestHeader("Authorization") String token) {
+        if(token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Boolean isAdmin = gerenciadorTokenJwt.isUserFromTokenAAdmin(token);
+        int roleId = 2;
+        if(isAdmin) {
+            roleId = 1;
+        }
+        CreateScheduleCommand command = ScheduleMapper.toCreateScheduleCommand(SchedulingRequestDto, roleId);
         Schedule schedule = createScheduleUseCase.create(command);
         ScheduleResponse response = ScheduleMapper.toResponse(schedule);
         return ResponseEntity.status(201).body(response);
@@ -68,11 +86,18 @@ public class ScheduleController {
     public ResponseEntity<Void> delete(
             @Parameter(description = "ID do agendamento", example = "1")
             @PathVariable Integer id,
-            @Parameter(description = "Role do usuário que está deletand o agendamento", example = "1")
-            @RequestParam Integer roleId,
             @Parameter(description = "Motivo do cancelamento", example = "Fiquei doente")
-            @RequestParam String message
+            @RequestParam String message,
+            @RequestHeader("Authorization") String token
     ) {
+        if(token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Boolean isAdmin = gerenciadorTokenJwt.isUserFromTokenAAdmin(token);
+        Integer roleId = 2;
+        if(isAdmin) {
+            roleId = 1;
+        }
         deleteScheduleUseCase.cancel(id, roleId, message);
         return ResponseEntity.noContent().build();
     }

@@ -1,10 +1,6 @@
 package com.aura8.general_backend.clean_arch.infrastructure.config;
 
-import com.aura8.general_backend.clean_arch.infrastructure.security.AuthenticEntryPoint;
-import com.aura8.general_backend.clean_arch.infrastructure.security.AuthenticFilter;
-import com.aura8.general_backend.clean_arch.infrastructure.security.AuthenticProvider;
-import com.aura8.general_backend.clean_arch.infrastructure.security.GerenciadorTokenJwt;
-import com.aura8.general_backend.clean_arch.infrastructure.security.AuthenticationService;
+import com.aura8.general_backend.clean_arch.infrastructure.security.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -78,9 +74,9 @@ public class SecurityConfig {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .cors(Customizer.withDefaults())
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
-                .authorizeHttpRequests(authorize -> 
+                .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers(URLS_PERMITIDAS).permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint(autenticacaoJwtEntryPoint))

@@ -15,7 +15,9 @@ public class UsersEntity extends AuditableEntity {
     private String phone;
     private LocalDate dateOfBirth;
     private String observation;
-    private Integer roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private RoleEntity role;
     private Boolean deleted = false;
 
     public UsersEntity() {
@@ -28,17 +30,17 @@ public class UsersEntity extends AuditableEntity {
         this.phone = phone;
     }
 
-    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, Integer roleId) {
+    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, RoleEntity role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
-        this.roleId = roleId;
+        this.role = role;
     }
 
-    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, String observation, Integer roleId, Boolean deleted) {
+    public UsersEntity(Integer id, String username, String email, String password, String phone, LocalDate dateOfBirth, String observation, RoleEntity role, Boolean deleted) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -46,7 +48,7 @@ public class UsersEntity extends AuditableEntity {
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
         this.observation = observation;
-        this.roleId = roleId;
+        this.role = role;
         this.deleted = deleted;
     }
 
@@ -106,12 +108,12 @@ public class UsersEntity extends AuditableEntity {
         this.observation = observation;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public RoleEntity getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 
     public Boolean getDeleted() {

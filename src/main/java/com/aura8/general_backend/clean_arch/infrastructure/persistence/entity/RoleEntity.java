@@ -14,7 +14,7 @@ public class RoleEntity {
 
     @OneToMany
     @JsonManagedReference
-    List<Users> users;
+    List<UsersEntity> users;
 
     private String name;
     private Boolean deleted = false;
@@ -22,12 +22,14 @@ public class RoleEntity {
     public RoleEntity() {
     }
 
-    public RoleEntity(Integer id, List<Users> users, String name, Boolean deleted) {
+
+    public RoleEntity(Integer id, List<UsersEntity> users, String name, Boolean deleted) {
         this.id = id;
         this.users = users;
         this.name = name;
         this.deleted = deleted;
     }
+
 
     public Integer getId() {
         return id;
@@ -37,11 +39,11 @@ public class RoleEntity {
         this.id = id;
     }
 
-    public List<Users> getUsers() {
+    public List<UsersEntity> getUsers() {
         return users;
     }
 
-    public void setUsers(List<Users> users) {
+    public void setUsers(List<UsersEntity> users) {
         this.users = users;
     }
 

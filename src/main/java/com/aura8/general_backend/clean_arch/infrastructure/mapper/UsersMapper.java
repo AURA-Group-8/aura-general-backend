@@ -3,6 +3,7 @@ package com.aura8.general_backend.clean_arch.infrastructure.mapper;
 import com.aura8.general_backend.clean_arch.application.usecase.users.create.CreateUsersCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.users.login.LoginUsersCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersCommand;
+import com.aura8.general_backend.clean_arch.core.domain.Role;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.domain.attribute.Email;
 import com.aura8.general_backend.clean_arch.core.domain.attribute.Password;
@@ -30,12 +31,12 @@ public class UsersMapper {
                 phone,
                 entity.getDateOfBirth(),
                 entity.getObservation(),
-                entity.getRoleId(),
+                RoleMapper.toDomain(entity.getRole()),
                 entity.getDeleted()
         );
     }
 
-    public static Users toDomain(CreateUsersCommand command) {
+    public static Users toDomain(CreateUsersCommand command, String encodedPassword, Role role) {
         if (command == null) {
             return null;
         }
@@ -43,7 +44,7 @@ public class UsersMapper {
         Username username = new Username(command.username());
         Email email = new Email(command.email());
         Phone phone = new Phone(command.phone());
-        Password password = new Password(command.password());
+        Password password = new Password(encodedPassword);
 
         return new Users(
                 username,
@@ -51,7 +52,7 @@ public class UsersMapper {
                 password,
                 phone,
                 command.dateOfBirth(),
-                command.roleId()
+                role
         );
     }
 
@@ -66,7 +67,7 @@ public class UsersMapper {
                 domain.getPassword().get(),
                 domain.getPhone().get(),
                 domain.getDateOfBirth(),
-                domain.getRoleId()
+                RoleMapper.toEntity(domain.getRole())
         );
     }
 
@@ -79,8 +80,7 @@ public class UsersMapper {
                 entity.email(),
                 entity.password(),
                 entity.phone(),
-                entity.dateOfBirth(),
-                entity.roleId()
+                entity.dateOfBirth()
         );
     }
 
@@ -95,7 +95,7 @@ public class UsersMapper {
                 users.getEmail().get(),
                 users.getPhone().get(),
                 users.getDateOfBirth(),
-                users.getRoleId(),
+                users.getRole(),
                 users.getObservation()
         );
     }
@@ -111,7 +111,7 @@ public class UsersMapper {
                 users.getEmail().get(),
                 users.getPhone().get(),
                 users.getDateOfBirth(),
-                users.getRoleId(),
+                users.getRole(),
                 users.getObservation()
         );
     }
@@ -128,7 +128,7 @@ public class UsersMapper {
                 users.getPhone().get(),
                 users.getDateOfBirth(),
                 users.getObservation(),
-                users.getRoleId()
+                users.getRole()
         );
     }
 
@@ -144,7 +144,8 @@ public class UsersMapper {
                 request.phone(),
                 request.dateOfBirth(),
                 request.observation(),
-                request.roleId()
+                request.roleId(),
+                null
         );
     }
 
@@ -168,7 +169,7 @@ public class UsersMapper {
             users.setObservation(command.observation());
         }
         if (command.roleId() != null) {
-            users.setRoleId(command.roleId());
+            users.setRole(command.role());
         }
     }
 
@@ -188,8 +189,8 @@ public class UsersMapper {
         if (domain.getDateOfBirth() != null) {
             entity.setDateOfBirth(domain.getDateOfBirth());
         }
-        if (domain.getRoleId() != null) {
-            entity.setRoleId(domain.getRoleId());
+        if (domain.getRole() != null) {
+            entity.setRole(RoleMapper.toEntity(domain.getRole()));
         }
         if (domain.getObservation() != null) {
             entity.setObservation(domain.getObservation());

@@ -30,15 +30,23 @@ public class GerenciadorTokenJwt {
         return getClaimForToken(token, Claims::getExpiration);
     }
 
+    public Boolean isUserFromTokenAAdmin(String token) {
+        return getClaimForToken(token, claims -> claims.get("isAdmin", Boolean.class));
+    }
+
     public String generateToken(final Authentication authentication) {
 
         // Para verificacoes de permissões;
         final String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        return Jwts.builder().setSubject(authentication.getName())
-                .signWith(parseSecret()).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .signWith(parseSecret())
+                .claim("isAdmin", authorities.contains("ADMIN"))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidity * 1_000)).compact();
+
     }
 
     public <T> T getClaimForToken(String token, Function<Claims, T> claimsResolver) {

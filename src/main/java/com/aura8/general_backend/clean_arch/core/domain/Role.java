@@ -6,6 +6,7 @@ public class Role {
     private Integer id;
     private String name;
     private List<Users> users;
+    private Boolean deleted = false;
 
     public Role(String name) {
         this.name = name;
@@ -20,6 +21,14 @@ public class Role {
         this.id = id;
         this.name = name;
         this.users = users;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getName() {

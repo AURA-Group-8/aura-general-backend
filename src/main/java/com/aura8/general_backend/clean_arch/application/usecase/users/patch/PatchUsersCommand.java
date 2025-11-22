@@ -1,5 +1,7 @@
 package com.aura8.general_backend.clean_arch.application.usecase.users.patch;
 
+import com.aura8.general_backend.clean_arch.core.domain.Role;
+
 import java.time.LocalDate;
 
 public record PatchUsersCommand(
@@ -10,6 +12,7 @@ public record PatchUsersCommand(
         String phone,
         LocalDate dateOfBirth,
         String observation,
-        Integer roleId
+        Integer roleId,
+        Role role
 ) {
 }
