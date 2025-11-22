@@ -1,12 +1,9 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
-import com.aura8.general_backend.infraestructure.entities.AuditableEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "job")
 public class JobEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -35,19 +35,17 @@ public class PatchUsersUseCase {
         }
 
         Users user = optionalUsers.get();
-        if (command.password() != null && !command.password().isBlank()) {
-            command = new PatchUsersCommand(
-                    userId,
-                    command.username(),
-                    command.email(),
-                    passwordEncoder.encode(command.password()),
-                    command.phone(),
-                    command.dateOfBirth(),
-                    command.observation(),
-                    command.roleId(),
-                    optionalRole.get()
-            );
-        }
+        command = new PatchUsersCommand(
+                userId,
+                command.username(),
+                command.email(),
+                command.password() != null && !command.password().isBlank() ? passwordEncoder.encode(command.password()) : null,
+                command.phone(),
+                command.dateOfBirth(),
+                command.observation(),
+                command.roleId(),
+                optionalRole.get()
+        );
         UsersMapper.mergeToDomain(user, command);
         Users patch = usersGateway.patch(user, userId);
         return patch;

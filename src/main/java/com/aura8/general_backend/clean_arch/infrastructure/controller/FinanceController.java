@@ -5,8 +5,6 @@ import com.aura8.general_backend.clean_arch.application.usecase.finance.GetDashb
 import com.aura8.general_backend.clean_arch.application.usecase.finance.GetMonthDataInIntervalUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.MonthData;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
-import com.aura8.general_backend.dtos.finance.DashboardDto;
-import com.aura8.general_backend.dtos.finance.MonthDataHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,8 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController("FinanceControllerCleanArch")
-@RequestMapping("/v2/insights/finance")
+@RestController
+@RequestMapping("/api/insights/finance")
 public class FinanceController {
     private final GetDashboardInfosUseCase getDashboardInfosUseCase;
     private final GetMonthDataInIntervalUseCase getMonthDataInIntervalUseCase;

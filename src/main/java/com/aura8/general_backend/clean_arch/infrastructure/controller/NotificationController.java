@@ -15,8 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("NotificationControllerV2")
-@RequestMapping("/v2/notificacoes")
+@RestController
+@RequestMapping("/api/notificacoes")
 public class NotificationController {
 
     private final FindByUserIdNotificationUseCase findByUserIdNotificationUseCase;

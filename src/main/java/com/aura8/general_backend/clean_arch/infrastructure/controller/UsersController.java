@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("UsersControllerV2")
-@RequestMapping("/v2/usuarios")
+@RestController
+@RequestMapping("/api/usuarios")
 public class UsersController {
 
     private final CreateUsersUseCase createUsersUseCase;

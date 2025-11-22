@@ -4,6 +4,7 @@ import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.id
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "job_schedule")
 public class JobScheduleEntity {
     @EmbeddedId
     private JobScheduleId id;

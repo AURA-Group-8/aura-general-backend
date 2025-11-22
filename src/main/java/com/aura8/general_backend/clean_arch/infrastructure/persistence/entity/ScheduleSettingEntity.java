@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
+@Table(name = "schedule_setting")
 public class ScheduleSettingEntity {
 
     @Id

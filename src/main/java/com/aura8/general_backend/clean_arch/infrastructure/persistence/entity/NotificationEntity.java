@@ -1,10 +1,10 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
-import com.aura8.general_backend.infraestructure.entities.AuditableEntity;
 import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "notification")
 public class NotificationEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

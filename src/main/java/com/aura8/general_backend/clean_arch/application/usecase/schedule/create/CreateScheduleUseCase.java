@@ -1,9 +1,9 @@
 package com.aura8.general_backend.clean_arch.application.usecase.schedule.create;
 
+import com.aura8.general_backend.clean_arch.application.exception.ElementConflictException;
 import com.aura8.general_backend.clean_arch.core.domain.*;
 import com.aura8.general_backend.clean_arch.core.domain.enums.NotificationType;
 import com.aura8.general_backend.clean_arch.core.gateway.*;
-import com.aura8.general_backend.exception.ConflictException;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -21,14 +21,16 @@ public class CreateScheduleUseCase {
     private final ScheduleSettingGateway scheduleSettingGateway;
     private final JobScheduleGateway jobScheduleGateway;
     private final NotificationGateway notificationGateway;
+    private final EventPublisherGateway eventPublisherGateway;
 
-    public CreateScheduleUseCase(ScheduleGateway scheduleGateway, UsersGateway usersGateway, JobGateway jobGateway, ScheduleSettingGateway scheduleSettingGateway, JobScheduleGateway jobScheduleGateway, NotificationGateway notificationGateway) {
+    public CreateScheduleUseCase(ScheduleGateway scheduleGateway, UsersGateway usersGateway, JobGateway jobGateway, ScheduleSettingGateway scheduleSettingGateway, JobScheduleGateway jobScheduleGateway, NotificationGateway notificationGateway, EventPublisherGateway eventPublisherGateway) {
         this.scheduleGateway = scheduleGateway;
         this.usersGateway = usersGateway;
         this.jobGateway = jobGateway;
         this.scheduleSettingGateway = scheduleSettingGateway;
         this.jobScheduleGateway = jobScheduleGateway;
         this.notificationGateway = notificationGateway;
+        this.eventPublisherGateway = eventPublisherGateway;
     }
 
     public Schedule create(CreateScheduleCommand command) {
@@ -59,7 +61,7 @@ public class CreateScheduleUseCase {
         List<Schedule> schedulesInRange = scheduleGateway.findByStartDateBetween(startRange, endRange, false);
         boolean hasConflict = schedulesInRange.stream().anyMatch(schedule::isScheduleColliding);
         if (hasConflict) {
-            throw new ConflictException("Conflito de agendamento: já existe um agendamento nesse período. Das %s ás %s de %s".formatted(
+            throw new ElementConflictException("Conflito de agendamento: já existe um agendamento nesse período. Das %s ás %s de %s".formatted(
                     schedule.getStartDatetime().toLocalTime().toString(),
                     schedule.getEndDatetime().toLocalTime().toString(),
                     schedule.getStartDatetime().toLocalDate().toString()
@@ -72,7 +74,7 @@ public class CreateScheduleUseCase {
         }
         Boolean timesInWorkTime = scheduleSetting.isScheduleInAvaliableDateTime(schedule);
         if(!timesInWorkTime) {
-            throw new ConflictException("Horário de agendamento fora do horário de trabalho.");
+            throw new ElementConflictException("Horário de agendamento fora do horário de trabalho.");
         }
 
         Schedule saved = scheduleGateway.create(schedule);
@@ -96,6 +98,7 @@ public class CreateScheduleUseCase {
                 notificationType
         );
         notificationGateway.create(notification);
+        eventPublisherGateway.publishEventCreateSchedule(saved, receiver);
         return saved;
     }
 }

@@ -14,9 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("ScheduleSettingsControllerV2")
+@RestController
 @Tag(name = "Confirações de agendamento", description = "Endpoint para gerenciar as configurações de agendamento")
-@RequestMapping("v2/configuracao-agendamento")
+@RequestMapping("api/configuracao-agendamento")
 public class ScheduleSettingController {
 
     private final FindPrincipalScheduleSettingUseCase findPrincipalScheduleSettingUseCase;

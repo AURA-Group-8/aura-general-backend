@@ -1,9 +1,6 @@
 package com.aura8.general_backend.clean_arch.infrastructure.exception;
 
-import com.aura8.general_backend.clean_arch.application.exception.ElementAlreadyExistsException;
-import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
-import com.aura8.general_backend.clean_arch.application.exception.ForbiddenException;
-import com.aura8.general_backend.clean_arch.application.exception.UnauthorizedException;
+import com.aura8.general_backend.clean_arch.application.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,4 +30,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleElementAlreadyExistsException(ElementAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ElementConflictException.class)
+    public ResponseEntity<String> handleElementConflictException(ElementConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+
 }

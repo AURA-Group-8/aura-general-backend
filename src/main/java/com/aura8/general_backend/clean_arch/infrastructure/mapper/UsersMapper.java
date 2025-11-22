@@ -168,7 +168,7 @@ public class UsersMapper {
         if (command.observation() != null) {
             users.setObservation(command.observation());
         }
-        if (command.roleId() != null) {
+        if (command.role() != null) {
             users.setRole(command.role());
         }
     }

@@ -14,8 +14,6 @@ import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
 import com.aura8.general_backend.clean_arch.infrastructure.security.GerenciadorTokenJwt;
-import com.aura8.general_backend.clean_arch.infrastructure.security.SecurityService;
-import com.aura8.general_backend.dtos.jobscheduling.SchedulingPatchRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController("ScheduleControllerV2")
-@RequestMapping("/v2/agendamentos")
+@RestController
+@RequestMapping("/api/agendamentos")
 public class ScheduleController {
 
     private final CreateScheduleUseCase createScheduleUseCase;

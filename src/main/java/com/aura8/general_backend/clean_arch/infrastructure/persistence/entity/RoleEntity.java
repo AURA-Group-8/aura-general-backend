@@ -1,18 +1,17 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
-import com.aura8.general_backend.infraestructure.entities.Users;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@Table(name = "role")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @OneToMany
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     List<UsersEntity> users;
 

@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("JobControllerV2")
-@RequestMapping("v2/servicos")
+@RestController
+@RequestMapping("api/servicos")
 public class JobController {
     private final CreateJobUseCase createJobUseCase;
     private final FindAllJobUseCase findAllJobUseCase;
