@@ -1,9 +1,9 @@
 package com.aura8.general_backend.clean_arch.core.domain;
 
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Email;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Password;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Phone;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Username;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Email;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Password;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Phone;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Username;
 
 import java.time.LocalDate;
 

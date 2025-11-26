@@ -5,10 +5,10 @@ import com.aura8.general_backend.clean_arch.application.usecase.users.login.Logi
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersCommand;
 import com.aura8.general_backend.clean_arch.core.domain.Role;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Email;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Password;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Phone;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Username;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Email;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Password;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Phone;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Username;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.users.*;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.UsersEntity;
 

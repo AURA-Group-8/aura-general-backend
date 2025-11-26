@@ -1,4 +1,4 @@
-package com.aura8.general_backend.clean_arch.core.domain.attribute;
+package com.aura8.general_backend.clean_arch.core.domain.valueobject;
 
 public class Phone {
     private String value;

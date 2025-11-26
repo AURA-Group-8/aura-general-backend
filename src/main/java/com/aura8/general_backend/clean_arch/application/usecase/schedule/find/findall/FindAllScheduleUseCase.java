@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findall;
 
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.ScheduleGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
@@ -26,6 +27,11 @@ public class FindAllScheduleUseCase {
                 entityPage.size()
         );
         return schedulePage;
+    }
+
+    public PageElement<Schedule> findAllPageable(int page, int size, String sortBy, String direction) {
+        PageElement<Schedule> entityPage = repository.findAllPageable(page, size, sortBy, direction);
+        return entityPage;
     }
 }
 

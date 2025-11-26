@@ -2,7 +2,7 @@ package com.aura8.general_backend.clean_arch.application.usecase.message.resetpa
 
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
-import com.aura8.general_backend.clean_arch.core.domain.attribute.Email;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.Email;
 import com.aura8.general_backend.clean_arch.core.gateway.MessageGateway;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
 import org.springframework.stereotype.Service;

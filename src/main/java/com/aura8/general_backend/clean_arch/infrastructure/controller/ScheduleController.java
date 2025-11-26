@@ -10,6 +10,7 @@ import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.P
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
@@ -116,29 +117,45 @@ public class ScheduleController {
     @SecurityRequirement(name = "Bearer")
     @GetMapping
     @Operation(summary = "Listar agendamentos paginados", description = "Retorna todos os agendamentos não deletados, paginados e ordenados")
-    public ResponseEntity<Page<ScheduleResponse>> findAll(
+    public ResponseEntity<PageElement<ScheduleResponse>> findAll(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction
     ) {
-        Page<Schedule> schedulePage = findAllScheduleUseCase.findAll(page, size, sortBy, direction.getDirection());
-        Page<ScheduleResponse> responsePage = schedulePage.map(ScheduleMapper::toResponse);
+        PageElement<Schedule> schedulePage = findAllScheduleUseCase.findAllPageable(page, size, sortBy, direction.getDirection());
+        PageElement<ScheduleResponse> responsePage = new PageElement<>(
+                schedulePage.getContent().stream()
+                        .map(schedule -> ScheduleMapper.toResponse((Schedule) schedule))
+                        .toList(),
+                schedulePage.getPageNumber(),
+                schedulePage.getPageSize(),
+                schedulePage.getTotalElements(),
+                schedulePage.getTotalPages()
+        );
         return ResponseEntity.ok(responsePage);
     }
 
     @CrossOrigin(origins = "*")
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/card")
-    public ResponseEntity<Page<ScheduleCardResponse>> getCardInfos(
+    public ResponseEntity<PageElement<ScheduleCardResponse>> getCardInfos(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction
     ) {
-        Page<Schedule> schedulePage = findAllScheduleUseCase.findAll(page, size, sortBy, direction.getDirection());
-        Page<ScheduleCardResponse> cards = schedulePage.map(ScheduleMapper::toScheduleCardResponse);
-        return ResponseEntity.ok(cards);
+        PageElement<Schedule> schedulePage = findAllScheduleUseCase.findAllPageable(page, size, sortBy, direction.getDirection());
+        PageElement<ScheduleCardResponse> responsePage = new PageElement<>(
+                schedulePage.getContent().stream()
+                        .map(schedule -> ScheduleMapper.toScheduleCardResponse((Schedule) schedule))
+                        .toList(),
+                schedulePage.getPageNumber(),
+                schedulePage.getPageSize(),
+                schedulePage.getTotalElements(),
+                schedulePage.getTotalPages()
+        );
+        return ResponseEntity.ok(responsePage);
     }
 
     @CrossOrigin(origins = "*")

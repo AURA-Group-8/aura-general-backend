@@ -2,6 +2,7 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.reposito
 
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 import com.aura8.general_backend.clean_arch.core.domain.enums.ScheduleStatus;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.ScheduleGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
@@ -67,6 +68,24 @@ public class ScheduleAdapterRepository implements ScheduleGateway {
                 .map(ScheduleMapper::toDomain)
                 .toList();
         return schedules;
+    }
+
+    @Override
+    public PageElement<Schedule> findAllPageable(Integer page, Integer size, String sortBy, String direction) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
+        Page<ScheduleEntity> entityPage = repository.findAllByCanceled(pageable, false);
+        List<Schedule> schedules = entityPage.getContent().stream()
+                .map(ScheduleMapper::toDomain)
+                .toList();
+        PageElement<Schedule> schedulePage =
+                new PageElement<>(
+                        schedules,
+                        entityPage.getNumber(),
+                        entityPage.getSize(),
+                        entityPage.getTotalElements(),
+                        entityPage.getTotalPages()
+                );
+        return schedulePage;
     }
 
     @Override
