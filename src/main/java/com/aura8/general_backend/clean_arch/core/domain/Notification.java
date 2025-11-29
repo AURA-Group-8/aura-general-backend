@@ -2,11 +2,14 @@ package com.aura8.general_backend.clean_arch.core.domain;
 
 import com.aura8.general_backend.clean_arch.core.domain.enums.NotificationType;
 
+import java.time.LocalDateTime;
+
 public class Notification {
     private Integer id;
     private Users users;
     private Schedule schedule;
     private String message;
+    private LocalDateTime createdAt;
     private Boolean hasButtonToRate;
     private Boolean isAnswered = false;
     private Boolean isRead = false;
@@ -25,7 +28,7 @@ public class Notification {
         this.id = id;
     }
 
-    public Notification(Integer id, Users users, Schedule schedule, String message, Boolean hasButtonToRate, Boolean isAnswered, Boolean isRead) {
+    public Notification(Integer id, Users users, Schedule schedule, String message, Boolean hasButtonToRate, Boolean isAnswered, Boolean isRead, LocalDateTime createdAt) {
         this.id = id;
         this.users = users;
         this.schedule = schedule;
@@ -33,6 +36,7 @@ public class Notification {
         this.hasButtonToRate = hasButtonToRate;
         this.isAnswered = isAnswered;
         this.isRead = isRead;
+        this.createdAt = createdAt;
     }
 
     public void completeInfosByType(NotificationType type) {
@@ -127,5 +131,9 @@ public class Notification {
 
     public void setRead(Boolean read) {
         isRead = read;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
