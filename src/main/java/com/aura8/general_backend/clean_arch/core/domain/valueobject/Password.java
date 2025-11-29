@@ -1,7 +1,7 @@
 package com.aura8.general_backend.clean_arch.core.domain.valueobject;
 
 public class Password {
-    private String value;
+    private final String value;
 
     public Password(String value) {
         if (value == null || value.length() < 8) {

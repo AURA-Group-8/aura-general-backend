@@ -1,7 +1,7 @@
 package com.aura8.general_backend.clean_arch.core.domain.valueobject;
 
 public class Username {
-    private String value;
+    private final String value;
 
     public Username(String value) {
         if (value == null || value.length() < 3) {

@@ -1,7 +1,7 @@
 package com.aura8.general_backend.clean_arch.core.domain.valueobject;
 
 public class Phone {
-    private String value;
+    private final String value;
 
     public Phone(String value) {
         if (value == null || !value.matches("^[0-9]{11}$")) {
