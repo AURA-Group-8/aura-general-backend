@@ -3,11 +3,11 @@ package com.aura8.general_backend.clean_arch.core.domain.valueobject;
 import java.util.List;
 
 public class PageElement<T> {
-    List<?> content;
-    Integer pageNumber;
-    Integer pageSize;
-    Long totalElements;
-    Integer totalPages;
+    final List<?> content;
+    final Integer pageNumber;
+    final Integer pageSize;
+    final Long totalElements;
+    final Integer totalPages;
 
     public PageElement(List<?> content, Integer pageNumber, Integer pageSize, Long totalElements, Integer totalPages) {
         this.content = content;
