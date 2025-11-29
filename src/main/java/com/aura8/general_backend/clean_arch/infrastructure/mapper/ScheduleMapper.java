@@ -3,7 +3,6 @@ package com.aura8.general_backend.clean_arch.infrastructure.mapper;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.CreateScheduleCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleCommand;
 import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
-import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.*;

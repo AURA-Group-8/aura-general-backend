@@ -3,8 +3,8 @@ package com.aura8.general_backend.clean_arch.core.domain;
 import java.time.LocalDate;
 
 public class MonthData {
-    private Integer month;
-    private LocalDate firstDayOfMonth;
+    private final Integer month;
+    private final LocalDate firstDayOfMonth;
     private Double totalBilledInMonth;
     private Integer totalSchedulesInMonth;
     private Integer totalCanceledSchedulesInMonth;

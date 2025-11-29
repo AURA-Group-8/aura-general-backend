@@ -12,7 +12,6 @@ import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.NotificationMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

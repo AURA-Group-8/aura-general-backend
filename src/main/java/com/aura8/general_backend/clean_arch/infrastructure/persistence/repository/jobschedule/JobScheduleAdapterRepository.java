@@ -3,11 +3,9 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.reposito
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
-import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.JobScheduleGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.JobScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.JobScheduleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,11 +17,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
 
     public JobScheduleAdapterRepository(JobScheduleJpaRepository repository) {
         this.repository = repository;
-    }
-
-    @Override
-    public JobSchedule create(JobSchedule jobScheduling) {
-        return null;
     }
 
     @Override
@@ -53,11 +46,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
     }
 
     @Override
-    public JobSchedule findById(Integer id) {
-        return null;
-    }
-
-    @Override
     public List<JobSchedule> findAllByScheduleId(Integer scheduleId) {
         return List.of();
     }
@@ -81,4 +69,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
         System.out.println("Top Serviços: " + topServicos);
         return topServicos;
     }
+
+
 }

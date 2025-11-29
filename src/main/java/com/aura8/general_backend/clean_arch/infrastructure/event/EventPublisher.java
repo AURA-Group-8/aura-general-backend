@@ -5,7 +5,6 @@ import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.EventPublisherGateway;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 @Configuration
 public class EventPublisher implements EventPublisherGateway {

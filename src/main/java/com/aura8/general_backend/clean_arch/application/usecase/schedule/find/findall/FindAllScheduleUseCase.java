@@ -3,9 +3,6 @@ package com.aura8.general_backend.clean_arch.application.usecase.schedule.find.f
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
 import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.ScheduleGateway;
-import com.aura8.general_backend.clean_arch.infrastructure.mapper.ScheduleMapper;
-import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
-import com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.schedule.ScheduleJpaRepository;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 

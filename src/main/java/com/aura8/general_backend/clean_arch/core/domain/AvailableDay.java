@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableDay {
-    private String weekDay;
-    private LocalDate date;
+    private final String weekDay;
+    private final LocalDate date;
     private List<LocalTime> availableTimes = new ArrayList<>();
     private Boolean isAvailable = true;
 
