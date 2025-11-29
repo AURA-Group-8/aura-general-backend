@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.notification;
 
 import com.aura8.general_backend.clean_arch.core.domain.Notification;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.NotificationGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.NotificationMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.NotificationEntity;
@@ -51,5 +52,21 @@ public class NotificationAdapterRepository implements NotificationGateway {
         Page<NotificationEntity> notificationPage = repository.findAllByUserId(pageable, userId);
         List<Notification> notificationList = notificationPage.getContent().stream().map(NotificationMapper::toDomain).toList();
         return notificationList;
+    }
+
+    @Override
+    public PageElement<Notification> getAllByUserIdPageable(Integer userId, Integer page, Integer size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<NotificationEntity> notificationPage = repository.findAllByUserId(pageable, userId);
+        List<Notification> notificationList = notificationPage.getContent().stream().map(NotificationMapper::toDomain).toList();
+        PageElement<Notification> pageElement = new PageElement<>(
+                notificationList,
+                notificationPage.getNumber(),
+                notificationPage.getSize(),
+                notificationPage.getTotalElements(),
+                notificationPage.getTotalPages()
+        );
+        return pageElement;
     }
 }

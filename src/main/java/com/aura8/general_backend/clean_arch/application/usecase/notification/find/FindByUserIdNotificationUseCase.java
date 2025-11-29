@@ -1,6 +1,8 @@
 package com.aura8.general_backend.clean_arch.application.usecase.notification.find;
 
 import com.aura8.general_backend.clean_arch.core.domain.Notification;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
+import com.aura8.general_backend.clean_arch.core.gateway.NotificationGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.notification.NotificationAdapterRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,9 +15,9 @@ import java.util.List;
 @Service
 public class FindByUserIdNotificationUseCase {
 
-    private final NotificationAdapterRepository repository;
+    private final NotificationGateway repository;
 
-    public FindByUserIdNotificationUseCase(NotificationAdapterRepository repository) {
+    public FindByUserIdNotificationUseCase(NotificationGateway repository) {
         this.repository = repository;
     }
 
@@ -27,5 +29,10 @@ public class FindByUserIdNotificationUseCase {
                 notificationList.size()
         );
         return notificationPage;
+    }
+
+    public PageElement<Notification> findByUserIdPageable(Integer userId, Integer page, Integer size, String sortBy, String direction) {
+        PageElement<Notification> notificationList = repository.getAllByUserIdPageable(userId, page, size, sortBy, direction);
+        return notificationList;
     }
 }
