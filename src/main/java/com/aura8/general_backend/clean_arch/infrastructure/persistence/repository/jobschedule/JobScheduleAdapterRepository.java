@@ -20,11 +20,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
     }
 
     @Override
-    public JobSchedule create(JobSchedule jobScheduling) {
-        return null;
-    }
-
-    @Override
     public List<JobSchedule> create(Schedule schedule, List<Job> jobs) {
         if(jobs.isEmpty()) {
             throw new IllegalArgumentException("Jobs não pode ser nulo");
@@ -51,11 +46,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
     }
 
     @Override
-    public JobSchedule findById(Integer id) {
-        return null;
-    }
-
-    @Override
     public List<JobSchedule> findAllByScheduleId(Integer scheduleId) {
         return List.of();
     }
@@ -79,4 +69,6 @@ public class JobScheduleAdapterRepository implements JobScheduleGateway {
         System.out.println("Top Serviços: " + topServicos);
         return topServicos;
     }
+
+
 }
