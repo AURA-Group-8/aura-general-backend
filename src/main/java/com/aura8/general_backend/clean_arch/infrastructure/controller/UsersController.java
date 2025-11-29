@@ -12,7 +12,9 @@ import com.aura8.general_backend.clean_arch.application.usecase.users.patch.Patc
 import com.aura8.general_backend.clean_arch.application.usecase.users.patch.PatchUsersUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.domain.UsersToken;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.users.*;
+import com.aura8.general_backend.clean_arch.infrastructure.enums.DirectionEnum;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.UsersMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -86,6 +88,32 @@ public class UsersController {
 
         List<FindUsersResponse> usersDto = users.stream().map(UsersMapper::toResponse).toList();
         return ResponseEntity.status(200).body(usersDto);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/paginacao")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Listar todos os usuários paginados", description = "Retorna uma pagina dos usuários cadastrados")
+    @ApiResponse(responseCode = "200", description = "Página de usuários retornada com sucesso")
+    public ResponseEntity<PageElement<FindUsersResponse>> getAllUsersPageable(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction
+    ) {
+
+        PageElement<Users> usersPage = findAllUsersUseCase.findAllPageable(page, size, sortBy, direction.getDirection());
+        List<FindUsersResponse> usersDto = usersPage.getContent().stream()
+                .map(users -> UsersMapper.toResponse((Users) users))
+                .toList();
+        PageElement<FindUsersResponse> responsePage = new PageElement<>(
+                usersDto,
+                usersPage.getPageNumber(),
+                usersPage.getPageSize(),
+                usersPage.getTotalElements(),
+                usersPage.getTotalPages()
+        );
+        return ResponseEntity.status(200).body(responsePage);
     }
 
     @CrossOrigin(origins = "*")

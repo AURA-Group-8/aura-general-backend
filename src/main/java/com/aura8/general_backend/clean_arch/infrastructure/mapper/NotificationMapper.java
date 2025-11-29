@@ -20,7 +20,8 @@ public class NotificationMapper {
                 entity.getMessage(),
                 entity.getHasButtonToRate(),
                 entity.getWasAnswered(),
-                entity.getWasRead()
+                entity.getWasRead(),
+                entity.getCreatedAt()
         );
     }
 
@@ -59,7 +60,8 @@ public class NotificationMapper {
                 domain.getMessage(),
                 domain.getHasButtonToRate(),
                 domain.getAnswered(),
-                domain.getRead()
+                domain.getRead(),
+                domain.getCreatedAt()
         );
     }
 
@@ -72,7 +74,8 @@ public class NotificationMapper {
                 domain.getMessage(),
                 domain.getHasButtonToRate(),
                 domain.getAnswered(),
-                domain.getRead()
+                domain.getRead(),
+                domain.getCreatedAt()
         );
     }
 

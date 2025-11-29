@@ -4,6 +4,7 @@ import com.aura8.general_backend.clean_arch.application.usecase.notification.fin
 import com.aura8.general_backend.clean_arch.application.usecase.notification.patch.PatchNotificationCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.notification.patch.PatchNotificationUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Notification;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.FindAllByUserIdNotificationResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.PatchNotificationRequest;
 import com.aura8.general_backend.clean_arch.infrastructure.dto.notification.PatchNotificationResponse;
@@ -14,6 +15,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/notificacoes")
@@ -32,7 +35,7 @@ public class NotificationController {
     @GetMapping("/{userId}")
     @SecurityRequirement(name = "Bearer")
     @Operation(summary = "Pegar notificações do usuario", description = "Pega notificações de um usuário")
-    public ResponseEntity<Page<FindAllByUserIdNotificationResponse>> getByUserId(
+    public ResponseEntity<PageElement<FindAllByUserIdNotificationResponse>> getByUserId(
             @PathVariable Integer userId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
@@ -40,8 +43,17 @@ public class NotificationController {
             @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction
             ){
 
-        Page<Notification> notificationPage = findByUserIdNotificationUseCase.findByUserId(userId, page, size, sortBy, direction.getDirection());
-        Page<FindAllByUserIdNotificationResponse> responsePage = notificationPage.map(NotificationMapper::toResponse);
+        PageElement<Notification> notificationPage = findByUserIdNotificationUseCase.findByUserIdPageable(userId, page, size, sortBy, direction.getDirection());
+        List<FindAllByUserIdNotificationResponse> notificationResponses = notificationPage.getContent().stream()
+                .map(notification -> NotificationMapper.toResponse((Notification) notification))
+                .toList();
+        PageElement<FindAllByUserIdNotificationResponse> responsePage = new PageElement<>(
+                notificationResponses,
+                notificationPage.getPageNumber(),
+                notificationPage.getPageSize(),
+                notificationPage.getTotalElements(),
+                notificationPage.getTotalPages()
+        );
         return ResponseEntity.ok(responsePage);
     }
 
