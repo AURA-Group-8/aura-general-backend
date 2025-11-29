@@ -34,9 +34,9 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private AuthenticationService autenticacaoService;
+    private final AuthenticationService autenticacaoService;
 
-    private AuthenticEntryPoint autenticacaoJwtEntryPoint;
+    private final AuthenticEntryPoint autenticacaoJwtEntryPoint;
 
     public SecurityConfig(AuthenticationService autenticacaoService, AuthenticEntryPoint autenticacaoJwtEntryPoint) {
         this.autenticacaoService = autenticacaoService;
