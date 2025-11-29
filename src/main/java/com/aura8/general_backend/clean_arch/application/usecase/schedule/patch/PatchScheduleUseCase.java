@@ -32,7 +32,7 @@ public class PatchScheduleUseCase {
             throw new ElementNotFoundException("Schedule de id: %d nao encontrado".formatted(scheduleId));
         }
         if(command.status() != null && command.status() == ScheduleStatus.CANCELADO) {
-            throw new IllegalArgumentException("Marcar agendamento como cancelado pelo metodo patch não é permitido. Use o metodo Delete.".formatted(scheduleId));
+            throw new IllegalArgumentException("Marcar agendamento como cancelado pelo metodo patch não é permitido. Use o metodo Delete.");
         }
         ScheduleMapper.mergePatchCommandInDomain(command, schedule);
         Schedule patch = scheduleGateway.patch(schedule);
