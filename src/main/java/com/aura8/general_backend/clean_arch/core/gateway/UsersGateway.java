@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.core.gateway;
 
 import com.aura8.general_backend.clean_arch.core.domain.Users;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Optional;
 public interface UsersGateway {
     Users save(Users user);
     List<Users> findAll();
+    PageElement<Users> findAllPageable(Integer page, Integer size, String sortBy, String direction);
     Optional<Users> findById(Integer id);
     Optional<Users> findByEmail(String email);
     Users patch(Users user, Integer userId);

@@ -1,10 +1,18 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.users;
 
+import com.aura8.general_backend.clean_arch.core.domain.Notification;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
+import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
+import com.aura8.general_backend.clean_arch.infrastructure.mapper.NotificationMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.UsersMapper;
+import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.NotificationEntity;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.UsersEntity;
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,6 +40,22 @@ public class UsersAdapterRepository implements UsersGateway {
         List<UsersEntity> usersEntities = repository.findAllByDeletedFalse();
         List<Users> usersList = usersEntities.stream().map(UsersMapper::toDomain).toList();
         return usersList;
+    }
+
+    @Override
+    public PageElement<Users> findAllPageable(Integer page, Integer size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<UsersEntity> usersPage = repository.findAllByDeletedFalse(pageable);
+        List<Users> usersList = usersPage.getContent().stream().map(UsersMapper::toDomain).toList();
+        PageElement<Users> pageElement = new PageElement<>(
+                usersList,
+                usersPage.getNumber(),
+                usersPage.getSize(),
+                usersPage.getTotalElements(),
+                usersPage.getTotalPages()
+        );
+        return pageElement;
     }
 
     @Override
