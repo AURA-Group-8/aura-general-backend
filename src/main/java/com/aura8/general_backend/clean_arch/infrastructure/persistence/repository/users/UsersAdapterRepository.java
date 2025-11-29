@@ -1,12 +1,9 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.users;
 
-import com.aura8.general_backend.clean_arch.core.domain.Notification;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
-import com.aura8.general_backend.clean_arch.infrastructure.mapper.NotificationMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.UsersMapper;
-import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.NotificationEntity;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.UsersEntity;
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
 import org.springframework.data.domain.Page;

@@ -6,9 +6,7 @@ import com.aura8.general_backend.clean_arch.core.domain.enums.NotificationType;
 import com.aura8.general_backend.clean_arch.core.gateway.*;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;

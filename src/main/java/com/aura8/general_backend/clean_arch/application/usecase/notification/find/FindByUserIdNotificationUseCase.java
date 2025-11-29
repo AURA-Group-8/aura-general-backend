@@ -3,7 +3,6 @@ package com.aura8.general_backend.clean_arch.application.usecase.notification.fi
 import com.aura8.general_backend.clean_arch.core.domain.Notification;
 import com.aura8.general_backend.clean_arch.core.domain.valueobject.PageElement;
 import com.aura8.general_backend.clean_arch.core.gateway.NotificationGateway;
-import com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.notification.NotificationAdapterRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

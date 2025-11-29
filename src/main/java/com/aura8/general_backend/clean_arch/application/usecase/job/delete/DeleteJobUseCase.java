@@ -1,7 +1,6 @@
 package com.aura8.general_backend.clean_arch.application.usecase.job.delete;
 
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
-import com.aura8.general_backend.clean_arch.application.usecase.job.find.findbyid.FindByIdJobUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.gateway.JobGateway;
 import org.springframework.stereotype.Service;

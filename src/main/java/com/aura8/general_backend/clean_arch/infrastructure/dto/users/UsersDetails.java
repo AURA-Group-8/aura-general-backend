@@ -1,6 +1,5 @@
 package com.aura8.general_backend.clean_arch.infrastructure.dto.users;
 
-import com.aura8.general_backend.clean_arch.core.domain.Role;
 import com.aura8.general_backend.clean_arch.core.domain.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -3,11 +3,9 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.reposito
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
-import com.aura8.general_backend.clean_arch.core.domain.Users;
 import com.aura8.general_backend.clean_arch.core.gateway.JobScheduleGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.JobScheduleMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.JobScheduleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

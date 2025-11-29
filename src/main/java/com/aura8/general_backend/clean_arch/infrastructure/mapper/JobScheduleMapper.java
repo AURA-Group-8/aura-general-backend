@@ -3,7 +3,6 @@ package com.aura8.general_backend.clean_arch.infrastructure.mapper;
 import com.aura8.general_backend.clean_arch.core.domain.JobSchedule;
 import com.aura8.general_backend.clean_arch.core.domain.Job;
 import com.aura8.general_backend.clean_arch.core.domain.Schedule;
-import com.aura8.general_backend.clean_arch.infrastructure.dto.schedule.ScheduleCardResponse;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.JobScheduleEntity;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.JobEntity;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
