@@ -2,7 +2,7 @@ name: Deploy Backend EC2
 
 on:
   push:
-    branches: [ "Producao-Aws" ]
+    branches: [ "producao-aws" ]
 
 jobs:
   build-and-deploy:
