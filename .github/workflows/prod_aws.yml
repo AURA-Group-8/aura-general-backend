@@ -45,14 +45,14 @@ jobs:
             echo "Parando serviço..."
             sudo systemctl stop backend.service || true
 
-            echo "Movendo nova versão..."
-            sudo cp /home/${{ secrets.EC2_USER }}/app/*.jar /opt/backend/backend.jar
+            echo "Atualizando JAR de produção..."
+            sudo cp /home/${{ secrets.EC2_USER }}/deploy/*.jar /aura/aura-general-backend/target/backend.jar
 
             echo "Ajustando permissões..."
-            sudo chmod 755 /opt/backend/backend.jar
+            sudo chmod 755 /aura/aura-general-backend/target/backend.jar
 
             echo "Iniciando serviço..."
             sudo systemctl start backend.service
 
-            echo "Status:"
+            echo "Status do serviço:"
             sudo systemctl status backend.service --no-pager
