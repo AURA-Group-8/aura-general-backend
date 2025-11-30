@@ -1,0 +1,58 @@
+name: Deploy Backend EC2
+
+on:
+  push:
+    branches: [ "Producao-Aws" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instala Java (ajuste a versão se precisar)
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # 3. Build com Maven
+      - name: Build Maven
+        run: mvn -B clean package -DskipTests
+
+      # 4. Copiar JAR para EC2
+      - name: Copy artifact to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "target/*.jar"
+          target: "/home/${{ secrets.EC2_USER }}/app"
+
+      # 5. Deploy na EC2
+      - name: Restart backend service on EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Parando serviço..."
+            sudo systemctl stop backend.service || true
+
+            echo "Movendo nova versão..."
+            sudo cp /home/${{ secrets.EC2_USER }}/app/*.jar /opt/backend/backend.jar
+
+            echo "Ajustando permissões..."
+            sudo chmod 755 /opt/backend/backend.jar
+
+            echo "Iniciando serviço..."
+            sudo systemctl start backend.service
+
+            echo "Status:"
+            sudo systemctl status backend.service --no-pager
