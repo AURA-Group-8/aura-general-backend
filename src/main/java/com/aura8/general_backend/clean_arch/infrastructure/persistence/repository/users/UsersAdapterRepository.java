@@ -34,6 +34,11 @@ public class UsersAdapterRepository implements UsersGateway {
 
     @Override
     public List<Users> findAll() {
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
+        }
         List<UsersEntity> usersEntities = repository.findAllByDeletedFalse();
         List<Users> usersList = usersEntities.stream().map(UsersMapper::toDomain).toList();
         return usersList;
