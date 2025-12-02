@@ -50,15 +50,15 @@ public class MessageSender implements MessageGateway {
     }
 
     private void sendJson(Object payload, String queueName) {
-        try {
-            byte[] json = objectMapper.writeValueAsBytes(payload);
-            MessageProperties props = new MessageProperties();
-            props.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-            Message amqpMessage = new Message(json, props);
-            amqpTemplate.send(queueName, amqpMessage);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize payload to JSON", e);
-        }
+//        try {
+//            byte[] json = objectMapper.writeValueAsBytes(payload);
+//            MessageProperties props = new MessageProperties();
+//            props.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+//            Message amqpMessage = new Message(json, props);
+//            amqpTemplate.send(queueName, amqpMessage);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException("Failed to serialize payload to JSON", e);
+//        }
     }
 
     @EventListener
