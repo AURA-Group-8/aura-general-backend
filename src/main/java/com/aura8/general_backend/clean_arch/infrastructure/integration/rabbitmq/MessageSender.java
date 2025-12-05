@@ -57,7 +57,9 @@ public class MessageSender implements MessageGateway {
             Message amqpMessage = new Message(json, props);
             amqpTemplate.send(queueName, amqpMessage);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize payload to JSON", e);
+            System.out.printf("Erro ao converter objeto para JSON: %s%n", e.getMessage());
+        } catch (Exception e) {
+            System.out.printf("Não foi possível enviar a mensagem para a fila %s: %s%n", queueName, e.getMessage());
         }
     }
 

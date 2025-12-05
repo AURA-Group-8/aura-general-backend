@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.users;
 
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.UsersEntity;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,7 @@ public interface UsersJpaRepository extends JpaRepository<UsersEntity, Integer> 
 
     Page<UsersEntity> findAllByDeletedFalse(Pageable pageable);
 
+    @Cacheable(value = "usersByEmailCache")
     Optional<UsersEntity> findByEmailAndDeletedFalse(String email);
 
     Optional<UsersEntity> findByIdAndDeletedFalse(Integer id);

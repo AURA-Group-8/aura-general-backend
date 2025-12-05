@@ -2,9 +2,11 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "job")
-public class JobEntity extends AuditableEntity {
+public class JobEntity extends AuditableEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

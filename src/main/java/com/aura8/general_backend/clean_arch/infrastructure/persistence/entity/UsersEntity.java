@@ -1,12 +1,14 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
-public class UsersEntity extends AuditableEntity {
+public class UsersEntity extends AuditableEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,6 +20,7 @@ public class UsersEntity extends AuditableEntity {
     private String observation;
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JsonIgnore
     private RoleEntity role;
     private Boolean deleted = false;
 
