@@ -3,9 +3,11 @@ package com.aura8.general_backend.clean_arch.infrastructure.persistence.entity;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.id.JobScheduleId;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "job_schedule")
-public class JobScheduleEntity {
+public class JobScheduleEntity implements Serializable {
     @EmbeddedId
     private JobScheduleId id;
 
