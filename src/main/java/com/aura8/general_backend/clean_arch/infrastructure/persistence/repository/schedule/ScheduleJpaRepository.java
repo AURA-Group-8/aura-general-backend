@@ -1,6 +1,7 @@
 package com.aura8.general_backend.clean_arch.infrastructure.persistence.repository.schedule;
 
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.ScheduleEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Integer> {
+    @Transactional
     List<ScheduleEntity> findByStartDatetimeBetweenAndCanceled(LocalDateTime startDate, LocalDateTime endDate, boolean canceled);
 
     Optional<ScheduleEntity> findByIdAndCanceled(Integer id, boolean canceled);

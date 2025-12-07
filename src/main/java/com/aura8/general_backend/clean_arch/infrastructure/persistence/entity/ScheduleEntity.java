@@ -4,12 +4,13 @@ import com.aura8.general_backend.clean_arch.core.domain.enums.PaymentStatus;
 import com.aura8.general_backend.clean_arch.core.domain.enums.ScheduleStatus;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "schedule")
-public class ScheduleEntity extends AuditableEntity{
+public class ScheduleEntity extends AuditableEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
