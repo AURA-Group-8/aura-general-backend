@@ -29,9 +29,10 @@ public class PatchUsersUseCase {
             throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
         }
 
-        Optional<Role> optionalRole = roleGateway.findById(command.roleId());
+        int roleId = command.roleId() != null ? command.roleId() : optionalUsers.get().getRole().getId();
+        Optional<Role> optionalRole = roleGateway.findById(roleId);
         if (optionalRole.isEmpty()) {
-            throw new ElementNotFoundException("Role de id: " + command.roleId() + " não encontrado");
+            throw new ElementNotFoundException("Role de id: " + roleId + " não encontrado");
         }
 
         Users user = optionalUsers.get();
@@ -43,7 +44,7 @@ public class PatchUsersUseCase {
                 command.phone(),
                 command.dateOfBirth(),
                 command.observation(),
-                command.roleId(),
+                roleId,
                 optionalRole.get()
         );
         UsersMapper.mergeToDomain(user, command);
