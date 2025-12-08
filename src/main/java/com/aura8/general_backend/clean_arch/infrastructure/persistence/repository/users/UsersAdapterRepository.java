@@ -6,6 +6,7 @@ import com.aura8.general_backend.clean_arch.core.gateway.UsersGateway;
 import com.aura8.general_backend.clean_arch.infrastructure.mapper.UsersMapper;
 import com.aura8.general_backend.clean_arch.infrastructure.persistence.entity.UsersEntity;
 import com.aura8.general_backend.clean_arch.application.exception.ElementNotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -72,6 +73,7 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
+    @CacheEvict(value = "usersByEmailCache")
     public Users patch(Users user, Integer userId) {
         Optional<UsersEntity> usersEntity = findById(userId).map(UsersMapper::toEntity);
         if(usersEntity.isEmpty()) throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
@@ -83,6 +85,7 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
+    @CacheEvict(value = "usersByEmailCache")
     public void delete(Integer userId) {
         Optional<UsersEntity> usersEntity = repository.findByIdAndDeletedFalse(userId);
         if (usersEntity.isEmpty()) throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
