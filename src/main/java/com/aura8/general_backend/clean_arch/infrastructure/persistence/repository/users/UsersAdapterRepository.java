@@ -73,7 +73,7 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
-    @CacheEvict(value = "usersByEmailCache")
+    @CacheEvict(value = "usersByEmailCache", allEntries = true)
     public Users patch(Users user, Integer userId) {
         Optional<UsersEntity> usersEntity = findById(userId).map(UsersMapper::toEntity);
         if(usersEntity.isEmpty()) throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
@@ -85,7 +85,7 @@ public class UsersAdapterRepository implements UsersGateway {
     }
 
     @Override
-    @CacheEvict(value = "usersByEmailCache")
+    @CacheEvict(value = "usersByEmailCache", allEntries = true)
     public void delete(Integer userId) {
         Optional<UsersEntity> usersEntity = repository.findByIdAndDeletedFalse(userId);
         if (usersEntity.isEmpty()) throw new ElementNotFoundException("User de id: " + userId + " não encontrado");
