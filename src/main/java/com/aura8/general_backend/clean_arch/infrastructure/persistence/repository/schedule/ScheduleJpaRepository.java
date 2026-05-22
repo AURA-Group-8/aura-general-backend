@@ -21,4 +21,6 @@ public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Int
     Page<ScheduleEntity> findAllByCanceled(Pageable pageable, boolean canceled);
 
     List<ScheduleEntity> findByUsersIdAndCanceled(Integer userId, boolean canceled);
+
+    Page<ScheduleEntity> findByUsersIdAndCanceled(Pageable pageable, Integer userId, boolean canceled);
 }

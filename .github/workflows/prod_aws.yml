@@ -42,7 +42,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo systemctl stop backend.service || true
-            sudo cp /home/${{ secrets.EC2_USER }}/app/*.jar /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
+            sudo cp /home/${{ secrets.EC2_USER }}/app/target/*.jar /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
             sudo chmod 755 /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
             sudo systemctl start backend.service
 
@@ -89,6 +89,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo systemctl stop backend.service || true
-            sudo cp /home/${{ secrets.EC2_USER }}/app/*.jar /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
+            sudo cp /home/${{ secrets.EC2_USER }}/app/target/*.jar /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
             sudo chmod 755 /aura/aura-general-backend/target/general-backend-0.0.1-SNAPSHOT.jar
             sudo systemctl start backend.service
