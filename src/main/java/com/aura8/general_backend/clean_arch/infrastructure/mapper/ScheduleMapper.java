@@ -92,6 +92,7 @@ public class ScheduleMapper {
     public static ScheduleCardResponse toScheduleCardResponse(Schedule schedule) {
         return new ScheduleCardResponse(
                 schedule.getId(),
+                schedule.getUsers().getId(),
                 schedule.getUsers().getUsername().get(),
                 schedule.getJobSchedules().stream()
                         .map(js -> js.getJob().getName())

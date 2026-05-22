@@ -108,4 +108,22 @@ public class ScheduleAdapterRepository implements ScheduleGateway {
                 .map(ScheduleMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public PageElement<Schedule> findByUserIdPageable(Integer page, Integer size, String sortBy, String direction, Integer userId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
+        Page<ScheduleEntity> entityPage = repository.findByUsersIdAndCanceled(pageable, userId, false);
+        List<Schedule> schedules = entityPage.getContent().stream()
+                .map(ScheduleMapper::toDomain)
+                .toList();
+        PageElement<Schedule> schedulePage =
+                new PageElement<>(
+                        schedules,
+                        entityPage.getNumber(),
+                        entityPage.getSize(),
+                        entityPage.getTotalElements(),
+                        entityPage.getTotalPages()
+                );
+        return schedulePage;
+    }
 }

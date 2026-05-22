@@ -6,6 +6,7 @@ import com.aura8.general_backend.clean_arch.application.usecase.schedule.create.
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.delete.DeleteScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findbyid.FindByIdScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findall.FindAllScheduleUseCase;
+import com.aura8.general_backend.clean_arch.application.usecase.schedule.find.findbyuserid.FindByUserIdScheduleUseCase;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleCommand;
 import com.aura8.general_backend.clean_arch.application.usecase.schedule.patch.PatchScheduleUseCase;
 import com.aura8.general_backend.clean_arch.core.domain.AvailableDay;
@@ -37,14 +38,9 @@ public class ScheduleController {
     private final GetAvailiblesDaysUseCase getAvailableTimesUseCase;
     private final PatchScheduleUseCase patchScheduleUseCase;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
+    private final FindByUserIdScheduleUseCase findByUserIdScheduleUseCase;
 
-    public ScheduleController(CreateScheduleUseCase createScheduleUseCase,
-                              DeleteScheduleUseCase deleteScheduleUseCase,
-                              FindByIdScheduleUseCase findByIdScheduleUseCase,
-                              FindAllScheduleUseCase findAllScheduleUseCase,
-                              GetAvailiblesDaysUseCase getAvailableTimesUseCase,
-                              PatchScheduleUseCase patchScheduleUseCase,
-                              GerenciadorTokenJwt gerenciadorTokenJwt) {
+    public ScheduleController(CreateScheduleUseCase createScheduleUseCase, DeleteScheduleUseCase deleteScheduleUseCase, FindByIdScheduleUseCase findByIdScheduleUseCase, FindAllScheduleUseCase findAllScheduleUseCase, GetAvailiblesDaysUseCase getAvailableTimesUseCase, PatchScheduleUseCase patchScheduleUseCase, GerenciadorTokenJwt gerenciadorTokenJwt, FindByUserIdScheduleUseCase findByUserIdScheduleUseCase) {
         this.createScheduleUseCase = createScheduleUseCase;
         this.deleteScheduleUseCase = deleteScheduleUseCase;
         this.findByIdScheduleUseCase = findByIdScheduleUseCase;
@@ -52,6 +48,7 @@ public class ScheduleController {
         this.getAvailableTimesUseCase = getAvailableTimesUseCase;
         this.patchScheduleUseCase = patchScheduleUseCase;
         this.gerenciadorTokenJwt = gerenciadorTokenJwt;
+        this.findByUserIdScheduleUseCase = findByUserIdScheduleUseCase;
     }
 
     @CrossOrigin(origins = "*")
@@ -145,6 +142,30 @@ public class ScheduleController {
             @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction
     ) {
         PageElement<Schedule> schedulePage = findAllScheduleUseCase.findAllPageable(page, size, sortBy, direction.getDirection());
+        PageElement<ScheduleCardResponse> responsePage = new PageElement<>(
+                schedulePage.getContent().stream()
+                        .map(schedule -> ScheduleMapper.toScheduleCardResponse((Schedule) schedule))
+                        .toList(),
+                schedulePage.getPageNumber(),
+                schedulePage.getPageSize(),
+                schedulePage.getTotalElements(),
+                schedulePage.getTotalPages()
+        );
+        return ResponseEntity.ok(responsePage);
+    }
+
+    @CrossOrigin(origins = "*")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/card/{userId}")
+    public ResponseEntity<PageElement<ScheduleCardResponse>> getCardInfos(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") DirectionEnum direction,
+            @Parameter(description = "ID do agendamento", example = "1")
+            @PathVariable Integer userId
+    ) {
+        PageElement<Schedule> schedulePage = findByUserIdScheduleUseCase.findByUserIdPageable(page, size, sortBy, direction.getDirection(), userId);
         PageElement<ScheduleCardResponse> responsePage = new PageElement<>(
                 schedulePage.getContent().stream()
                         .map(schedule -> ScheduleMapper.toScheduleCardResponse((Schedule) schedule))

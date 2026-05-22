@@ -5,6 +5,7 @@ import java.util.List;
 
 public record ScheduleCardResponse (
     Integer idScheduling,
+    Integer idUser,
     String userName,
     List<String> jobsNames,
     LocalDateTime startDatetime,
