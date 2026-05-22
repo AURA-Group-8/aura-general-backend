@@ -15,4 +15,5 @@ public interface ScheduleGateway {
     PageElement<Schedule> findAllPageable(Integer page, Integer size, String sortBy, String direction);
     List<Schedule> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate, boolean getCanceled);
     List<Schedule> findByUsersId(Integer userId);
+    PageElement<Schedule> findByUserIdPageable(Integer page, Integer size, String sortBy, String direction, Integer userId);
 }
